@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen">
+<title>Champion Display</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  body {
+    background: #0a0a0a;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #fff;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .screen { 
+    display: none; 
+    width: 100%; 
+    height: 100dvh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .screen.active { display: flex; }
+
+  /* ── SCREEN 1: CONSENT ── */
+  #screen-consent {
+    background: #0a0a0a;
+    justify-content: center;
+    padding: 32px 24px;
+    gap: 24px;
+  }
+  .logo-mark {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #00c853;
+  }
+  .consent-heading {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+  }
+  .consent-heading span { color: #00c853; }
+  .consent-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #aaa;
+    text-align: center;
+    max-width: 320px;
+  }
+  .consent-box {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 16px;
+    width: 100%;
+    max-width: 360px;
+  }
+  .consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.5;
+  }
+  .consent-label input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    accent-color: #00c853;
+    cursor: pointer;
+    margin-top: 1px;
+  }
+  .btn-primary {
+    width: 100%;
+    max-width: 360px;
+    padding: 18px;
+    background: #00c853;
+    color: #000;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    opacity: 0.35;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.1s;
+    text-transform: uppercase;
+  }
+  .btn-primary.unlocked {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .btn-primary.unlocked:active { transform: scale(0.97); }
+
+  /* ── SCREEN 2: CAMERA ── */
+  #screen-camera {
+    position: relative;
+    background: #000;
+    padding: 0;
+    justify-content: center;
+  }
+  #video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  #frame-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .camera-ui {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 24px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  }
+  .shutter-btn {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: #fff;
+    border: 4px solid rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: transform 0.1s;
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.15);
+  }
+  .shutter-btn:active { transform: scale(0.9); }
+  .camera-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+  .flip-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── SCREEN 3: TEXT ── */
+  #screen-text {
+    background: #0a0a0a;
+    padding: 0;
+    gap: 0;
+  }
+  .preview-container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  #preview-photo {
+    width: 100%;
+    display: block;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+  }
+  #preview-frame {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  .text-canvas-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 22%;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .text-line {
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5);
+    font-weight: 900;
+    line-height: 1.15;
+    padding: 0 8%;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: font-size 0.1s;
+  }
+  #ol1 { font-size: clamp(12px, 5vw, 26px); }
+  #ol2 { font-size: clamp(10px, 4vw, 22px); font-weight: 700; }
+  #ol3 { font-size: clamp(9px, 3.5vw, 18px); font-weight: 600; color: #eee; }
+
+  .text-inputs {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .input-group label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 700;
+  }
+  .input-group input {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    outline: none;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transition: border-color 0.2s;
+  }
+  .input-group input:focus { border-color: #00c853; }
+  .char-count {
+    font-size: 10px;
+    color: #444;
+    text-align: right;
+  }
+  .char-count.warn { color: #ff6b35; }
+
+  .text-actions {
+    width: 100%;
+    max-width: 480px;
+    padding: 16px 20px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .btn-download {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  .btn-download:active { transform: scale(0.97); }
+  .btn-free {
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+  }
+  .btn-premium {
+    background: #00c853;
+    color: #000;
+  }
+  .btn-retake {
+    background: transparent;
+    color: #666;
+    border: none;
+    font-size: 13px;
+    padding: 8px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── SCREEN 4: SUCCESS ── */
+  #screen-success {
+    background: #0a0a0a;
+    justify-content: center;
+    padding: 32px 24px;
+    gap: 20px;
+    text-align: center;
+  }
+  .success-icon { font-size: 56px; }
+  .success-heading { font-size: 26px; font-weight: 800; }
+  .success-body { font-size: 14px; color: #777; line-height: 1.6; max-width: 300px; }
+  .btn-again {
+    margin-top: 8px;
+    padding: 16px 32px;
+    background: #00c853;
+    color: #000;
+    font-weight: 800;
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ERROR TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #222;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 24px;
+    font-size: 13px;
+    z-index: 999;
+    transition: transform 0.3s;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Permission error */
+  .cam-error {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background: #000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 32px;
+    text-align: center;
+  }
+  .cam-error.show { display: flex; }
+  .cam-error p { color: #aaa; font-size: 14px; line-height: 1.6; }
+  .cam-error button {
+    padding: 14px 28px;
+    background: #00c853;
+    color: #000;
+    font-weight: 800;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SCREEN 1: CONSENT -->
+<div class="screen active" id="screen-consent">
+  <div class="logo-mark">Champion Display</div>
+  <h1 class="consent-heading">Before we<br><span>get started</span></h1>
+  <p class="consent-body">This app uses your camera to create sports graphics. Photos are never uploaded or stored anywhere.</p>
+  <div class="consent-box" id="consent-box" onclick="toggleConsent()" style="cursor:pointer">
+    <div class="consent-label">
+      <div id="check-visual" style="width:24px;height:24px;min-width:24px;border:2px solid #555;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;"></div>
+      <span>I agree to the Terms of Use and confirm I have parental authorisation to photograph and share images of any athletes under 18.</span>
+    </div>
+  </div>
+  <button class="btn-primary" id="consent-btn" onclick="tryCamera()">Open Camera</button>
+</div>
+
+<!-- SCREEN 2: CAMERA -->
+<div class="screen" id="screen-camera">
+  <video id="video" autoplay playsinline muted></video>
+  <img id="frame-overlay" src="frame.png" alt="">
+  <button class="flip-btn" onclick="flipCamera()" title="Flip camera">⟳</button>
+  <div class="camera-ui">
+    <p class="camera-hint">Position player inside the frame, then tap</p>
+    <button class="shutter-btn" onclick="capturePhoto()"></button>
+  </div>
+  <div class="cam-error" id="cam-error">
+    <p>📷</p>
+    <p>Camera access is needed to frame your player.<br>Please check your browser privacy settings and try again.</p>
+    <button onclick="retryCamera()">Retry</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: TEXT -->
+<div class="screen" id="screen-text">
+  <div class="preview-container">
+    <img id="preview-photo" src="" alt="captured photo">
+    <img id="preview-frame" src="frame.png" alt="">
+    <div class="text-canvas-overlay">
+      <div class="text-line" id="ol1">&nbsp;</div>
+      <div class="text-line" id="ol2">&nbsp;</div>
+      <div class="text-line" id="ol3">&nbsp;</div>
+    </div>
+  </div>
+
+  <div class="text-inputs">
+    <div class="input-group">
+      <label>Line 1 — Player / Headline <span class="char-count" id="cc1">0/20</span></label>
+      <input type="text" id="line1" maxlength="20" placeholder="JAMES WILSON" oninput="updateText()">
+    </div>
+    <div class="input-group">
+      <label>Line 2 — Team / Event <span class="char-count" id="cc2">0/25</span></label>
+      <input type="text" id="line2" maxlength="25" placeholder="HIBISCUS COAST U12" oninput="updateText()">
+    </div>
+    <div class="input-group">
+      <label>Line 3 — Score / Detail <span class="char-count" id="cc3">0/20</span></label>
+      <input type="text" id="line3" maxlength="20" placeholder="WON 3-1" oninput="updateText()">
+    </div>
+  </div>
+
+  <div class="text-actions">
+    <button class="btn-download btn-free" onclick="downloadFree()">⬇ Download Free</button>
+    <button class="btn-download btn-premium" onclick="downloadPremium()">★ Premium Download — $4.95</button>
+    <button class="btn-retake" onclick="retakePhoto()">Retake photo</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: SUCCESS -->
+<div class="screen" id="screen-success">
+  <div class="success-icon">🎉</div>
+  <h2 class="success-heading">Looking good!</h2>
+  <p class="success-body">Your graphic has been saved to your camera roll. Share it with the team!</p>
+  <button class="btn-again" onclick="makeAnother()">Make Another</button>
+</div>
+
+<!-- Hidden canvas for compositing -->
+<canvas id="canvas" style="display:none"></canvas>
+
+<script>
+const FRAME_SRC = document.getElementById('frame-overlay').src;
+let stream = null;
+let facingMode = 'environment';
+let capturedDataURL = null;
+
+// ── CONSENT ──
+let consentGiven = false;
+
+function toggleConsent() {
+  consentGiven = !consentGiven;
+  const visual = document.getElementById('check-visual');
+  const btn = document.getElementById('consent-btn');
+  const box = document.getElementById('consent-box');
+  if (consentGiven) {
+    visual.textContent = '✓';
+    visual.style.background = '#00c853';
+    visual.style.borderColor = '#00c853';
+    visual.style.color = '#000';
+    btn.classList.add('unlocked');
+    box.style.borderColor = '#00c853';
+  } else {
+    visual.textContent = '';
+    visual.style.background = 'transparent';
+    visual.style.borderColor = '#555';
+    btn.classList.remove('unlocked');
+    box.style.borderColor = '#2a2a2a';
+  }
+}
+
+function tryCamera() {
+  if (!consentGiven) {
+    document.getElementById('consent-box').style.borderColor = '#ff4444';
+    setTimeout(() => {
+      document.getElementById('consent-box').style.borderColor = '#2a2a2a';
+    }, 800);
+    return;
+  }
+  startCamera();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── CAMERA ──
+async function startCamera() {
+  localStorage.setItem('champion_consent_accepted', 'true');
+  localStorage.setItem('champion_consent_version', '1');
+  showScreen('screen-camera');
+  // Small delay to let screen render before requesting camera
+  setTimeout(async () => {
+    await initCamera();
+  }, 100);
+}
+
+async function initCamera() {
+  document.getElementById('cam-error').classList.remove('show');
+  try {
+    if (stream) { stream.getTracks().forEach(t => t.stop()); }
+    // Try ideal constraints first
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: facingMode }, width: { ideal: 1080 }, height: { ideal: 1350 } },
+        audio: false
+      });
+    } catch(e1) {
+      // Fallback: simpler constraints
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: facingMode },
+        audio: false
+      });
+    }
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+    await video.play();
+  } catch(e) {
+    console.error('Camera error:', e);
+    document.getElementById('cam-error').classList.add('show');
+  }
+}
+
+async function flipCamera() {
+  facingMode = facingMode === 'environment' ? 'user' : 'environment';
+  await initCamera();
+}
+
+async function retryCamera() {
+  await initCamera();
+}
+
+// ── CAPTURE ──
+function capturePhoto() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  // Use 4:5 ratio at good resolution
+  const W = 1080, H = 1350;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Draw video frame, centered-crop to 4:5
+  const vw = video.videoWidth, vh = video.videoHeight;
+  const targetRatio = W / H;
+  const videoRatio = vw / vh;
+  let sx, sy, sw, sh;
+  if (videoRatio > targetRatio) {
+    sh = vh; sw = vh * targetRatio; sx = (vw - sw) / 2; sy = 0;
+  } else {
+    sw = vw; sh = vw / targetRatio; sx = 0; sy = (vh - sh) / 2;
+  }
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, W, H);
+  capturedDataURL = canvas.toDataURL('image/jpeg', 0.92);
+
+  // Stop camera stream to save battery
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+
+  // Show photo on text screen
+  document.getElementById('preview-photo').src = capturedDataURL;
+  updateText();
+  showScreen('screen-text');
+}
+
+// ── TEXT UPDATES ──
+function updateText() {
+  const lines = ['line1','line2','line3'];
+  const overlays = ['ol1','ol2','ol3'];
+  const maxLens = [20,25,20];
+  const ccIds = ['cc1','cc2','cc3'];
+
+  lines.forEach((id, i) => {
+    const val = document.getElementById(id).value.toUpperCase();
+    const el = document.getElementById(overlays[i]);
+    el.textContent = val || '\u00A0';
+    const cc = document.getElementById(ccIds[i]);
+    cc.textContent = val.length + '/' + maxLens[i];
+    cc.classList.toggle('warn', val.length >= maxLens[i] - 2);
+  });
+}
+
+function retakePhoto() {
+  capturedDataURL = null;
+  showScreen('screen-camera');
+  initCamera();
+}
+
+// ── DOWNLOAD ──
+async function compositeImage(addWatermark) {
+  const W = 1080, H = 1350;
+  const canvas = document.getElementById('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // 1. Draw photo
+  await new Promise(res => {
+    const img = new Image();
+    img.onload = () => { ctx.drawImage(img, 0, 0, W, H); res(); };
+    img.src = capturedDataURL;
+  });
+
+  // 2. Draw frame overlay
+  await new Promise(res => {
+    const img = new Image();
+    img.onload = () => { ctx.drawImage(img, 0, 0, W, H); res(); };
+    img.src = FRAME_SRC;
+  });
+
+  // 3. Draw text
+  const line1 = document.getElementById('line1').value.toUpperCase();
+  const line2 = document.getElementById('line2').value.toUpperCase();
+  const line3 = document.getElementById('line3').value.toUpperCase();
+
+  ctx.textAlign = 'center';
+  ctx.shadowColor = 'rgba(0,0,0,0.85)';
+  ctx.shadowBlur = 12;
+
+  if (line1) {
+    const fs1 = Math.min(80, Math.max(40, 80 - Math.max(0, line1.length - 10) * 3));
+    ctx.font = ;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(line1, W/2, H * 0.76);
+  }
+  if (line2) {
+    const fs2 = Math.min(60, Math.max(30, 60 - Math.max(0, line2.length - 14) * 2));
+    ctx.font = ;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(line2, W/2, H * 0.82);
+  }
+  if (line3) {
+    const fs3 = Math.min(48, Math.max(24, 48 - Math.max(0, line3.length - 10) * 2));
+    ctx.font = ;
+    ctx.fillStyle = '#eeeeee';
+    ctx.fillText(line3, W/2, H * 0.87);
+  }
+
+  ctx.shadowBlur = 0;
+  return canvas.toDataURL('image/jpeg', 0.92);
+}
+
+async function downloadFree() {
+  showToast('Generating your graphic...');
+  try {
+    const dataURL = await compositeImage(false);
+    triggerDownload(dataURL, 'ChampionDisplay_Graphic_' + dateStr() + '.jpg');
+    showScreen('screen-success');
+  } catch(e) {
+    showToast('Something went wrong. Please try again.');
+  }
+}
+
+async function downloadPremium() {
+  showToast('Premium coming soon! Downloading free version for now...');
+  try {
+    const dataURL = await compositeImage(false);
+    triggerDownload(dataURL, 'ChampionDisplay_Premium_Social_' + dateStr() + '.jpg');
+    showScreen('screen-success');
+  } catch(e) {
+    showToast('Something went wrong. Please try again.');
+  }
+}
+
+function triggerDownload(dataURL, filename) {
+  const a = document.createElement('a');
+  a.href = dataURL;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function dateStr() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function makeAnother() {
+  document.getElementById('line1').value = '';
+  document.getElementById('line2').value = '';
+  document.getElementById('line3').value = '';
+  updateText();
+  capturedDataURL = null;
+  showScreen('screen-camera');
+  initCamera();
+}
+
+// Auto-start camera if already consented
+window.addEventListener('load', () => {
+  const consented = localStorage.getItem('champion_consent_accepted') === 'true';
+  const version = localStorage.getItem('champion_consent_version');
+  if (consented && version === '1') {
+    showScreen('screen-camera');
+    initCamera();
+  }
+});
+</script>
+</body>
+</html>
