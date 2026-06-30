@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Champion Display</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; overflow:hidden; display:flex; justify-content:center; align-items:center; }
+
+.screen { display:none; width:100%; height:100dvh; flex-direction:column; align-items:center; justify-content:center; overflow-y:auto; position:relative; }
+.screen.active { display:flex; }
+
+/* ── FIXED 4:5 CONTAINER ENGINE ── */
+.aspect-container {
+  position:relative;
+  width:100%;
+  max-width:480px;
+  aspect-ratio:4/5;
+  background:#000;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* ── S1 AGREE ── */
+#s1 { gap:20px; padding:32px 24px; text-align:center; }
+#s1 .brand { font-size:11px; font-weight:700; letter-spacing:0.15em; color:#00c853; text-transform:uppercase; }
+#s1 h1 { font-size:28px; font-weight:900; line-height:1.2; }
+#s1 h1 span { color:#00c853; }
+#s1 p { color:#999; font-size:14px; line-height:1.6; max-width:300px; }
+#agree-btn { width:100%; max-width:340px; padding:20px; background:#00c853; color:#000; font-size:17px; font-weight:900; border:none; border-radius:14px; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; }
+.terms-note { font-size:11px; color:#444; max-width:300px; line-height:1.5; }
+
+/* ── S2 CAMERA ── */
+#s2 { padding:0; background:#0a0a0a; }
+
+#video {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+}
+
+.frame-layer {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  pointer-events:none;
+  z-index:2;
+}
+
+.cam-bottom {
+  position:absolute;
+  bottom:0; left:0; right:0;
+  z-index:10;
+  padding:20px 20px 32px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  background:linear-gradient(transparent, rgba(0,0,0,0.85) 60%);
+}
+
+.cam-hint-box {
+  background:rgba(0, 0, 0, 0.65);
+  border:1px solid rgba(255,255,255,0.15);
+  padding:8px 16px;
+  border-radius:20px;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  z-index:11;
+  margin-bottom:4px;
+}
+.cam-hint { font-size:13px; font-weight:700; color:#fff; letter-spacing:0.04em; text-transform:uppercase; text-align:center; }
+
+#shutter { width:76px; height:76px; border-radius:50%; background:#fff; border:5px solid rgba(255,255,255,0.4); cursor:pointer; box-shadow:0 0 0 6px rgba(255,255,255,0.15); transition:transform 0.1s; }
+#shutter:active { transform:scale(0.9); }
+#flip-btn { position:absolute; top:16px; right:16px; z-index:10; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:22px; width:46px; height:46px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+
+#cam-err { display:none; position:absolute; inset:0; z-index:20; background:#000; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:32px; text-align:center; }
+#cam-err.show { display:flex; }
+
+/* ── S2B: CONFIRM PHOTO PREVIEW ── */
+#s2b { background:#0a0a0a; justify-content:center; gap:20px; }
+.action-container { width:100%; max-width:480px; padding:0 16px; display:flex; flex-direction:column; gap:10px; }
+
+/* ── S3: TEXT WORKSPACE ── */
+#s3 { justify-content:flex-start; padding-top:0; overflow-y:auto; }
+
+.text-overlay {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:5;
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding-bottom:13%;
+  padding-left:5%;
+  padding-right:5%;
+  gap:1.5%;
+}
+
+.tline {
+  text-align:center;
+  color:#fff;
+  font-weight:900;
+  font-family:'Arial Black', sans-serif;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.6);
+  white-space:nowrap;
+  overflow:hidden;
+  width:100%;
+  text-transform:uppercase;
+}
+
+#tl1 { font-size:6.5vw; }
+#tl2 { font-size:5vw; }
+#tl3 { font-size:4vw; color:#f0f0f0; }
+
+@media(min-width:480px) {
+  #tl1 { font-size:32px; }
+  #tl2 { font-size:24px; }
+  #tl3 { font-size:20px; }
+}
+
+.inputs-area { width:100%; max-width:480px; padding:16px; display:flex; flex-direction:column; gap:12px; }
+.input-row { display:flex; flex-direction:column; gap:4px; }
+.input-row label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; }
+.input-row input {
+  width:100%;
+  background:#161616;
+  border:1px solid #2c2c2c;
+  border-radius:10px;
+  padding:14px 16px;
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  outline:none;
+  text-transform:uppercase;
+}
+.input-row input:focus { border-color:#00c853; background:#1e1e1e; }
+
+.dl-area { width:100%; max-width:480px; padding:4px 16px 32px; display:flex; flex-direction:column; gap:10px; }
+.btn-free { width:100%; padding:16px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:12px; font-size:15px; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:0.04em; }
+.btn-prem { width:100%; padding:16px; background:#00c853; color:#000; border:none; border-radius:12px; font-size:15px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; }
+.btn-retake { background:none; border:none; color:#666; font-size:13px; text-decoration:underline; cursor:pointer; padding:4px; text-underline-offset:3px; text-align:center; }
+
+/* ── S4 FINAL PREVIEW SCREEN ── */
+#s4 { background:#0a0a0a; justify-content:center; gap:20px; }
+
+/* ── S5 DONE ── */
+#s5 { gap:20px; padding:32px 24px; text-align:center; }
+#s5 .icon { font-size:60px; }
+#s5 h2 { font-size:28px; font-weight:900; }
+#s5 p { color:#777; font-size:14px; line-height:1.6; max-width:280px; }
+#s5 button { padding:16px 32px; background:#00c853; color:#000; font-weight:900; font-size:15px; border:none; border-radius:10px; cursor:pointer; text-transform:uppercase; }
+</style>
+</head>
+<body>
+
+<!-- S1: AGREE -->
+<div class="screen active" id="s1">
+  <div class="brand">Champion Display</div>
+  <h1>Ready to make<br><span>something epic?</span></h1>
+  <p>Your camera creates the graphic on your device. Photos are never uploaded or stored anywhere.</p>
+  <button id="agree-btn" onclick="handleAgree()">I Agree — Open Camera</button>
+  <p class="terms-note">By tapping above you agree to our Terms of Use and confirm you have parental authorisation to photograph athletes under 18.</p>
+</div>
+
+<!-- S2: CAMERA -->
+<div class="screen" id="s2">
+  <div class="aspect-container">
+    <video id="video" autoplay playsinline muted></video>
+    <img class="frame-layer" src="frame.png" alt="">
+    <button id="flip-btn" onclick="flipCam()">⟳</button>
+    <div class="cam-bottom">
+      <div class="cam-hint-box">
+        <p class="cam-hint">Line up your player inside the frame</p>
+      </div>
+      <button id="shutter" onclick="capture()"></button>
+    </div>
+    <div id="cam-err">
+      <p>📷 Camera access blocked.<br><br>Tap the padlock icon in your browser address bar, set Camera to Allow, then tap Try Again.</p>
+      <button onclick="startCam()">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- S2B: CONFIRM PHOTO PREVIEW -->
+<div class="screen" id="s2b">
+  <div class="aspect-container">
+    <img id="confirm-img" class="frame-layer" style="object-fit:cover; z-index:1;" src="" alt="">
+    <img class="frame-layer" src="frame.png" alt="">
+  </div>
+  <div class="action-container">
+    <button class="btn-prem" onclick="show('s3')">Use Photo</button>
+    <button class="btn-free" onclick="retake()">Retake Photo</button>
+  </div>
+</div>
+
+<!-- S3: TEXT INPUT WORKSPACE -->
+<div class="screen" id="s3">
+  <div class="aspect-container" style="flex-shrink:0;">
+    <img id="preview-img" class="frame-layer" style="object-fit:cover; z-index:1;" src="" alt="">
+    <img class="frame-layer" src="frame.png" alt="">
+    <div class="text-overlay">
+      <div class="tline" id="tl1">&nbsp;</div>
+      <div class="tline" id="tl2">&nbsp;</div>
+      <div class="tline" id="tl3">&nbsp;</div>
+    </div>
+  </div>
+  <div class="inputs-area">
+    <div class="input-row">
+      <label>Player / Headline</label>
+      <input id="i1" type="text" maxlength="20" placeholder="JAMES WILSON" oninput="updateText()">
+    </div>
+    <div class="input-row">
+      <label>Team / Event</label>
+      <input id="i2" type="text" maxlength="25" placeholder="HIBISCUS COAST U12" oninput="updateText()">
+    </div>
+    <div class="input-row">
+      <label>Score / Detail</label>
+      <input id="i3" type="text" maxlength="20" placeholder="WON 3-1" oninput="updateText()">
+    </div>
+  </div>
+  <div class="dl-area">
+    <button class="btn-prem" onclick="buildPreview()">Preview My Graphic →</button>
+    <button class="btn-retake" onclick="retake()">Retake photo</button>
+  </div>
+</div>
+
+<!-- S4: PREVIEW BEFORE DOWNLOAD -->
+<div class="screen" id="s4">
+  <div class="aspect-container">
+    <img id="final-img" class="frame-layer" style="object-fit:contain; z-index:1; background:#000;" src="" alt="Your graphic">
+  </div>
+  <div class="action-container">
+    <button class="btn-prem" onclick="doDownload()">⬇ Save to Camera Roll</button>
+    <button class="btn-free" onclick="show('s3')">Edit Text</button>
+    <button class="btn-retake" onclick="retake()">Retake photo</button>
+  </div>
+</div>
+
+<!-- S5: DONE -->
+<div class="screen" id="s5">
+  <div class="icon">🎉</div>
+  <h2>Saved!</h2>
+  <p>Your graphic is in your camera roll. Share it with the team!</p>
+  <button onclick="again()">Make Another</button>
+</div>
+
+<canvas id="cv" style="display:none"></canvas>
+
+<script>
+let str = null;
+let facing = 'environment';
+let photoData = null;
+let finalDataURL = null;
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function handleAgree() {
+  localStorage.setItem('cd_consent','1');
+  show('s2');
+  setTimeout(startCam, 150);
+}
+
+async function startCam() {
+  document.getElementById('cam-err').classList.remove('show');
+  try {
+    if (str) str.getTracks().forEach(t => t.stop());
+    str = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } },
+      audio: false
+    });
+    const v = document.getElementById('video');
+    v.srcObject = str;
+    await v.play();
+  } catch(e) {
+    document.getElementById('cam-err').classList.add('show');
+  }
+}
+
+function flipCam() {
+  facing = facing === 'environment' ? 'user' : 'environment';
+  startCam();
+}
+
+function capture() {
+  const v = document.getElementById('video');
+  const cv = document.getElementById('cv');
+  const W = 1080, H = 1350;
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  
+  const vw = v.videoWidth, vh = v.videoHeight;
+  const tr = W/H;
+  const vr = vw/vh;
+  let sx, sy, sw, sh;
+  
+  if (vr > tr) { sh = vh; sw = sh * tr; sx = (vw - sw) / 2; sy = 0; }
+  else { sw = vw; sh = sw / tr; sx = 0; sy = (vh - sh) / 2; }
+  
+  ctx.drawImage(v, sx, sy, sw, sh, 0, 0, W, H);
+  photoData = cv.toDataURL('image/jpeg', 0.93);
+  
+  if (str) { str.getTracks().forEach(t => t.stop()); str = null; }
+  
+  document.getElementById('preview-img').src = photoData;
+  document.getElementById('confirm-img').src = photoData;
+  updateText();
+  show('s2b');
+}
+
+function updateText() {
+  const vals = ['i1','i2','i3'].map(id => document.getElementById(id).value.toUpperCase());
+  ['tl1','tl2','tl3'].forEach((id, i) => {
+    document.getElementById(id).textContent = vals[i] || '\u00A0';
+  });
+}
+
+function retake() {
+  photoData = null; finalDataURL = null;
+  ['i1','i2','i3'].forEach(id => document.getElementById(id).value = '');
+  updateText();
+  show('s2');
+  startCam();
+}
+
+async function buildPreview() {
+  const W = 1080, H = 1350;
+  const cv = document.getElementById('cv');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+
+  await loadImg(ctx, photoData, 0, 0, W, H);
+  await loadImg(ctx, 'frame.png', 0, 0, W, H);
+
+  const texts = ['i1','i2','i3'].map(id => document.getElementById(id).value.toUpperCase());
+  ctx.textAlign = 'center';
+  ctx.shadowColor = 'rgba(0,0,0,0.95)';
+  ctx.shadowBlur = 16;
+
+  const configs = [
+    { y: H * 0.77, baseSize: 82, minSize: 36 },
+    { y: H * 0.825, baseSize: 62, minSize: 28 },
+    { y: H * 0.875, baseSize: 48, minSize: 22 },
+  ];
+
+  texts.forEach((t, i) => {
+    if (!t) return;
+    const c = configs[i];
+    let fs = c.baseSize;
+    while(fs > c.minSize) {
+      ctx.font = `900 ${fs}px Arial Black, Arial, sans-serif`;
+      if(ctx.measureText(t).width < W * 0.88) break;
+      fs -= 2;
+    }
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(t, W / 2, c.y);
+  });
+
+  ctx.shadowBlur = 0;
+  finalDataURL = cv.toDataURL('image/jpeg', 0.93);
+
+  document.getElementById('final-img').src = finalDataURL;
+  show('s4');
+}
+
+function doDownload() {
+  if (!finalDataURL) return;
+  const a = document.createElement('a');
+  a.href = finalDataURL;
+  a.download = 'ChampionDisplay_' + new Date().toISOString().slice(0,10) + '.jpg';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  show('s5');
+}
+
+function loadImg(ctx, src, x, y, w, h) {
+  return new Promise(res => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => { ctx.drawImage(img, x, y, w, h); res(); };
+    img.onerror = () => res();
+    img.src = src + (src.startsWith('data:') ? '' : '?v=' + Date.now());
+  });
+}
+
+function again() {
+  photoData = null; finalDataURL = null;
+  ['i1','i2','i3'].forEach(id => document.getElementById(id).value = '');
+  updateText();
+  show('s2');
+  startCam();
+}
+
+if (localStorage.getItem('cd_consent') === '1') {
+  show('s2');
+  setTimeout(startCam, 150);
+}
+</script>
+</body>
+</html>
