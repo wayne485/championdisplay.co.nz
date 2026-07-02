@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Champion Display</title>
+
+<!-- IMPORT SUPABASE CLIENT CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; overflow:hidden; display:flex; justify-content:center; align-items:center; }
+
+.screen { display:none; width:100%; height:100dvh; flex-direction:column; align-items:center; justify-content:center; overflow-y:auto; position:relative; }
+.screen.active { display:flex; }
+
+/* ── FIXED 4:5 CONTAINER ENGINE ── */
+.aspect-container {
+  position:relative;
+  width:100%;
+  max-width:480px;
+  aspect-ratio:4/5;
+  max-height:62dvh;
+  background:#000;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* ── S1 AGREE ── */
+#s1 { gap:20px; padding:32px 24px; text-align:center; justify-content:center; }
+#s1 .logo-container { width:100%; max-width:160px; margin-bottom:8px; display:flex; align-items:center; justify-content:center; }
+#s1 .logo-img { width:100%; height:auto; object-fit:contain; }
+#s1 h1 { font-size:26px; font-weight:900; line-height:1.2; text-transform:uppercase; letter-spacing:0.02em; padding:0 10px; text-align:center; }
+#s1 h1 span { color:#dac16d; }
+#s1 .privacy-block { color:#999; font-size:14px; line-height:1.6; max-width:340px; text-align:center; margin:4px auto; }
+#agree-btn { width:100%; max-width:340px; padding:18px; background:#dac16d; color:#000; font-size:16px; font-weight:900; border:none; border-radius:12px; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; margin-top:8px; transition:background 0.2s; text-align:center; line-height:1.4; }
+#agree-btn:active { background:#c4ab59; }
+.terms-note { font-size:10.5px; color:#555; max-width:340px; line-height:1.4; text-align:justify; margin-top:8px; }
+
+/* ── S2 CAMERA ── */
+#s2 { padding:0; background:#0a0a0a; }
+
+#video {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+}
+
+.frame-layer {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  pointer-events:none;
+  z-index:2;
+}
+
+.cam-bottom {
+  position:absolute;
+  bottom:0; left:0; right:0;
+  z-index:10;
+  padding:20px 20px 32px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  background:linear-gradient(transparent, rgba(0,0,0,0.85) 60%);
+}
+
+.cam-hint-box {
+  background:rgba(0, 0, 0, 0.65);
+  border:1px solid rgba(255,255,255,0.15);
+  padding:8px 16px;
+  border-radius:20px;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  z-index:11;
+  margin-bottom:4px;
+}
+.cam-hint { font-size:13px; font-weight:700; color:#fff; letter-spacing:0.04em; text-transform:uppercase; text-align:center; }
+
+#shutter { width:76px; height:76px; border-radius:50%; background:#fff; border:5px solid rgba(255,255,255,0.4); cursor:pointer; box-shadow:0 0 0 6px rgba(255,255,255,0.15); transition:transform 0.1s; }
+#shutter:active { transform:scale(0.9); }
+#flip-btn { position:absolute; top:16px; right:16px; z-index:10; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:22px; width:46px; height:46px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+
+#cam-err { display:none; position:absolute; inset:0; z-index:20; background:#000; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:32px; text-align:center; }
+#cam-err.show { display:flex; }
+
+/* ── S2B: CONFIRM PHOTO PREVIEW ── */
+#s2b { background:#0a0a0a; justify-content:flex-start; gap:0; padding:0; }
+.action-container { width:100%; max-width:480px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+
+/* ── S3: TEXT WORKSPACE ── */
+#s3 { justify-content:flex-start; padding-top:0; overflow-y:auto; }
+
+.text-overlay {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:5;
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding-bottom:14%;
+  padding-left:0;
+  padding-right:0;
+  gap:0.5%;
+}
+
+.tline {
+  text-align:center;
+  color:#fff;
+  font-weight:900;
+  font-family:'Impact', 'Arial Narrow', sans-serif;
+  letter-spacing:0.02em;
+  white-space:nowrap;
+  overflow:hidden;
+  width:100%;
+  text-transform:uppercase;
+  line-height:1.1;
+  -webkit-text-stroke: 1.5px #005a2b;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.6);
+}
+
+#tl1 { font-size:9.5vw; }
+#tl2 { font-size:9.5vw; }
+#tl3 { font-size:4.5vw; font-weight:700; font-family:sans-serif; letter-spacing:0.05em; margin-top:4px; -webkit-text-stroke:0px; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
+
+@media(min-width:480px) {
+  #tl1 { font-size:45px; }
+  #tl2 { font-size:45px; }
+  #tl3 { font-size:21px; }
+}
+
+.inputs-area { width:100%; max-width:480px; padding:16px; display:flex; flex-direction:column; gap:12px; }
+.input-row { display:flex; flex-direction:column; gap:4px; }
+.input-row label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; }
+.input-row input {
+  width:100%;
+  background:#161616;
+  border:1px solid #2c2c2c;
+  border-radius:10px;
+  padding:14px 16px;
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  outline:none;
+  text-transform:uppercase;
+}
+.input-row input:focus { border-color:#dac16d; background:#1e1e1e; }
+
+.dl-area { width:100%; max-width:480px; padding:4px 16px 32px; display:flex; flex-direction:column; gap:10px; }
+.btn-free { width:100%; padding:16px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:12px; font-size:15px; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:0.04em; }
+.btn-prem { width:100%; padding:16px; background:#dac16d; color:#000; border:none; border-radius:12px; font-size:15px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; }
+.btn-retake { background:none; border:none; color:#666; font-size:13px; text-decoration:underline; cursor:pointer; padding:4px; text-underline-offset:3px; text-align:center; }
+.btn-sec { width:100%; padding:16px; background:#1a1a1a; color:#dac16d; font-size:15px; font-weight:900; border:2px solid #dac16d; border-radius:12px; cursor:pointer; text-transform:uppercase; letter-spacing:0.04em; }
+.btn-sec:active { opacity:0.85; }
+
+/* ── S4 FINAL PREVIEW SCREEN ── */
+#s4 { background:#0a0a0a; justify-content:center; gap:20px; }
+
+/* ── iOS / IN-APP BROWSER DOWNLOAD FALLBACK PANEL ── */
+.save-fallback-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+.save-fallback-overlay.show { display: flex; }
+.fallback-card { background: #161616; border: 1px solid #2a2a2a; border-radius: 16px; padding: 24px; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.fallback-title { font-size: 18px; font-weight: 800; color: #dac16d; }
+.fallback-desc { font-size: 13.5px; color: #ccc; line-height: 1.5; }
+.btn-fallback-close { width:100%; padding:12px; background:#222; color:#fff; border:1px solid #333; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; }
+
+/* ── S5 DONE ── */
+#s5 { gap:20px; padding:32px 24px; text-align:center; }
+#s5 .icon { font-size:60px; }
+#s5 h2 { font-size:28px; font-weight:900; }
+#s5 p { color:#777; font-size:14px; line-height:1.6; max-width:280px; }
+#s5 button { padding:16px 32px; background:#dac16d; color:#000; font-weight:900; font-size:15px; border:none; border-radius:10px; cursor:pointer; text-transform:uppercase; }
+
+/* ── PWA ADD-TO-HOME-SCREEN PROMPT MODAL ── */
+.pwa-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 999;
+}
+.pwa-overlay.show { display: block; }
+.pwa-prompt {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border-top: 3px solid #dac16d;
+  border-radius: 24px 24px 0 0;
+  padding: 28px 24px 48px;
+  box-shadow: 0 -20px 60px rgba(0,0,0,0.95);
+  z-index: 1000;
+  gap: 0;
+}
+.pwa-prompt.show { display: flex; flex-direction: column; }
+.pwa-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.pwa-title { font-size: 22px; font-weight: 900; color: #dac16d; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.2; }
+.pwa-close { background: none; border: none; color: #555; font-size: 30px; cursor: pointer; line-height: 1; padding: 0 0 0 12px; }
+.pwa-text { font-size: 15px; color: #bbb; line-height: 1.65; margin-bottom: 24px; }
+.pwa-footer { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.btn-pwa-action { width: 100%; padding: 20px; border: none; border-radius: 14px; font-size: 17px; font-weight: 900; cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+.btn-pwa-install { background: #dac16d; color: #000; }
+.btn-pwa-dismiss { background: #2a2a2a; color: #777; border: 1px solid #333; font-size: 14px; font-weight: 700; padding: 16px; }
+
+/* ── SPLASH SCREEN ── */
+#s-splash { background:#0a0a0a; gap:0; justify-content:center; align-items:center; }
+#s-splash img { width:180px; height:auto; animation:fadeIn 0.5s ease; }
+@keyframes fadeIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+
+/* ── CHOICE SCREEN ── */
+#s-choice { gap:20px; padding:32px 24px; text-align:center; justify-content:center; }
+#s-choice h2 { font-size:22px; font-weight:900; color:#fff; margin-bottom:4px; }
+#s-choice p { font-size:14px; color:#777; margin-bottom:8px; }
+.choice-btn { width:100%; max-width:360px; padding:24px; border-radius:16px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; text-align:center; transition:transform 0.1s; }
+.choice-btn:active { transform:scale(0.97); }
+.choice-text strong { display:block; font-size:24px; font-weight:900; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+.choice-text span { font-size:14px; opacity:0.8; }
+.choice-camera { background:#dac16d; color:#000; }
+.choice-upload { background:#1e1e1e; color:#dac16d; border:2px solid #dac16d !important; }
+
+/* ── UPLOAD POSITION SCREEN ── */
+#s-upload { background:#0a0a0a; justify-content:flex-start; overflow-y:auto; }
+.upload-viewport { position:relative; width:100%; aspect-ratio:4/5; flex-shrink:0; overflow:hidden; touch-action:none; background:#000; }
+#upload-canvas { width:100%; aspect-ratio:4/5; display:block; touch-action:none; }
+.upload-hint-bar { width:100%; max-width:480px; padding:12px 16px; display:flex; align-items:center; justify-content:center; gap:8px; background:#111; flex-shrink:0; }
+.pinch-icon { font-size:20px; animation:pinchPulse 1.8s ease-in-out infinite; }
+@keyframes pinchPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(0.65)} }
+.upload-hint-text { font-size:13px; font-weight:700; color:#aaa; letter-spacing:0.03em; }
+.upload-actions { width:100%; max-width:480px; padding:16px 16px 32px; display:flex; flex-direction:column; gap:10px; flex-shrink:0; }
+.btn-upload-confirm { width:100%; padding:18px; background:#dac16d; color:#000; border:none; border-radius:12px; font-size:16px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; }
+.btn-upload-alt { width:100%; padding:16px; background:#1a1a1a; color:#dac16d; border:2px solid #dac16d; border-radius:12px; font-size:14px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:0.04em; }
+
+</style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div class="screen active" id="s-splash">
+  <img src="logo.png" alt="Champion Display" onerror="this.style.display='none'">
+</div>
+
+<!-- CHOICE SCREEN -->
+<div class="screen" id="s-choice">
+  <h2 style="margin-bottom:24px;">Create Your Sports Card</h2>
+  <button class="choice-btn choice-camera" onclick="chooseCamera()">
+    <div class="choice-text">
+      <strong>Take a Photo</strong>
+      <span>Frame your player live</span>
+    </div>
+  </button>
+  <button class="choice-btn choice-upload" onclick="chooseUpload()">
+    <div class="choice-text">
+      <strong>Upload Photo</strong>
+      <span>Choose from your photos</span>
+    </div>
+  </button>
+</div>
+
+<!-- UPLOAD POSITION SCREEN -->
+<div class="screen" id="s-upload">
+  <div class="upload-viewport" id="upload-viewport">
+    <canvas id="upload-canvas"></canvas>
+    <div style="position:absolute;top:73%;left:0;right:0;display:flex;justify-content:center;z-index:5;pointer-events:none;">
+      <div style="background:rgba(0,0,0,0.72);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:10px 18px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:22px;animation:pinchPulse 1.8s ease-in-out infinite;display:inline-block;">🤏</span>
+        <span style="font-size:14px;font-weight:800;color:#fff;letter-spacing:0.03em;">Pinch to zoom · Drag to move</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="upload-actions">
+    <button class="btn-upload-confirm" id="btn-upload-confirm" onclick="confirmUpload()">Use This Photo</button>
+    <button class="btn-upload-alt" onclick="chooseUpload()">Choose Different Photo</button>
+  </div>
+</div>
+
+<input type="file" id="photo-file-input" accept="image/*" style="display:none" onchange="handleFileSelected(event)">
+
+<!-- S1: AGREE SCREEN -->
+<div class="screen" id="s1">
+  <div class="logo-container">
+    <img id="logo-branding" src="logo.png" alt="Champion Display" class="logo-img" onerror="this.style.display='none';">
+  </div>
+  <h1 id="welcome-headline">Personalised sports cards for<br><span style="color:#dac16d">your club</span></h1>
+  <div class="privacy-block">
+    Sports cards are made only on this device.<br>No images are uploaded or stored anywhere.
+  </div>
+  <button id="agree-btn" onclick="handleAgree()">I Agree<br>Create Sports Card</button>
+  <p class="terms-note">By tapping 'I Agree' above, you certify that you are over 18, agree to our Terms of Use, and confirm that you have explicit parental or guardian authorization to photograph and distribute images of minor athletes. You represent that you will not capture or distribute any objectionable, harmful, or unauthorized material, and acknowledge that you hold sole legal responsibility for all content you create.</p>
+</div>
+
+<!-- S2: CAMERA -->
+<div class="screen" id="s2">
+  <div class="aspect-container">
+    <video id="video" autoplay playsinline muted></video>
+    <img id="camera-frame" class="frame-layer" src="" alt="">
+    <button id="flip-btn" onclick="flipCam()">⟳</button>
+    <div class="cam-bottom">
+      <div class="cam-hint-box">
+        <p class="cam-hint">Line up your player inside the frame</p>
+      </div>
+      <button id="shutter" onclick="capture()"></button>
+    </div>
+    <div id="cam-err">
+      <p>📷 Camera access blocked.<br><br>Tap the padlock icon in your browser address bar, set Camera to Allow, then tap Try Again.</p>
+      <button onclick="startCam()">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- S2B: CONFIRM PHOTO PREVIEW -->
+<div class="screen" id="s2b">
+  <div class="aspect-container">
+    <img id="confirm-img" class="frame-layer" style="object-fit:cover; z-index:1;" src="" alt="">
+    <img id="confirm-frame" class="frame-layer" src="" alt="">
+  </div>
+  <div class="action-container">
+    <button id="btn-use-photo" class="btn-prem" onclick="show('s3')">Use This Photo</button>
+    <button class="btn-sec" onclick="retake()">Retake Photo</button>
+  </div>
+</div>
+
+<!-- S3: TEXT INPUT WORKSPACE -->
+<div class="screen" id="s3">
+  <div class="aspect-container" style="flex-shrink:0; max-height:58dvh;">
+    <img id="preview-img" class="frame-layer" style="object-fit:cover; z-index:1;" src="" alt="">
+    <img id="preview-frame" class="frame-layer" src="" alt="">
+    <div class="text-overlay">
+      <div class="tline" id="tl1">&nbsp;</div>
+      <div class="tline" id="tl2">&nbsp;</div>
+      <div class="tline" id="tl3">&nbsp;</div>
+    </div>
+  </div>
+  <div class="inputs-area">
+    <div class="input-row">
+      <label>Headline One</label>
+      <input id="i1" type="text" maxlength="20" placeholder="ENTER HEADLINE ONE HERE" oninput="updateText()">
+    </div>
+    <div class="input-row">
+      <label>Headline Two</label>
+      <input id="i2" type="text" maxlength="25" placeholder="ENTER HEADLINE TWO HERE" oninput="updateText()">
+    </div>
+    <div class="input-row">
+      <label>Bottom Text Line</label>
+      <input id="i3" type="text" maxlength="40" placeholder="ENTER BOTTOM LINE OF TEXT HERE" oninput="updateText()">
+    </div>
+  </div>
+  <div class="dl-area">
+    <button id="btn-preview-graphic" class="btn-prem" onclick="buildPreview()">Preview My Sports Card →</button>
+  </div>
+</div>
+
+<!-- S4: PREVIEW BEFORE DOWNLOAD -->
+<div class="screen" id="s4">
+  <div class="aspect-container">
+    <!-- Final composite image container -->
+    <img id="final-img" class="frame-layer" style="object-fit:contain; z-index:1; background:#000;" src="" alt="Your graphic">
+    
+    <!-- Robust press-and-hold instructions overlay for mobile Safari / Facebook webviews -->
+    <div id="save-fallback" class="save-fallback-overlay">
+      <div class="fallback-card">
+        <h3 class="fallback-title">How to Save</h3>
+        <p class="fallback-desc">In-app browsers and certain iOS systems block automatic saving.<br><br><strong>Press and hold the card image</strong> below, then select <strong>"Add to Photos"</strong> or <strong>"Save Image"</strong>.</p>
+        <button class="btn-fallback-close" onclick="closeSaveFallback()">Got it</button>
+      </div>
+    </div>
+  </div>
+  <div class="action-container">
+    <p style="text-align:center;color:#fff;font-size:14px;font-weight:700;letter-spacing:0.05em;margin:0 0 4px;">Ready to share and print</p>
+    <button id="btn-save" class="btn-prem" onclick="doDownload()">Save Print Quality Image</button>
+    <button class="btn-sec" onclick="show('s3')">Edit Text</button>
+  </div>
+</div>
+
+<!-- S5: DONE -->
+<div class="screen" id="s5">
+  <div class="icon">🎉</div>
+  <h2>Saved!</h2>
+  <p>Your sports card is in your photos. Share it with the team!</p>
+  <button id="btn-again" class="btn-prem" onclick="again()">Make Another Sports Card</button>
+</div>
+
+<!-- PWA PROMPT MODAL WINDOW -->
+<div id="pwa-overlay" class="pwa-overlay" onclick="dismissPwaPrompt()"></div>
+<div id="pwa-prompt-container" class="pwa-prompt">
+  <div class="pwa-header">
+    <div class="pwa-title">📲 Save as App</div>
+    <button class="pwa-close" onclick="dismissPwaPrompt()">×</button>
+  </div>
+  <div id="pwa-android-section">
+    <div class="pwa-text" style="margin-bottom:10px;">Open Champion Display instantly from your home screen — no browser needed next time.</div>
+    <div class="pwa-footer">
+      <button id="pwa-install-btn" class="btn-pwa-action btn-pwa-install" onclick="triggerPwaInstall()">Add to Home Screen</button>
+      <button class="btn-pwa-action btn-pwa-dismiss" onclick="dismissPwaPrompt()">Not Now</button>
+    </div>
+  </div>
+  <div id="pwa-ios-section" style="display:none;">
+    <div class="pwa-text">To add to your Home Screen:<br><br>
+      1. Tap the <strong>Share</strong> button [⎋] at the bottom of Safari<br>
+      2. Scroll down and tap <strong>"Add to Home Screen"</strong><br>
+      3. Tap <strong>Add</strong>
+    </div>
+    <div class="pwa-footer" style="margin-top:12px;">
+      <button class="btn-pwa-action btn-pwa-dismiss" style="flex:1;" onclick="dismissPwaPrompt()">Got It</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="cv" style="display:none"></canvas>
+
+<script>
+// SUPABASE CLIENT INITIALIZATION CONFIG (Pre-baked with your active project credentials)
+const SUPABASE_URL = "https://ftxmnrsqnbpwhvsvngnk.supabase.co"; 
+
+// PASTE YOUR PUBLIC ANON KEY INSIDE THESE QUOTES (The public key starting with 'eyJ...')
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0eG1ucnNxbmJwd2h2c3ZuZ25rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTE1MTUsImV4cCI6MjA5ODM4NzUxNX0.rJrDn6nc1Wy1HspaEqyJd7aDMOL8pzVmUripM-HgtE0";         
+
+let supabaseClient = null;
+
+// Dynamic configuration profile
+const currentClubConfig = {
+  isB2B: false,
+  clubSlug: "freemium",
+  clubName: "Champion Display",
+  fontFamily: "Impact, 'Arial Narrow', sans-serif",
+  line1Color: "#ffffff",
+  line1StrokeColor: "#005a2b",
+  line2Color: "#ffffff",
+  line2StrokeColor: "#005a2b",
+  line3Color: "#ffffff",
+  line3StrokeColor: null,
+  line3FontFamily: "sans-serif",
+  frameOverlayUrl: "https://championdisplay.co.nz/frames/hibiscuscoast_frame.png" // Fallback
+};
+
+let str = null;
+let facing = 'environment';
+let photoData = null;
+let finalDataURL = null;
+let deferredPrompt = null;
+let uploadImg = null;
+let uploadFrameImg = null; // preloaded frame for upload canvas - no flicker
+let uploadState = { x:0, y:0, scale:1, isDragging:false, startX:0, startY:0, imgStartX:0, imgStartY:0, lastDist:null };
+
+// ── TELEMETRY LOGGER ENGINE ──
+async function logTelemetryEvent(eventString) {
+  if (!supabaseClient) return;
+  try {
+    await supabaseClient
+      .from('analytics_events')
+      .insert([{ event_string: eventString, track_type: currentClubConfig.clubSlug }]);
+  } catch (err) {
+    // Silent fail in offline conditions
+  }
+}
+
+// ── ON PAGE INITIALIZATION ──
+window.onload = async function() {
+  // Initialize client once keys are validated
+  try {
+    if (typeof supabase !== 'undefined' && SUPABASE_ANON_KEY !== "your-anon-public-key") {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch(err) {
+    console.error("Supabase client failed to initialize.", err);
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const clubSlug = urlParams.get('club');
+
+  // Load dynamically from database if ?club variable is set
+  if (clubSlug && supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('club_profiles')
+        .select('*')
+        .eq('club_slug', clubSlug.toLowerCase())
+        .single();
+
+      if (data && !error) {
+        currentClubConfig.isB2B = true;
+        currentClubConfig.clubSlug = clubSlug.toLowerCase();
+        currentClubConfig.clubName = data.club_name;
+        // Use render_config if available, otherwise fall back to frame_url
+        const rc = data.render_config || {};
+        const frameFile = rc.frame || null;
+        if (frameFile) {
+          currentClubConfig.frameOverlayUrl = 'https://championdisplay.co.nz/frames/' + frameFile;
+        } else if (data.frame_url) {
+          currentClubConfig.frameOverlayUrl = data.frame_url;
+        }
+        
+        // Apply render_config text positions and colours
+        if (rc.line1) {
+          currentClubConfig.line1Color = rc.line1.color || '#ffffff';
+          currentClubConfig.line1StrokeColor = rc.line1.stroke || data.primary_color_hex;
+        }
+        if (rc.line2) {
+          currentClubConfig.line2Color = rc.line2.color || '#ffffff';
+          currentClubConfig.line2StrokeColor = rc.line2.stroke || data.primary_color_hex;
+        }
+        if (rc.line3) {
+          currentClubConfig.line3Color = rc.line3.color || '#ffffff';
+          currentClubConfig.line3StrokeColor = rc.line3.stroke || null;
+        }
+        // Store full render_config for use in buildPreview
+        currentClubConfig.renderConfig = rc;
+        currentClubConfig.primaryColor = data.primary_color_hex;
+        
+        // ── DYNAMIC CUSTOM FONT LOADING LOGIC ──
+        // Load font from /fonts/ folder on GitHub
+        const fontFile = (data.render_config && data.render_config.font) ? data.render_config.font : (data.custom_font_url || null);
+        if (fontFile) {
+          try {
+            const fontUrl = fontFile.startsWith('http') ? fontFile : 'https://championdisplay.co.nz/fonts/' + fontFile;
+            const fontName = 'ClubFont_' + currentClubConfig.clubSlug;
+            const fontFace = new FontFace(fontName, `url(${fontUrl})`);
+            const loadedFont = await fontFace.load();
+            document.fonts.add(loadedFont);
+            currentClubConfig.fontFamily = `"${fontName}", Impact, 'Arial Narrow', sans-serif`;
+          } catch (fontErr) {
+            console.warn('Font load failed, using Impact fallback.');
+            currentClubConfig.fontFamily = "Impact, 'Arial Narrow', sans-serif";
+          }
+        } else {
+          currentClubConfig.fontFamily = "Impact, 'Arial Narrow', sans-serif";
+        }
+
+        currentClubConfig.line1StrokeColor = data.font_stroke_color_hex || data.primary_color_hex;
+        currentClubConfig.line2StrokeColor = data.font_stroke_color_hex || data.primary_color_hex;
+        currentClubConfig.line1Color = data.font_color_hex || "#ffffff";
+        currentClubConfig.line2Color = data.font_color_hex || "#ffffff";
+
+        // Paint theme UI styles
+        document.getElementById('welcome-headline').innerHTML = `Personalised sports cards for<br><span style="color:#dac16d">${data.club_name}</span>`;
+        document.getElementById('agree-btn').style.backgroundColor = '#dac16d';
+        document.getElementById('agree-btn').style.color = "#000000";
+        document.getElementById('btn-use-photo').style.backgroundColor = '#dac16d';
+        document.getElementById('btn-preview-graphic').style.backgroundColor = '#dac16d';
+        document.getElementById('btn-save').style.backgroundColor = '#dac16d';
+        document.getElementById('btn-again').style.backgroundColor = '#dac16d';
+        
+        // Set frame URL on all frame overlay images
+        const frameUrl = currentClubConfig.frameOverlayUrl;
+        ['camera-frame', 'confirm-frame', 'preview-frame'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.src = frameUrl;
+        });
+
+        // ── SILENTLY MASK/REWRITE THE URL BAR ──
+        window.history.replaceState({}, document.title, "/" + currentClubConfig.clubSlug);
+      }
+    } catch(err) {
+      console.log('Database sync error, using local fallback assets.', err);
+    }
+  }
+
+  logTelemetryEvent('session_start');
+
+  // Transition away from splash screen now that club data is loaded
+  if (localStorage.getItem('cd_consent') === '1') {
+    show('s-choice');
+    return; // skip the consent skip at the bottom
+  } else {
+    show('s1');
+  }
+
+  // Setup dynamic font styling
+  const styleBlock = document.createElement('style');
+  styleBlock.textContent = `
+    .tline {
+      font-family: ${currentClubConfig.fontFamily} !important;
+      -webkit-text-stroke: 1.5px ${currentClubConfig.line1StrokeColor} !important;
+    }
+  `;
+  document.head.appendChild(styleBlock);
+
+  // Initialize PWA Installation Prompts
+  initializePwaInstallPrompts();
+};
+
+// ── PWA / HOME SCREEN INSTALL CONFIG ──
+function initializePwaInstallPrompts() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isAndroid = /Android/.test(navigator.userAgent);
+  const isMobile = isIOS || isAndroid;
+  const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+  // Capture install prompt - show ONLY after first download, never on load
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  // Service worker intentionally omitted - not needed for this app
+
+  // Dynamically inject the app manifest details
+  // Build start_url to include the current club slug so PWA opens correctly
+  const pwaStartUrl = window.location.href.split('#')[0]; // current full URL including ?club=
+  const manifest = {
+    "name": currentClubConfig.clubName || "Champion Display",
+    "short_name": "Champion",
+    "start_url": pwaStartUrl,
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#0a0a0a",
+    "orientation": "portrait",
+    "background_color": "#0a0a0a",
+    "icons": [
+      { "src": "https://wayne485.github.io/championdisplay.co.nz/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+      { "src": "https://wayne485.github.io/championdisplay.co.nz/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    ]
+  };
+  const stringManifest = JSON.stringify(manifest);
+  const blob = new Blob([stringManifest], {type: 'application/json'});
+  const manifestURL = URL.createObjectURL(blob);
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = manifestURL;
+  document.head.appendChild(link);
+}
+
+function dismissPwaPrompt() {
+  document.getElementById('pwa-prompt-container').classList.remove('show');
+  const overlay = document.getElementById('pwa-overlay');
+  if (overlay) overlay.classList.remove('show');
+  localStorage.setItem('cd_pwa_prompt_dismissed', '1');
+}
+
+function triggerPwaInstall() {
+  if (deferredPrompt) {
+    // Native Android install prompt available - use it
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((result) => {
+      if (result.outcome === 'accepted') {
+        localStorage.setItem('cd_pwa_prompt_dismissed', '1');
+      }
+      deferredPrompt = null;
+      dismissPwaPrompt();
+    });
+  } else {
+    // No native prompt available - show manual Android instructions
+    document.getElementById('pwa-android-section').innerHTML = `
+      <div class="pwa-text">To add to your Home Screen:<br><br>
+        1. Tap the <strong style="color:#fff;">three dots menu</strong> [⋮] in Chrome<br>
+        2. Tap <strong style="color:#fff;">"Add to Home Screen"</strong> or <strong style="color:#fff;">"Install App"</strong><br>
+        3. Tap <strong style="color:#fff;">Add</strong>
+      </div>
+      <div class="pwa-footer" style="margin-top:16px;">
+        <button class="btn-pwa-action btn-pwa-dismiss" onclick="dismissPwaPrompt()">Got It</button>
+      </div>
+    `;
+  }
+}
+
+function showPwaPromptModal(platform) {
+  const modal = document.getElementById('pwa-prompt-container');
+  const overlay = document.getElementById('pwa-overlay');
+  const androidSection = document.getElementById('pwa-android-section');
+  const iosSection = document.getElementById('pwa-ios-section');
+
+  if (platform === 'ios') {
+    androidSection.style.display = 'none';
+    iosSection.style.display = 'block';
+  } else {
+    androidSection.style.display = 'block';
+    iosSection.style.display = 'none';
+  }
+  modal.classList.add('show');
+  if (overlay) overlay.classList.add('show');
+}
+
+// ── UPLOAD CANVAS ENGINE ──
+function initUploadCanvas() {
+  const canvas = document.getElementById('upload-canvas');
+  const vp = document.getElementById('upload-viewport');
+  const W = vp.offsetWidth || window.innerWidth;
+  const H = W * (5/4);
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+
+  // Fit photo to fill canvas (cover), not just fit inside
+  const scaleW = W / uploadImg.width;
+  const scaleH = H / uploadImg.height;
+  // Use the larger scale so photo fills the frame area
+  uploadState.scale = Math.max(scaleW, scaleH) * 0.85; // 85% of fill = slightly zoomed out
+  uploadState.x = (W - uploadImg.width * uploadState.scale) / 2;
+  uploadState.y = (H - uploadImg.height * uploadState.scale) / 2;
+  uploadState.isDragging = false;
+  uploadState.lastDist = null;
+
+  // Upload confirm button always gold - no club colour override
+
+  // Preload frame image ONCE then render - no cache busting, no flicker
+  uploadFrameImg = new Image();
+  uploadFrameImg.crossOrigin = 'anonymous';
+  uploadFrameImg.onload = () => {
+    renderUploadCanvas(); // Only render AFTER frame is ready
+  };
+  uploadFrameImg.onerror = () => {
+    renderUploadCanvas(); // Render without frame if it fails
+  };
+  uploadFrameImg.src = currentClubConfig.frameOverlayUrl;
+  setupUploadTouches();
+}
+
+function renderUploadCanvas() {
+  const canvas = document.getElementById('upload-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw photo at current transform
+  ctx.drawImage(uploadImg,
+    uploadState.x, uploadState.y,
+    uploadImg.width * uploadState.scale,
+    uploadImg.height * uploadState.scale
+  );
+
+  // Draw preloaded frame on top - no async = no flicker
+  if (uploadFrameImg && uploadFrameImg.complete && uploadFrameImg.naturalWidth > 0) {
+    ctx.drawImage(uploadFrameImg, 0, 0, W, H);
+  }
+}
+
+let touchsSetup = false;
+function setupUploadTouches() {
+  if (touchsSetup) return;
+  touchsSetup = true;
+  const vp = document.getElementById('upload-viewport');
+
+  vp.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      uploadState.isDragging = true;
+      uploadState.startX = e.touches[0].clientX;
+      uploadState.startY = e.touches[0].clientY;
+      uploadState.imgStartX = uploadState.x;
+      uploadState.imgStartY = uploadState.y;
+    } else if (e.touches.length === 2) {
+      uploadState.isDragging = false;
+      uploadState.lastDist = getTouchDist(e.touches);
+    }
+  }, { passive: false });
+
+  vp.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (e.touches.length === 1 && uploadState.isDragging) {
+      uploadState.x = uploadState.imgStartX + (e.touches[0].clientX - uploadState.startX);
+      uploadState.y = uploadState.imgStartY + (e.touches[0].clientY - uploadState.startY);
+      renderUploadCanvas();
+    } else if (e.touches.length === 2 && uploadState.lastDist) {
+      const dist = getTouchDist(e.touches);
+      const rawRatio = dist / uploadState.lastDist;
+      // Dampen sensitivity - bring ratio closer to 1 to avoid aggressive jumps
+      const dampened = 1 + (rawRatio - 1) * 0.6;
+      uploadState.scale = Math.min(8, Math.max(0.1, uploadState.scale * dampened));
+      uploadState.lastDist = dist;
+      renderUploadCanvas();
+    }
+  }, { passive: false });
+
+  vp.addEventListener('touchend', e => {
+    if (e.touches.length === 0) {
+      uploadState.isDragging = false;
+      uploadState.lastDist = null;
+    }
+  });
+}
+
+function getTouchDist(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function confirmUpload() {
+  const canvas = document.getElementById('upload-canvas');
+  const W = canvas.width, H = canvas.height;
+
+  // Determine output size from render_config
+  const rc = currentClubConfig.renderConfig || {};
+  const outW = rc.output_width || 1800;
+  const outH = rc.output_height || 2250;
+
+  // Create output canvas with photo positioned correctly
+  const outCanvas = document.createElement('canvas');
+  outCanvas.width = outW;
+  outCanvas.height = outH;
+  const ctx = outCanvas.getContext('2d');
+
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, outW, outH);
+
+  const scaleX = outW / W;
+  const scaleY = outH / H;
+
+  ctx.drawImage(uploadImg,
+    uploadState.x * scaleX,
+    uploadState.y * scaleY,
+    uploadImg.width * uploadState.scale * scaleX,
+    uploadImg.height * uploadState.scale * scaleY
+  );
+
+  photoData = outCanvas.toDataURL('image/jpeg', 0.95);
+
+  // Go straight to text entry - skip confirm screen for upload path
+  document.getElementById('preview-img').src = photoData;
+  updateText();
+  logTelemetryEvent('upload_used');
+  show('s3');
+}
+
+// ── SCREEN ROUTING ──
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function handleAgree() {
+  localStorage.setItem('cd_consent','1');
+  logTelemetryEvent('consent_accepted');
+  show('s-choice');
+}
+
+function chooseCamera() {
+  show('s2');
+  setTimeout(startCam, 150);
+}
+
+function chooseUpload() {
+  document.getElementById('photo-file-input').click();
+}
+
+function handleFileSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  event.target.value = '';
+  const reader = new FileReader();
+  reader.onload = e => {
+    uploadImg = new Image();
+    uploadImg.onload = () => {
+      initUploadCanvas();
+      show('s-upload');
+    };
+    uploadImg.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function startCam() {
+  document.getElementById('cam-err').classList.remove('show');
+  try {
+    if (str) str.getTracks().forEach(t => t.stop());
+    str = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: facing }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+      audio: false
+    });
+    const v = document.getElementById('video');
+    v.srcObject = str;
+    await v.play();
+  } catch(e) {
+    document.getElementById('cam-err').classList.add('show');
+  }
+}
+
+function flipCam() {
+  facing = facing === 'environment' ? 'user' : 'environment';
+  startCam();
+}
+
+// ── PHOTO CAPTURE ENGINE ──
+function capture() {
+  const v = document.getElementById('video');
+  const cv = document.getElementById('cv');
+  const W = 1080, H = 1350;
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  
+  const vw = v.videoWidth, vh = v.videoHeight;
+  const tr = W/H;
+  const vr = vw/vh;
+  let sx, sy, sw, sh;
+  
+  if (vr > tr) { sh = vh; sw = sh * tr; sx = (vw - sw) / 2; sy = 0; }
+  else { sw = vw; sh = sw / tr; sx = 0; sy = (vh - sh) / 2; }
+  
+  ctx.drawImage(v, sx, sy, sw, sh, 0, 0, W, H);
+  photoData = cv.toDataURL('image/jpeg', 0.93);
+  
+  if (str) { str.getTracks().forEach(t => t.stop()); str = null; }
+  
+  document.getElementById('preview-img').src = photoData;
+  document.getElementById('confirm-img').src = photoData;
+  updateText();
+  logTelemetryEvent('photo_taken');
+  show('s2b');
+}
+
+function updateText() {
+  const vals = ['i1','i2','i3'].map(id => document.getElementById(id).value.toUpperCase());
+  ['tl1','tl2','tl3'].forEach((id, i) => {
+    document.getElementById(id).textContent = vals[i] || '\u00A0';
+  });
+}
+
+function retake() {
+  photoData = null; finalDataURL = null;
+  ['i1','i2','i3'].forEach(id => document.getElementById(id).value = '');
+  updateText();
+  if (uploadImg) {
+    // Came from upload path - reopen photos directly
+    uploadImg = null;
+    uploadFrameImg = null;
+    document.getElementById('photo-file-input').click();
+  } else {
+    // Came from camera path - go back to choice screen
+    show('s-choice');
+  }
+}
+
+// ── GRAPHICS CANVAS COMPILER ENGINE ──
+async function buildPreview() {
+  // Load photo and frame first so we can measure their actual dimensions
+  const photoImg = await new Promise(res => {
+    const im = new Image();
+    im.onload = () => res(im);
+    im.src = photoData;
+  });
+  const frameImg = await new Promise(res => {
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = () => res(im);
+    im.onerror = () => res({ width: 0, height: 0 });
+    im.src = currentClubConfig.frameOverlayUrl + '?v=' + Date.now();
+  });
+
+  // Use render_config output dimensions if available
+  const rc_dims = currentClubConfig.renderConfig || {};
+  const W = rc_dims.output_width || Math.max(1800, photoImg.width, frameImg.width);
+  const H = rc_dims.output_height || Math.max(2250, photoImg.height, frameImg.height);
+
+  const cv = document.getElementById('cv');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+
+  // Draw photo first then frame on top
+  ctx.drawImage(photoImg, 0, 0, W, H);
+  if (frameImg.width > 0) ctx.drawImage(frameImg, 0, 0, W, H);
+
+  const texts = ['i1','i2','i3'].map(id => document.getElementById(id).value.toUpperCase());
+  ctx.textAlign = 'center';
+
+  // Scale all text and stroke sizes proportionally to the larger canvas
+  const scale = W / 1080;
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 8 * scale;
+
+  // Use render_config from Supabase if available, otherwise use defaults
+  const rc = currentClubConfig.renderConfig || {};
+  const configs = [
+    { 
+      y: H * (rc.line1 ? rc.line1.y : 0.640), 
+      baseSize: (rc.line1 ? rc.line1.size : 80) * scale, 
+      minSize: 30 * scale, 
+      color: currentClubConfig.line1Color, 
+      stroke: currentClubConfig.line1StrokeColor, 
+      font: currentClubConfig.fontFamily 
+    },
+    { 
+      y: H * (rc.line2 ? rc.line2.y : 0.725), 
+      baseSize: (rc.line2 ? rc.line2.size : 80) * scale, 
+      minSize: 30 * scale, 
+      color: currentClubConfig.line2Color, 
+      stroke: currentClubConfig.line2StrokeColor, 
+      font: currentClubConfig.fontFamily 
+    },
+    { 
+      y: H * (rc.line3 ? rc.line3.y : 0.795), 
+      baseSize: (rc.line3 ? rc.line3.size : 38) * scale, 
+      minSize: 18 * scale, 
+      color: currentClubConfig.line3Color, 
+      stroke: currentClubConfig.line3StrokeColor, 
+      font: currentClubConfig.line3FontFamily 
+    }
+  ];
+
+  texts.forEach((t, i) => {
+    if (!t) return;
+    const c = configs[i];
+    let fs = c.baseSize;
+
+    while (fs > c.minSize) {
+      ctx.font = i === 2 ? `700 ${fs}px ${c.font}` : `900 ${fs}px ${c.font}`;
+      if (ctx.measureText(t).width < W * 0.90) break;
+      fs -= 2;
+    }
+
+    if (c.stroke) {
+      ctx.strokeStyle = c.stroke;
+      ctx.lineWidth = i === 2 ? 4 * scale : Math.max(6 * scale, fs * 0.12);
+      ctx.lineJoin = 'round';
+      ctx.strokeText(t, W / 2, c.y);
+    }
+
+    ctx.fillStyle = c.color;
+    ctx.fillText(t, W / 2, c.y);
+  });
+
+  ctx.shadowBlur = 0;
+  finalDataURL = cv.toDataURL('image/jpeg', 0.96);
+
+  document.getElementById('final-img').src = finalDataURL;
+  show('s4');
+}
+
+function showIOSSaveInstructions() {
+  const overlay = document.getElementById('ios-save-overlay');
+  const img = document.getElementById('ios-save-img');
+  img.src = finalDataURL;
+  overlay.style.display = 'flex';
+  logTelemetryEvent('download_completed');
+}
+
+function closeIOSSave() {
+  document.getElementById('ios-save-overlay').style.display = 'none';
+  show('s5');
+  // Show PWA prompt after closing
+  const dismissed = localStorage.getItem('cd_pwa_dismissed');
+  const standalone = window.navigator.standalone === true;
+  if (!dismissed && !standalone) {
+    setTimeout(showPwaPrompt, 600);
+  }
+}
+
+function doDownload() {
+  if (!finalDataURL) return;
+  
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isIOS) {
+    showIOSSaveInstructions();
+    return;
+  }
+
+  try {
+    const a = document.createElement('a');
+    a.href = finalDataURL;
+    a.download = (currentClubConfig.clubSlug || 'club') + '_ChampionDisplay_' + new Date().toISOString().slice(0,10) + '.jpg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    logTelemetryEvent('download_completed');
+    show('s5');
+    // Show PWA install prompt after first successful download only
+    const alreadyPrompted = localStorage.getItem('cd_pwa_prompt_dismissed');
+    const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+    if (!alreadyPrompted && !isStandalone) {
+      setTimeout(() => {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          showPwaPromptModal('ios');
+        } else if (deferredPrompt) {
+          showPwaPromptModal('android');
+        } else {
+          showPwaPromptModal('android_fallback');
+        }
+      }, 800);
+    }
+  } catch (err) {
+    // Show premium press-and-hold fallback modal if standard download is blocked on native platform
+    showSaveFallback();
+  }
+}
+
+function showSaveFallback() {
+  document.getElementById('save-fallback').classList.add('show');
+}
+
+function closeSaveFallback() {
+  document.getElementById('save-fallback').classList.remove('show');
+}
+
+function loadImg(ctx, src, x, y, w, h) {
+  return new Promise(res => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => { ctx.drawImage(img, x, y, w, h); res(); };
+    img.onerror = () => res();
+    img.src = src + (src.startsWith('data:') ? '' : '?v=' + Date.now());
+  });
+}
+
+function again() {
+  photoData = null; finalDataURL = null;
+  uploadImg = null;
+  ['i1','i2','i3'].forEach(id => document.getElementById(id).value = '');
+  updateText();
+  show('s-choice');
+}
+
+// Consent routing handled in window.onload above
+</script>
+</body>
+</html>
