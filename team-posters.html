@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Posters | Champion Display</title>
+<meta name="description" content="Custom team posters for junior sports clubs. Turn a season of matchday photos into a poster every player wants on their wall.">
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="/" class="brand">
+      <img src="/logo-crest.png" alt="Champion Display">
+      <span class="brand-word">Champion<span>Display</span></span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="/team-posters.html" class="active">Team Posters</a>
+      <a href="/sports-cards.html">Sports Cards</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle">Menu</button>
+  </div>
+</header>
+
+<section class="hero" style="padding-bottom:20px;">
+  <div class="wrap">
+    <span class="eyebrow">Team Posters</span>
+    <h1>A season worth<br>putting on the <em>wall</em></h1>
+    <p class="lede">Custom posters built from your club's own photos, designed to make every player feel like part of something worth remembering.</p>
+  </div>
+</section>
+
+<section style="padding-top:20px;">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <span class="eyebrow">What it is</span>
+        <h2>One poster. The whole squad.</h2>
+        <p>A Team Poster brings your club's season to life: player photos, team colours, and club branding laid out in a single custom design that's built to be printed and hung, at home, in the clubrooms, wherever it belongs.</p>
+        <p>It's the kind of thing a kid points at on the wall for years after the season's over.</p>
+      </div>
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <div class="placeholder-photo">Team Poster<br>Example</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="split reverse">
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <div class="placeholder-photo">Design In<br>Progress</div>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow">How it works</span>
+        <h2>We handle the design work</h2>
+        <ul class="checklist">
+          <li>You send through the season's team photos.</li>
+          <li>We lay out a custom poster in your club's colours and branding.</li>
+          <li>You review it and ask for any changes.</li>
+          <li>Print-ready files, sized and ready to order.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why It Matters</span>
+      <h2>Made for clubs that care about their players</h2>
+    </div>
+    <div class="trio">
+      <div class="trio-item">
+        <span class="num">01</span>
+        <h3>Every club is different</h3>
+        <p>Colours, crest, sponsor logos, whatever makes your club yours, built into the design.</p>
+      </div>
+      <div class="trio-item">
+        <span class="num">02</span>
+        <h3>A keepsake, not a printout</h3>
+        <p>Designed to be proudly displayed, not filed away with the rest of the season's paperwork.</p>
+      </div>
+      <div class="trio-item">
+        <span class="num">03</span>
+        <h3>One point of contact</h3>
+        <p>You deal directly with us from first photo to final print-ready file.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Get In Touch</span>
+      <h2>Ask about a Team Poster for your club</h2>
+      <p>Tell us a bit about your club and squad size, and we'll get back to you.</p>
+    </div>
+    <div class="contact-block">
+      <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div class="contact-grid">
+          <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="full">
+            <label for="club">Club Name</label>
+            <input type="text" id="club" name="club">
+          </div>
+          <input type="hidden" name="interest" value="Team Posters">
+          <div class="full">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Roughly how many players, and when's your season wrapping up?" required></textarea>
+          </div>
+        </div>
+        <div style="margin-top:24px;">
+          <button type="submit" class="btn btn-gold">Send Message</button>
+        </div>
+        <p class="form-msg" id="formMsg"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<a href="#contact" class="floating-contact">✉ Contact Us</a>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <img src="/logo-crest.png" alt="Champion Display">
+    <p>&copy; <span id="year"></span> Champion Display Limited. All rights reserved.</p>
+    <div class="foot-nav">
+      <a href="/">Home</a>
+      <a href="/sports-cards.html">Sports Cards</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('navToggle').addEventListener('click', function() {
+    document.getElementById('mainNav').classList.toggle('open');
+  });
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var form = e.target;
+    var msg = document.getElementById('formMsg');
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function(res) {
+      if (res.ok) {
+        msg.textContent = "Thanks, we've got your message and will be in touch soon.";
+        msg.className = 'form-msg success';
+        form.reset();
+      } else {
+        msg.textContent = "Something went wrong sending that. Please try again or email us directly.";
+        msg.className = 'form-msg error';
+      }
+    }).catch(function() {
+      msg.textContent = "Something went wrong sending that. Please try again or email us directly.";
+      msg.className = 'form-msg error';
+    });
+  });
+</script>
+
+</body>
+</html>
