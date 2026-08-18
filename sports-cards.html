@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports Cards | Champion Display</title>
+<meta name="description" content="Personalised sports cards for junior sports clubs. Every player gets their own custom card, created from a single photo.">
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="/" class="brand">
+      <img src="/logo-crest.png" alt="Champion Display">
+      <span class="brand-word">Champion<span>Display</span></span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="/team-posters.html">Team Posters</a>
+      <a href="/sports-cards.html" class="active">Sports Cards</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle">Menu</button>
+  </div>
+</header>
+
+<section class="hero" style="padding-bottom:20px;">
+  <div class="wrap">
+    <span class="eyebrow">Sports Cards</span>
+    <h1>Every player,<br>their own <em>card</em></h1>
+    <p class="lede">Personalised sports cards built from a single photo, so every kid on the team gets something with their name, their number, their moment.</p>
+  </div>
+</section>
+
+<section style="padding-top:20px;">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <span class="eyebrow">What it is</span>
+        <h2>A card that's actually theirs</h2>
+        <p>Not a generic template with a name slapped on. Each card is built around that player's own photo, styled to your club's colours, ready to save, share, and print.</p>
+        <p>It's the kind of thing kids show their mates and parents put up on the fridge.</p>
+      </div>
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <div class="placeholder-photo">Sports Card<br>Example</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="split reverse">
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <div class="placeholder-photo">Card Creator<br>In Action</div>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow">How it works for clubs</span>
+        <h2>We set your club up, families take it from there</h2>
+        <ul class="checklist">
+          <li>We build your club its own private card creator, in your colours.</li>
+          <li>You share the link with your team's families.</li>
+          <li>Each family uploads a photo and creates their player's card.</li>
+          <li>Cards are ready to save and share in seconds.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why It Matters</span>
+      <h2>Built for clubs, loved by families</h2>
+    </div>
+    <div class="trio">
+      <div class="trio-item">
+        <span class="num">01</span>
+        <h3>No club admin workload</h3>
+        <p>Families create their own cards. Your club doesn't lift a finger once you're set up.</p>
+      </div>
+      <div class="trio-item">
+        <span class="num">02</span>
+        <h3>Your club, your colours</h3>
+        <p>Every card carries your club's own look, not a generic off-the-shelf design.</p>
+      </div>
+      <div class="trio-item">
+        <span class="num">03</span>
+        <h3>Fast, on any device</h3>
+        <p>No app to download. Upload a photo on a phone and the card's ready moments later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Get In Touch</span>
+      <h2>Set your club up with Sports Cards</h2>
+      <p>Tell us a bit about your club, and we'll get back to you about getting set up.</p>
+    </div>
+    <div class="contact-block">
+      <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div class="contact-grid">
+          <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="full">
+            <label for="club">Club Name</label>
+            <input type="text" id="club" name="club">
+          </div>
+          <input type="hidden" name="interest" value="Sports Cards">
+          <div class="full">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us a bit about your club and how many players you've got." required></textarea>
+          </div>
+        </div>
+        <div style="margin-top:24px;">
+          <button type="submit" class="btn btn-gold">Send Message</button>
+        </div>
+        <p class="form-msg" id="formMsg"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<a href="#contact" class="floating-contact">✉ Contact Us</a>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <img src="/logo-crest.png" alt="Champion Display">
+    <p>&copy; <span id="year"></span> Champion Display Limited. All rights reserved.</p>
+    <div class="foot-nav">
+      <a href="/">Home</a>
+      <a href="/team-posters.html">Team Posters</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('navToggle').addEventListener('click', function() {
+    document.getElementById('mainNav').classList.toggle('open');
+  });
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var form = e.target;
+    var msg = document.getElementById('formMsg');
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function(res) {
+      if (res.ok) {
+        msg.textContent = "Thanks, we've got your message and will be in touch soon.";
+        msg.className = 'form-msg success';
+        form.reset();
+      } else {
+        msg.textContent = "Something went wrong sending that. Please try again or email us directly.";
+        msg.className = 'form-msg error';
+      }
+    }).catch(function() {
+      msg.textContent = "Something went wrong sending that. Please try again or email us directly.";
+      msg.className = 'form-msg error';
+    });
+  });
+</script>
+
+</body>
+</html>
