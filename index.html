@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Champion Display | Custom Team Posters &amp; Sports Cards for NZ Clubs</title>
-<meta name="description" content="Champion Display creates custom team posters and personalised sports cards for youth sports clubs across New Zealand. Give every player something worth putting on the wall.">
+<title>Champion Display | Club-Branded Products for Sports Clubs</title>
+<meta name="description" content="Champion Display helps sports clubs look like the pros with team posters, sports cards and team photos that create revenue, exposure and proud players.">
 <link rel="icon" href="/logo.png">
 <link rel="stylesheet" href="/style.css">
 </head>
@@ -19,6 +19,7 @@
     <nav class="main-nav" id="mainNav">
       <a href="/team-posters.html">Team Posters</a>
       <a href="/sports-cards.html">Sports Cards</a>
+      <a href="/team-photos.html">Team Photos</a>
       <a href="#contact">Contact</a>
     </nav>
     <button class="nav-toggle" id="navToggle">Menu</button>
@@ -29,24 +30,34 @@
   <div class="wrap">
     <img src="/logo-crest.png" alt="Champion Display crest" class="hero-logo">
     <span class="eyebrow">Made for New Zealand sports clubs</span>
-    <h1>Give every kid a wall<br>worth being <em>proud</em> of</h1>
-    <p class="lede">Champion Display turns matchday photos into custom team posters and personalised sports cards, so every player on the team gets something worth showing off.</p>
+    <h1>Make your club look like <em>the pros</em></h1>
+    <p class="lede"><strong>Without the big price tag or heaps of extra work.</strong></p>
+    <p class="lede">Turn your members’ phone pics into cash, sponsors, and proud players.</p>
   </div>
 </section>
 
 <div class="wrap">
+  <div class="section-head">
+    <span class="eyebrow">Choose what’s right for your club</span>
+  </div>
   <div class="gateway">
     <a href="/team-posters.html" class="gateway-card">
       <div class="icon">🖼️</div>
       <h2>Team Posters</h2>
-      <p>Full squad photos turned into a custom club poster, built to hang proudly at home or at the clubrooms.</p>
-      <span class="go">See Team Posters →</span>
+      <p>Turn your teams into something players are proud to put on their wall.</p>
+      <span class="go">Explore Team Posters →</span>
     </a>
     <a href="/sports-cards.html" class="gateway-card">
       <div class="icon">🃏</div>
       <h2>Sports Cards</h2>
-      <p>Personalised player cards, made from a single photo. Built for clubs, loved by kids, ready in seconds.</p>
-      <span class="go">See Sports Cards →</span>
+      <p>Give your members the power to create personalised, club-branded sports cards from their own photos.</p>
+      <span class="go">Explore Sports Cards →</span>
+    </a>
+    <a href="/team-photos.html" class="gateway-card">
+      <div class="icon">📸</div>
+      <h2>Team Photos</h2>
+      <p>Give every team a professional club-branded photo while creating a genuine revenue opportunity for your club.</p>
+      <span class="go">Explore Team Photos →</span>
     </a>
   </div>
 </div>
@@ -54,24 +65,37 @@
 <section class="alt">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow">Why clubs choose us</span>
-      <h2>Built for clubs, made for families</h2>
+      <h2>A new generation of parents, players and sponsors expect more.</h2>
+      <p>Your players may not play like pros, but they all want to look like one.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why clubs partner with Champion Display</span>
     </div>
     <div class="trio">
       <div class="trio-item">
         <span class="num">01</span>
-        <h3>Every player included</h3>
-        <p>Not just the best player on the team. Every kid who laces up gets their own poster or card, no exceptions.</p>
+        <h3>MORE REVENUE</h3>
+        <p>Create new income for your club from products your members actually want.</p>
       </div>
       <div class="trio-item">
         <span class="num">02</span>
-        <h3>Easy for club admins</h3>
-        <p>We do the setup work with your club so the whole season's photos turn into something families actually want.</p>
+        <h3>MORE EXPOSURE</h3>
+        <p>Get your club and sponsors seen every time members create and share.</p>
       </div>
       <div class="trio-item">
         <span class="num">03</span>
-        <h3>Proudly Kiwi-made</h3>
-        <p>Built for New Zealand junior sport, from the clubrooms up. We understand what a club season means to a family.</p>
+        <h3>MORE ENGAGEMENT</h3>
+        <p>Give your members another reason to interact with, share and celebrate their club.</p>
+      </div>
+      <div class="trio-item">
+        <span class="num">04</span>
+        <h3>MORE PROUD MEMBERS</h3>
+        <p>Give players something personal they’re proud to create, keep and show off.</p>
       </div>
     </div>
   </div>
@@ -80,9 +104,7 @@
 <section id="contact">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow">Get In Touch</span>
-      <h2>Want Champion Display at your club?</h2>
-      <p>Tell us a bit about your club or what you're after, and we'll get back to you.</p>
+      <h2>Get Champion Display at your club</h2>
     </div>
     <div class="contact-block">
       <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
@@ -96,17 +118,8 @@
             <input type="email" id="email" name="email" required>
           </div>
           <div class="full">
-            <label for="club">Club Name (if applicable)</label>
-            <input type="text" id="club" name="club">
-          </div>
-          <div class="full">
-            <label for="interest">I'm interested in</label>
-            <select id="interest" name="interest">
-              <option value="Team Posters">Team Posters</option>
-              <option value="Sports Cards">Sports Cards</option>
-              <option value="Both">Both</option>
-              <option value="Not sure yet">Not sure yet</option>
-            </select>
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
           </div>
           <div class="full">
             <label for="message">Message</label>
@@ -131,6 +144,7 @@
     <div class="foot-nav">
       <a href="/team-posters.html">Team Posters</a>
       <a href="/sports-cards.html">Sports Cards</a>
+      <a href="/team-photos.html">Team Photos</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
