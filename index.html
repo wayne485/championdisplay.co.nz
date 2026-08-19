@@ -4,9 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Champion Display | Club-Branded Products for Sports Clubs</title>
-<meta name="description" content="Champion Display helps sports clubs look like the pros with team posters, sports cards and team photos that create revenue, exposure and proud players.">
+<meta name="description" content="Champion Display helps sports clubs look like the pros with sports cards, player cards, team posters and team photos that create revenue, exposure and proud players.">
 <link rel="icon" href="/logo.png">
 <link rel="stylesheet" href="/style.css">
+<style>
+  .hero-subhead {
+    margin: 24px auto 14px;
+    max-width: 900px;
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  .product-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    padding: 28px 0 72px;
+  }
+
+  .product-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(220, 180, 80, 0.22);
+    background: rgba(255,255,255,0.02);
+    overflow: hidden;
+  }
+
+  .product-image-wrap {
+    width: 100%;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .product-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 760px;
+    object-fit: contain;
+    background: #111;
+  }
+
+  .product-copy {
+    padding: 28px 30px 32px;
+  }
+
+  .product-copy h2 {
+    margin: 0 0 10px;
+  }
+
+  .product-copy p {
+    margin: 0 0 18px;
+  }
+
+  .product-copy .go {
+    display: inline-block;
+  }
+
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  @media (max-width: 900px) {
+    .benefit-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-subhead {
+      font-size: clamp(1.35rem, 6vw, 1.85rem);
+    }
+
+    .product-stack {
+      gap: 34px;
+      padding-top: 18px;
+    }
+
+    .product-copy {
+      padding: 22px 20px 26px;
+    }
+
+    .product-image {
+      max-height: none;
+    }
+
+    .benefit-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -17,8 +111,9 @@
       <span class="brand-word">Champion<span>Display</span></span>
     </a>
     <nav class="main-nav" id="mainNav">
-      <a href="/team-posters.html">Team Posters</a>
       <a href="/sports-cards.html">Sports Cards</a>
+      <a href="/player-cards.html">Player Cards</a>
+      <a href="/team-posters.html">Team Posters</a>
       <a href="/team-photos.html">Team Photos</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -28,37 +123,59 @@
 
 <section class="hero">
   <div class="wrap">
-    <img src="/logo-crest.png" alt="Champion Display crest" class="hero-logo">
-    <span class="eyebrow">Made for New Zealand sports clubs</span>
     <h1>Make your club look like <em>the pros</em></h1>
-    <p class="lede"><strong>Without the big price tag or heaps of extra work.</strong></p>
+    <p class="hero-subhead">Without the big price tag or heaps of extra work.</p>
     <p class="lede">Turn your members’ phone pics into cash, sponsors, and proud players.</p>
   </div>
 </section>
 
 <div class="wrap">
-  <div class="section-head">
-    <span class="eyebrow">Choose what’s right for your club</span>
-  </div>
-  <div class="gateway">
-    <a href="/team-posters.html" class="gateway-card">
-      <div class="icon">🖼️</div>
-      <h2>Team Posters</h2>
-      <p>Turn your teams into something players are proud to put on their wall.</p>
-      <span class="go">Explore Team Posters →</span>
+  <div class="product-stack">
+
+    <a href="/sports-cards.html" class="product-card">
+      <div class="product-image-wrap">
+        <img src="/sports-cards.webp" alt="Champion Display sports card example" class="product-image" loading="lazy">
+      </div>
+      <div class="product-copy">
+        <h2>Sports Cards</h2>
+        <p>Give your members the power to create personalised, club-branded sports cards from their own photos.</p>
+        <span class="go">Explore Sports Cards →</span>
+      </div>
     </a>
-    <a href="/sports-cards.html" class="gateway-card">
-      <div class="icon">🃏</div>
-      <h2>Sports Cards</h2>
-      <p>Give your members the power to create personalised, club-branded sports cards from their own photos.</p>
-      <span class="go">Explore Sports Cards →</span>
+
+    <a href="/player-cards.html" class="product-card">
+      <div class="product-image-wrap">
+        <img src="/player-cards.webp" alt="Champion Display personalised player card example" class="product-image" loading="lazy">
+      </div>
+      <div class="product-copy">
+        <h2>Player Cards</h2>
+        <p>Turn every player into the star of their own personalised club card.</p>
+        <span class="go">Explore Player Cards →</span>
+      </div>
     </a>
-    <a href="/team-photos.html" class="gateway-card">
-      <div class="icon">📸</div>
-      <h2>Team Photos</h2>
-      <p>Give every team a professional club-branded photo while creating a genuine revenue opportunity for your club.</p>
-      <span class="go">Explore Team Photos →</span>
+
+    <a href="/team-posters.html" class="product-card">
+      <div class="product-image-wrap">
+        <img src="/team-posters.webp" alt="Champion Display team poster example" class="product-image" loading="lazy">
+      </div>
+      <div class="product-copy">
+        <h2>Team Posters</h2>
+        <p>Turn your teams into something players are proud to put on their wall.</p>
+        <span class="go">Explore Team Posters →</span>
+      </div>
     </a>
+
+    <a href="/team-photos.html" class="product-card">
+      <div class="product-image-wrap">
+        <img src="/team-photos.webp" alt="Champion Display team photo example" class="product-image" loading="lazy">
+      </div>
+      <div class="product-copy">
+        <h2>Team Photos</h2>
+        <p>Give every team a professional club-branded photo while creating a genuine revenue opportunity for your club.</p>
+        <span class="go">Explore Team Photos →</span>
+      </div>
+    </a>
+
   </div>
 </div>
 
@@ -76,7 +193,7 @@
     <div class="section-head">
       <span class="eyebrow">Why clubs partner with Champion Display</span>
     </div>
-    <div class="trio">
+    <div class="benefit-grid">
       <div class="trio-item">
         <span class="num">01</span>
         <h3>MORE REVENUE</h3>
@@ -142,8 +259,9 @@
     <img src="/logo-crest.png" alt="Champion Display">
     <p>&copy; <span id="year"></span> Champion Display Limited. All rights reserved.</p>
     <div class="foot-nav">
-      <a href="/team-posters.html">Team Posters</a>
       <a href="/sports-cards.html">Sports Cards</a>
+      <a href="/player-cards.html">Player Cards</a>
+      <a href="/team-posters.html">Team Posters</a>
       <a href="/team-photos.html">Team Photos</a>
       <a href="#contact">Contact</a>
     </div>
