@@ -289,6 +289,80 @@
     }
   }
 
+
+  /* CTA fix: the Explore text is a span inside the clickable product card */
+  .product-copy .go.product-cta {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    color: var(--gold) !important;
+    font-size: clamp(28px, 3.5vw, 38px) !important;
+    font-weight: 900 !important;
+    line-height: 1.15 !important;
+    margin: 24px auto 6px !important;
+    padding: 14px 10px !important;
+    box-sizing: border-box !important;
+    text-transform: uppercase !important;
+  }
+
+  @media (max-width: 720px) {
+    .product-copy .go.product-cta {
+      font-size: 26px !important;
+    }
+  }
+
+
+  /* Stronger product section boxes + internal spacing */
+  .product-card {
+    border: 2px solid var(--gold) !important;
+    padding: 28px 28px 32px !important;
+    margin: 0 auto 56px !important;
+    box-sizing: border-box !important;
+  }
+
+  .product-title {
+    margin: 0 0 24px !important;
+    padding: 0 !important;
+    line-height: 1.05 !important;
+  }
+
+  .product-image-wrap {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .product-copy {
+    padding: 0 !important;
+    margin-top: 22px !important;
+  }
+
+  @media (max-width: 720px) {
+    .product-card {
+      border-width: 2px !important;
+      padding: 20px 18px 24px !important;
+      margin-bottom: 38px !important;
+    }
+
+    .product-title {
+      margin-bottom: 18px !important;
+    }
+
+    .product-copy {
+      margin-top: 18px !important;
+    }
+  }
+
+
+  /* Header phone number replacing brand-word text */
+  .brand .header-phone {
+    color: var(--gold) !important;
+    font-family: inherit !important;
+    font-size: clamp(14px, 1.6vw, 18px) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+  }
+
 </style>
 </head>
 <body>
@@ -297,7 +371,7 @@
   <div class="wrap">
     <a href="/" class="brand">
       <img src="/logo-crest.png" alt="Champion Display">
-      <span class="brand-word">Champion<span>Display</span></span>
+      <span class="brand-word header-phone">+64 21 577 045</span>
     </a>
     <nav class="main-nav" id="mainNav">
       <a href="/sports-cards.html">Sports Cards</a>
@@ -328,7 +402,7 @@
       </div>
 <div class="product-copy">
         <p>Give your members the power to create personalised, club-branded sports cards from their own photos.</p>
-        <span class="go">Explore Sports Cards →</span>
+        <span class="go product-cta">Explore Sports Cards →</span>
       </div>
     </a>
 
@@ -339,7 +413,7 @@
       </div>
 <div class="product-copy">
         <p>Turn every player into the star of their own personalised club card.</p>
-        <span class="go">Explore Player Cards →</span>
+        <span class="go product-cta">Explore Player Cards →</span>
       </div>
     </a>
 
@@ -350,7 +424,7 @@
       </div>
 <div class="product-copy">
         <p>Turn your teams into something players are proud to put on their wall.</p>
-        <span class="go">Explore Team Posters →</span>
+        <span class="go product-cta">Explore Team Posters →</span>
       </div>
     </a>
 
@@ -361,7 +435,7 @@
       </div>
 <div class="product-copy">
         <p>Give every team a professional club-branded photo while creating a genuine revenue opportunity for your club.</p>
-        <span class="go">Explore Team Photos →</span>
+        <span class="go product-cta">Explore Team Photos →</span>
       </div>
     </a>
 
