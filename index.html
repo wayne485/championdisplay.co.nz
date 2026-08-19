@@ -363,6 +363,48 @@
     white-space: nowrap !important;
   }
 
+
+  .brand .header-phone {
+    text-decoration: none !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+
+  /* Hero supporting copy: true white */
+  .hero-sub,
+  .hero-desc {
+    color: #ffffff !important;
+  }
+
+
+  /* Fix actual WHY CLUBS PARTNER heading */
+  .why .eyebrow,
+  #why .eyebrow,
+  .why-section .eyebrow {
+    display: block !important;
+    color: var(--gold) !important;
+    font-size: clamp(42px, 5.5vw, 64px) !important;
+    font-weight: 900 !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0.01em !important;
+    text-align: center !important;
+    margin: 0 auto 42px !important;
+    text-transform: uppercase !important;
+  }
+
+  @media (max-width: 720px) {
+    .why .eyebrow,
+    #why .eyebrow,
+    .why-section .eyebrow {
+      font-size: 36px !important;
+      line-height: 1.08 !important;
+      margin-bottom: 30px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -371,7 +413,7 @@
   <div class="wrap">
     <a href="/" class="brand">
       <img src="/logo-crest.png" alt="Champion Display">
-      <span class="brand-word header-phone">+64 21 577 045</span>
+      <a class="brand-word header-phone" href="tel:+6421577045" aria-label="Call +64 21 577 045">+64 21 577 045</a>
     </a>
     <nav class="main-nav" id="mainNav">
       <a href="/sports-cards.html">Sports Cards</a>
