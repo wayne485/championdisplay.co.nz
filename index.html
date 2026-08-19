@@ -405,6 +405,96 @@
     }
   }
 
+
+  /* FINAL colour + hierarchy correction: no grey text */
+  body,
+  p,
+  .lede,
+  .hero-subhead,
+  .expect-support,
+  .product-copy p,
+  .trio-item p,
+  .section-head p,
+  label,
+  .site-footer p,
+  .foot-nav a {
+    color: #ffffff !important;
+  }
+
+  /* Actual partner heading in the current markup */
+  .section-head > .eyebrow {
+    display: block !important;
+    color: var(--gold) !important;
+  }
+
+  section:not(.hero):not(.alt) .section-head > .eyebrow {
+    font-size: clamp(42px, 5.5vw, 64px) !important;
+    line-height: 1.05 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    margin: 0 auto 42px !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Keep all intended gold hierarchy explicitly gold */
+  .main-nav a,
+  .product-title,
+  .product-cta,
+  .expect-headline .gold,
+  .trio-item h3,
+  .header-phone {
+    color: var(--gold) !important;
+  }
+
+  /* Benefit supporting copy must be true white */
+  .benefit-grid .trio-item p {
+    color: #ffffff !important;
+  }
+
+  /* Hero supporting copy must be true white */
+  .hero .hero-subhead,
+  .hero .lede {
+    color: #ffffff !important;
+  }
+
+  @media (max-width: 720px) {
+    section:not(.hero):not(.alt) .section-head > .eyebrow {
+      font-size: 36px !important;
+      line-height: 1.08 !important;
+      margin-bottom: 30px !important;
+    }
+  }
+
+
+  /* Supporting-copy typography consistency:
+     use the same treatment as the product description copy everywhere */
+  .hero .lede,
+  .alt .lede,
+  .expect-support,
+  .benefit-grid .trio-item p,
+  .trio-item p,
+  .section-head p {
+    font-family: var(--font-body) !important;
+    font-size: clamp(19px, 2.3vw, 24px) !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    color: #ffffff !important;
+  }
+
+  @media (max-width: 720px) {
+    .hero .lede,
+    .alt .lede,
+    .expect-support,
+    .benefit-grid .trio-item p,
+    .trio-item p,
+    .section-head p {
+      font-size: 19px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
