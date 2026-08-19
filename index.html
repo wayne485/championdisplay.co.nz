@@ -34,6 +34,9 @@
 
   .product-image-wrap {
     width: 100%;
+    height: clamp(320px, 52vw, 560px);
+    padding: 24px;
+    box-sizing: border-box;
     background: #111;
     display: flex;
     justify-content: center;
@@ -44,10 +47,9 @@
   .product-image {
     display: block;
     width: 100%;
-    height: auto;
-    max-height: 760px;
+    height: 100%;
     object-fit: contain;
-    background: #111;
+    object-position: center;
   }
 
   .product-copy {
@@ -92,14 +94,81 @@
       padding: 22px 20px 26px;
     }
 
+    .product-image-wrap {
+      height: 320px;
+      padding: 14px;
+    }
+
     .product-image {
-      max-height: none;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .benefit-grid {
       grid-template-columns: 1fr;
     }
   }
+
+  /* Latest homepage hierarchy updates */
+  .main-nav a { color: var(--gold) !important; }
+
+  .hero { padding-bottom: 36px !important; }
+  .products-section { padding-top: 10px !important; }
+
+  .product-card {
+    display: block;
+    margin-bottom: 54px;
+  }
+  .product-title {
+    color: var(--gold);
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1;
+    margin: 0 0 18px;
+    text-transform: uppercase;
+  }
+  .product-copy { margin-top: 18px; }
+  .product-cta {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--gold) !important;
+    font-size: clamp(18px, 2.2vw, 22px);
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .expect-headline {
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1.08;
+  }
+  .expect-headline .gold { color: var(--gold); }
+  .expect-support {
+    font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.25;
+  }
+
+  .partner-heading {
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.08;
+    margin-bottom: 34px;
+  }
+  .trio-item .num { display: none !important; }
+  .trio-item h3 {
+    color: var(--gold) !important;
+    font-size: clamp(28px, 3vw, 38px) !important;
+    line-height: 1.05;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 720px) {
+    .hero { padding-bottom: 24px !important; }
+    .products-section { padding-top: 0 !important; }
+    .product-card { margin-bottom: 42px; }
+    .product-title { margin-bottom: 14px; }
+    .product-copy { margin-top: 14px; }
+  }
+
 </style>
 </head>
 <body>
@@ -133,44 +202,44 @@
   <div class="product-stack">
 
     <a href="/sports-cards.html" class="product-card">
-      <div class="product-image-wrap">
+      <h2 class="product-title">Sports Cards</h2>
+<div class="product-image-wrap">
         <img src="/sports-cards.webp" alt="Champion Display sports card example" class="product-image" loading="lazy">
       </div>
-      <div class="product-copy">
-        <h2>Sports Cards</h2>
+<div class="product-copy">
         <p>Give your members the power to create personalised, club-branded sports cards from their own photos.</p>
         <span class="go">Explore Sports Cards →</span>
       </div>
     </a>
 
     <a href="/player-cards.html" class="product-card">
-      <div class="product-image-wrap">
+      <h2 class="product-title">Player Cards</h2>
+<div class="product-image-wrap">
         <img src="/player-cards.webp" alt="Champion Display personalised player card example" class="product-image" loading="lazy">
       </div>
-      <div class="product-copy">
-        <h2>Player Cards</h2>
+<div class="product-copy">
         <p>Turn every player into the star of their own personalised club card.</p>
         <span class="go">Explore Player Cards →</span>
       </div>
     </a>
 
     <a href="/team-posters.html" class="product-card">
-      <div class="product-image-wrap">
+      <h2 class="product-title">Team Posters</h2>
+<div class="product-image-wrap">
         <img src="/team-posters.webp" alt="Champion Display team poster example" class="product-image" loading="lazy">
       </div>
-      <div class="product-copy">
-        <h2>Team Posters</h2>
+<div class="product-copy">
         <p>Turn your teams into something players are proud to put on their wall.</p>
         <span class="go">Explore Team Posters →</span>
       </div>
     </a>
 
     <a href="/team-photos.html" class="product-card">
-      <div class="product-image-wrap">
+      <h2 class="product-title">Team Photos</h2>
+<div class="product-image-wrap">
         <img src="/team-photos.webp" alt="Champion Display team photo example" class="product-image" loading="lazy">
       </div>
-      <div class="product-copy">
-        <h2>Team Photos</h2>
+<div class="product-copy">
         <p>Give every team a professional club-branded photo while creating a genuine revenue opportunity for your club.</p>
         <span class="go">Explore Team Photos →</span>
       </div>
@@ -182,8 +251,8 @@
 <section class="alt">
   <div class="wrap">
     <div class="section-head">
-      <h2>A new generation of parents, players and sponsors expect more.</h2>
-      <p>Your players may not play like pros, but they all want to look like one.</p>
+      <h2 class="expect-headline">A <span class="gold">NEW GENERATION</span> of parents, players and sponsors <span class="gold">EXPECT MORE</span></h2>
+      <p class="expect-support">Your players may not play like the pros,<br>but they all want to look like one.</p>
     </div>
   </div>
 </section>
@@ -195,22 +264,18 @@
     </div>
     <div class="benefit-grid">
       <div class="trio-item">
-        <span class="num">01</span>
         <h3>MORE REVENUE</h3>
         <p>Create new income for your club from products your members actually want.</p>
       </div>
       <div class="trio-item">
-        <span class="num">02</span>
         <h3>MORE EXPOSURE</h3>
         <p>Get your club and sponsors seen every time members create and share.</p>
       </div>
       <div class="trio-item">
-        <span class="num">03</span>
         <h3>MORE ENGAGEMENT</h3>
         <p>Give your members another reason to interact with, share and celebrate their club.</p>
       </div>
       <div class="trio-item">
-        <span class="num">04</span>
         <h3>MORE PROUD MEMBERS</h3>
         <p>Give players something personal they’re proud to create, keep and show off.</p>
       </div>
