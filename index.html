@@ -538,6 +538,58 @@
     }
   }
 
+
+  /* New generation section: no box */
+  .expect-section,
+  .generation-section {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .expect-section .wrap,
+  .generation-section .wrap {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+
+  /* Explicit generation-section line structure */
+  .expect-line {
+    display: block !important;
+  }
+
+  .support-line {
+    display: block !important;
+    white-space: nowrap !important;
+  }
+
+  @media (max-width: 720px) {
+    .expect-headline {
+      font-size: clamp(30px, 9.4vw, 38px) !important;
+      line-height: 1.08 !important;
+    }
+
+    .expect-support {
+      max-width: none !important;
+      width: 100% !important;
+      font-size: clamp(14px, 4.2vw, 16px) !important;
+    }
+
+    .support-line {
+      white-space: nowrap !important;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .expect-support {
+      font-size: 13px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -617,11 +669,19 @@
   </div>
 </div>
 
-<section class="alt">
+<section class="expect-section" class="alt">
   <div class="wrap">
     <div class="section-head">
-      <h2 class="expect-headline">A <span class="gold">NEW GENERATION</span> of parents, players and sponsors <span class="gold">EXPECT MORE</span></h2>
-      <p class="expect-support">Your players may not play like the pros,<br>but they all want to look like one.</p>
+      <h2 class="expect-headline">
+      <span class="expect-line"><span class="gold">A NEW GENERATION</span> OF</span>
+      <span class="expect-line">PLAYERS, PARENTS</span>
+      <span class="expect-line">AND SPONSORS</span>
+      <span class="expect-line gold">EXPECT MORE</span>
+    </h2>
+      <p class="expect-support">
+      <span class="support-line">Your players may not play like the pros,</span>
+      <span class="support-line">but they all want to look like one.</span>
+    </p>
     </div>
   </div>
 </section>
