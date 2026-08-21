@@ -924,6 +924,44 @@
     }
   }
 
+
+  /* Exact fixes for the actual current markup */
+
+  /* Remove the real source of the large gap after the last product card */
+  .product-stack {
+    padding-bottom: 18px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .product-stack .product-card:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .expect-section {
+    padding-top: 18px !important;
+    margin-top: 0 !important;
+  }
+
+  /* Make all four product headlines visibly larger and identical */
+  @media (max-width: 720px) {
+    .product-title {
+      font-size: 30px !important;
+      line-height: 1 !important;
+      letter-spacing: -0.8px !important;
+      white-space: nowrap !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 0 18px 0 !important;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .product-title {
+      font-size: 28px !important;
+      letter-spacing: -0.9px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -1006,7 +1044,7 @@
   </div>
 </div>
 
-<section class="expect-section" class="alt">
+<section class="expect-section alt">
   <div class="wrap">
     <div class="section-head">
       <h2 class="expect-headline">
