@@ -815,6 +815,72 @@
     }
   }
 
+
+  /* Footer navigation links: gold */
+  .foot-nav a,
+  footer .foot-nav a {
+    color: var(--gold) !important;
+  }
+
+
+  /* Consistent vertical spacing between major page sections */
+  section {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Mobile: one consistent section rhythm across the page */
+  @media (max-width: 720px) {
+    section,
+    .expect-section {
+      padding-top: 32px !important;
+      padding-bottom: 32px !important;
+    }
+
+    /* Product cards already create their own internal spacing */
+    section.products,
+    .products {
+      padding-top: 32px !important;
+      padding-bottom: 32px !important;
+    }
+
+    /* Remove oversized inherited gaps around section wrappers/headings */
+    section > .wrap,
+    section .section-head {
+      margin-top: 0 !important;
+    }
+
+    .expect-section {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* Contact section should begin at the same distance after benefits */
+    #contact,
+    .contact-section {
+      margin-top: 0 !important;
+      padding-top: 32px !important;
+    }
+  }
+
+
+  /* Product box headlines: larger but sized to keep the longest title inside the box */
+  @media (max-width: 720px) {
+    .product-title {
+      font-size: 25px !important;
+      line-height: 1.08 !important;
+      letter-spacing: -0.35px !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .product-title {
+      font-size: 23px !important;
+      letter-spacing: -0.45px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
