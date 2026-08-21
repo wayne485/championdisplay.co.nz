@@ -737,6 +737,43 @@
     }
   }
 
+
+  /* Hero supporting lines: same size, different weight */
+  .hero-parent-line,
+  .hero-card-line {
+    font-size: clamp(24px, 2.8vw, 31px) !important;
+  }
+
+  .hero-parent-line {
+    font-weight: 400 !important;
+  }
+
+  .hero-card-line {
+    font-weight: 800 !important;
+  }
+
+  .hero-card-line > span {
+    display: block !important;
+  }
+
+  @media (max-width: 720px) {
+    .hero-parent-line,
+    .hero-card-line {
+      font-size: 20px !important;
+    }
+
+    .hero-parent-line {
+      white-space: normal !important;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .hero-parent-line,
+    .hero-card-line {
+      font-size: 19px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -763,7 +800,7 @@
     <h1>Make your club look like <em>the pros</em></h1>
     <div class="hero-message hero-sports-card-message">
       <p class="hero-parent-line">Let every parent turn phone pics into</p>
-      <p class="hero-card-line">club-branded sports cards in 30 seconds.</p>
+      <p class="hero-card-line"><span>club-branded sports cards</span><span>in 30 seconds.</span></p>
     </div>
 
   </div>
