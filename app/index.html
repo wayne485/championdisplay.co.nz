@@ -492,7 +492,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 
 <!-- SPLASH SCREEN -->
 <div class="screen active" id="s-splash">
-  <img src="/logo.png" alt="Champion Display" onerror="this.style.display='none'">
+  <img src="logo.png" alt="Champion Display" onerror="this.style.display='none'">
 </div>
 
 <!-- CHOICE SCREEN -->
@@ -535,7 +535,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 <!-- S1: AGREE SCREEN -->
 <div class="screen" id="s1">
   <div class="logo-container">
-    <img id="logo-branding" src="/logo.png" alt="Champion Display" class="logo-img" onerror="this.style.display='none';">
+    <img id="logo-branding" src="logo.png" alt="Champion Display" class="logo-img" onerror="this.style.display='none';">
   </div>
   <h1 id="welcome-headline">Personalised sports cards for<br><span style="color:#dac16d">your club</span></h1>
   <div class="privacy-block">
@@ -867,8 +867,7 @@ window.onload = async function() {
 
   // Read club slug from pathname first (clean URLs), fall back to query param
   const pathParts = window.location.pathname.split('/').filter(Boolean);
-  const RESERVED_PATH_SEGMENTS = ['index.html', 'app'];
-  const slugFromPath = pathParts[0] && !RESERVED_PATH_SEGMENTS.includes(pathParts[0].toLowerCase()) ? pathParts[0].toLowerCase() : null;
+  const slugFromPath = pathParts[0] && pathParts[0] !== 'index.html' ? pathParts[0].toLowerCase() : null;
   const slugFromQuery = new URLSearchParams(window.location.search).get('club');
   const clubSlug = slugFromPath || slugFromQuery;
 
@@ -937,7 +936,7 @@ window.onload = async function() {
         // Load Football Card specific font if different
         if (data.has_football_card && data.football_card_url) {
           try {
-            const fcFontUrl = '/fonts/CruyffSansCondensed-Medium.ttf';
+            const fcFontUrl = 'fonts/CruyffSansCondensed-Medium.ttf';
             const fcFontName = 'CruyffSansCondensed';
             const fcFontFace = new FontFace(fcFontName, `url(${fcFontUrl})`);
             const fcLoaded = await fcFontFace.load();
@@ -1448,7 +1447,7 @@ async function buildPreview() {
     let fs = c.baseSize;
 
     while (fs > c.minSize) {
-      ctx.font = i === 2 ? `700 ${fs}px ${c.font}` : `900 ${fs}px ${c.font}`;
+      ctx.font = `900 ${fs}px ${c.font}`;
       if (ctx.measureText(t).width < W * 0.90) break;
       fs -= 2;
     }
@@ -1783,7 +1782,7 @@ async function generateSportsCardThumbnail(targetImgEl) {
     const c = configs[i];
     let fs = c.baseSize;
     while (fs > c.minSize) {
-      ctx.font = i === 2 ? `700 ${fs}px ${c.font}` : `900 ${fs}px ${c.font}`;
+      ctx.font = `900 ${fs}px ${c.font}`;
       if (ctx.measureText(t).width < W * 0.90) break;
       fs -= 2;
     }
