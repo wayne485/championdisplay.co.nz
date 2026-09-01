@@ -7,6 +7,36 @@
 <meta name="description" content="Custom team posters for junior sports clubs. Turn a season of matchday photos into a poster every player wants on their wall.">
 <link rel="icon" href="/logo.png">
 <link rel="stylesheet" href="/style.css">
+
+<style>
+  .team-slider { touch-action: pan-y; }
+  .team-slide img { user-select:none; -webkit-user-drag:none; }
+  .slider-arrow {
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.35);
+    background:rgba(0,0,0,.62);
+    color:#fff;
+    font-size:34px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .slider-dot {
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    border:0;
+    background:#666;
+    padding:0;
+    cursor:pointer;
+  }
+  .slider-dot.active { background:#dac16d; }
+  @media (max-width:720px) {
+    .slider-arrow { width:42px;height:42px;font-size:30px; }
+  }
+</style>
+
 </head>
 <body>
 
@@ -25,28 +55,65 @@
   </div>
 </header>
 
+
 <section class="hero" style="padding-bottom:20px;">
   <div class="wrap">
     <span class="eyebrow">Team Posters</span>
-    <h1>A season worth<br>putting on the <em>wall</em></h1>
-    <p class="lede">Custom posters built from your club's own photos, designed to make every player feel like part of something worth remembering.</p>
+    <h1>Get a team photo kids will put on their bedroom wall.</h1>
   </div>
 </section>
 
 <section style="padding-top:20px;">
   <div class="wrap">
-    <div class="split">
-      <div>
-        <span class="eyebrow">What it is</span>
-        <h2>One poster. The whole squad.</h2>
-        <p>A Team Poster brings your club's season to life: player photos, team colours, and club branding laid out in a single custom design that's built to be printed and hung, at home, in the clubrooms, wherever it belongs.</p>
-        <p>It's the kind of thing a kid points at on the wall for years after the season's over.</p>
+    <div class="display-case" style="max-width:960px;margin:0 auto;">
+      <span class="bracket-tl"></span><span class="bracket-br"></span>
+      <video controls playsinline preload="metadata" style="width:100%;display:block;border-radius:12px;">
+        <source src="/SQ Team Posters Ad.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why Clubs Are Choosing Team Posters</span>
+    </div>
+    <ul class="checklist" style="max-width:900px;margin:0 auto;">
+      <li><strong>Kids love them.</strong> They go on bedroom walls.</li>
+      <li><strong>Parents want them.</strong> They don’t end up buried in a cupboard.</li>
+      <li><strong>No extra work for the committee.</strong> Each team deals directly with Champion Display.</li>
+      <li><strong>Makes every player feel like a pro.</strong> A team photo they’re proud to show off.</li>
+      <li><strong>Raises money for the club.</strong> Ask about our club rebate.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Team Poster Examples</span>
+    </div>
+
+    <div class="team-slider" id="teamSlider" style="position:relative;max-width:1100px;margin:0 auto;">
+      <div class="team-slide active">
+        <img src="/PNHSOB Year 6 PV.jpg" alt="PNHSOB Year 6 team poster example" style="width:100%;display:block;border-radius:12px;">
       </div>
-      <div class="split-media">
-        <div class="display-case">
-          <span class="bracket-tl"></span><span class="bracket-br"></span>
-          <div class="placeholder-photo">Team Poster<br>Example</div>
-        </div>
+      <div class="team-slide" hidden>
+        <img src="/x21 prints.jpg" alt="Belfast Year 8 Cobras team poster example" style="width:100%;display:block;border-radius:12px;">
+      </div>
+      <div class="team-slide" hidden>
+        <img src="/Year 1 Gold.jpg" alt="Taieri Rugby Year 1 Gold team poster example" style="width:100%;display:block;border-radius:12px;">
+      </div>
+
+      <button type="button" class="slider-arrow slider-prev" aria-label="Previous poster" onclick="changeTeamSlide(-1)" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:2;">‹</button>
+      <button type="button" class="slider-arrow slider-next" aria-label="Next poster" onclick="changeTeamSlide(1)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:2;">›</button>
+
+      <div class="slider-dots" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
+        <button type="button" class="slider-dot active" aria-label="Show poster 1" onclick="showTeamSlide(0)"></button>
+        <button type="button" class="slider-dot" aria-label="Show poster 2" onclick="showTeamSlide(1)"></button>
+        <button type="button" class="slider-dot" aria-label="Show poster 3" onclick="showTeamSlide(2)"></button>
       </div>
     </div>
   </div>
@@ -54,48 +121,76 @@
 
 <section class="alt">
   <div class="wrap">
-    <div class="split reverse">
-      <div class="split-media">
-        <div class="display-case">
-          <span class="bracket-tl"></span><span class="bracket-br"></span>
-          <div class="placeholder-photo">Design In<br>Progress</div>
-        </div>
-      </div>
-      <div>
-        <span class="eyebrow">How it works</span>
-        <h2>We handle the design work</h2>
-        <ul class="checklist">
-          <li>You send through the season's team photos.</li>
-          <li>We lay out a custom poster in your club's colours and branding.</li>
-          <li>You review it and ask for any changes.</li>
-          <li>Print-ready files, sized and ready to order.</li>
-        </ul>
-      </div>
+    <div class="section-head">
+      <span class="eyebrow">What You Get</span>
     </div>
+    <ul class="checklist" style="max-width:760px;margin:0 auto;">
+      <li><strong>A3 Team Poster</strong></li>
+      <li><strong>Laminated to the edge</strong></li>
+      <li><strong>Free delivery</strong></li>
+    </ul>
   </div>
 </section>
 
 <section>
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow">Why It Matters</span>
-      <h2>Made for clubs that care about their players</h2>
+      <span class="eyebrow">How It Works</span>
     </div>
-    <div class="trio">
-      <div class="trio-item">
-        <span class="num">01</span>
-        <h3>Every club is different</h3>
-        <p>Colours, crest, sponsor logos, whatever makes your club yours, built into the design.</p>
+
+    <div class="split">
+      <div>
+        <span class="eyebrow">01</span>
+        <h2>Take your team photo</h2>
+        <p>Use your phone. No professional photographer or photo day needed.</p>
       </div>
-      <div class="trio-item">
-        <span class="num">02</span>
-        <h3>A keepsake, not a printout</h3>
-        <p>Designed to be proudly displayed, not filed away with the rest of the season's paperwork.</p>
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <img src="/freepik__talk__14714(20260901-003921).jpeg" alt="Taking a team photo on a mobile phone" style="width:100%;display:block;border-radius:12px;">
+        </div>
       </div>
-      <div class="trio-item">
-        <span class="num">03</span>
-        <h3>One point of contact</h3>
-        <p>You deal directly with us from first photo to final print-ready file.</p>
+    </div>
+
+    <div class="split reverse" style="margin-top:56px;">
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <img src="/Cantona 2025 Team Poster PRINT V.jpg" alt="Team poster being created" style="width:100%;display:block;border-radius:12px;">
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow">02</span>
+        <h2>We create the poster</h2>
+        <p>Send us the photo, player names and team name. We do the rest.</p>
+      </div>
+    </div>
+
+    <div class="split" style="margin-top:56px;">
+      <div>
+        <span class="eyebrow">03</span>
+        <h2>You approve it</h2>
+        <p>We send the finished design to you for approval.</p>
+      </div>
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <img src="/Cantona 2025 Sample(1).jpg" alt="Finished Hibiscus Coast team poster" style="width:100%;display:block;border-radius:12px;">
+        </div>
+      </div>
+    </div>
+
+    <div class="split reverse" style="margin-top:56px;">
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <img src="/PNHSOB Year 6 PV.jpg" alt="Finished team poster ready for team orders" style="width:100%;display:block;border-radius:12px;">
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow">04</span>
+        <h2>Take your orders</h2>
+        <p>Show the finished poster to your team and collect the orders.</p>
       </div>
     </div>
   </div>
@@ -179,6 +274,57 @@
       msg.className = 'form-msg error';
     });
   });
+</script>
+
+
+<script>
+  let teamSlideIndex = 0;
+  function showTeamSlide(index) {
+    const slides = Array.from(document.querySelectorAll('.team-slide'));
+    const dots = Array.from(document.querySelectorAll('.slider-dot'));
+    if (!slides.length) return;
+    teamSlideIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      slide.hidden = i !== teamSlideIndex;
+      slide.classList.toggle('active', i === teamSlideIndex);
+    });
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === teamSlideIndex));
+  }
+
+  function changeTeamSlide(step) {
+    showTeamSlide(teamSlideIndex + step);
+  }
+
+  (function enableTeamSliderSwipe() {
+    const slider = document.getElementById('teamSlider');
+    if (!slider) return;
+    let startX = null;
+
+    slider.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    slider.addEventListener('touchend', function(e) {
+      if (startX === null || !e.changedTouches.length) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 45) changeTeamSlide(dx < 0 ? 1 : -1);
+      startX = null;
+    }, { passive: true });
+
+    let mouseDown = false;
+    let mouseStartX = 0;
+    slider.addEventListener('mousedown', function(e) {
+      if (e.target.closest('button')) return;
+      mouseDown = true;
+      mouseStartX = e.clientX;
+    });
+    window.addEventListener('mouseup', function(e) {
+      if (!mouseDown) return;
+      const dx = e.clientX - mouseStartX;
+      if (Math.abs(dx) > 60) changeTeamSlide(dx < 0 ? 1 : -1);
+      mouseDown = false;
+    });
+  })();
 </script>
 
 </body>
