@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player Cards | Champion Display</title>
+<meta name="description" content="Personalised sports cards for junior sports clubs. Every player gets their own custom card, created from a single photo.">
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/style.css">
+
+<style>
+.sports-proof,.sports-moments,.share-print{text-align:center}
+.sports-proof .section-head,.sports-moments .section-head,.share-print .section-head{max-width:760px;margin:0 auto 28px}
+.sports-proof h2,.sports-moments h2,.share-print h2{margin:0}
+.sports-proof h2 em,.sports-moments h2 em,.share-print h2 em{color:var(--gold);font-style:normal}
+.video-wrap{width:min(100%,430px);margin:0 auto}
+.video-wrap video{display:block;width:100%;background:#000}
+.proof-note{margin:22px auto 0;max-width:620px}
+.moment-list{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:28px}
+.moment-list div{border:1px solid var(--gold);padding:18px 10px;color:var(--gold);font-weight:800}
+.share-print-image{display:block;width:min(100%,620px);height:auto;margin:28px auto 0}
+@media(max-width:720px){
+ .sports-proof,.sports-moments,.share-print{padding-top:34px;padding-bottom:34px}
+ .moment-list{grid-template-columns:1fr;gap:10px}
+ .sports-proof .section-head,.sports-moments .section-head,.share-print .section-head{margin-bottom:20px}
+}
+</style>
+
+
+<style>
+.header-phone{
+  color:var(--gold,#e1c46b)!important;
+  font-weight:800;
+  text-decoration:underline;
+  white-space:nowrap;
+}
+.floating-contact{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:9999;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  padding:0 26px;
+  border-radius:999px;
+  background:var(--gold,#e1c46b);
+  color:#111!important;
+  text-decoration:none;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  box-shadow:0 4px 18px rgba(0,0,0,.25);
+}
+@media(max-width:720px){
+  .header-phone{font-size:16px}
+  .floating-contact{
+    right:18px;
+    bottom:20px;
+    min-height:48px;
+    padding:0 20px;
+    font-size:12px;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="/" aria-label="Champion Display home">
+        <img src="/logo-crest.png" alt="Champion Display">
+      </a>
+      <a class="header-phone" href="tel:+6421577045" aria-label="Call +64 21 577 045">+64 21 577 045</a>
+    </div>
+    <nav class="main-nav" id="mainNav">
+      <a href="/sports-cards.html">Sports Cards</a>
+      <a href="/player-cards.html" class="active">Player Cards</a>
+      <a href="/team-posters.html">Team Posters</a>
+      <a href="/team-photos.html">Team Photos</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle">Menu</button>
+  </div>
+</header>
+
+<section class="hero" style="padding-bottom:20px;">
+  <div class="wrap">
+    <h1>Give Every Player<br>Their <em>Hero Moment</em></h1>
+    <p class="lede">Create a Pro Sports Card in 30 seconds straight from your phone.</p>
+  </div>
+</section>
+
+
+<section class="sports-proof">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>WATCH A PLAYER CARD<br>BE CREATED IN<br><em>30 SECONDS</em></h2>
+      <p>Unedited real-time screen recording</p>
+    </div>
+    <div class="video-wrap">
+      <video controls playsinline preload="metadata">
+        <source src="/sports-card-30-seconds.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="alt sports-moments">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>GIVE KIDS A<br><em>TRULY SPECIAL MEMENTO</em></h2>
+    </div>
+  </div>
+</section>
+
+<section class="share-print">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>SHARE IT. <em>PRINT IT.</em></h2>
+      <p>Share it online. Print it for the wall.</p>
+    </div>
+    <img src="/sports-cards-share-print.png"
+         alt="Sports card shared online and printed for the wall"
+         class="share-print-image">
+  </div>
+</section>
+
+<a href="#contact" class="floating-contact">✉ Contact Us</a>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var navToggle = document.getElementById('navToggle');
+    var mainNav = document.getElementById('mainNav');
+    if (navToggle && mainNav && !navToggle.dataset.menuBound) {
+      navToggle.dataset.menuBound = '1';
+      navToggle.addEventListener('click', function () {
+        mainNav.classList.toggle('open');
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
