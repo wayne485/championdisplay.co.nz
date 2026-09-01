@@ -865,11 +865,24 @@ window.onload = async function() {
     console.error("Supabase client failed to initialize.", err);
   }
 
-  // Read club slug from pathname first (clean URLs), fall back to query param
+  // Read club slug safely from either clean URLs or /app/ routes.
+  // Query parameter takes priority so /app/?club=paihiafc works correctly.
   const pathParts = window.location.pathname.split('/').filter(Boolean);
-  const slugFromPath = pathParts[0] && pathParts[0] !== 'index.html' ? pathParts[0].toLowerCase() : null;
   const slugFromQuery = new URLSearchParams(window.location.search).get('club');
-  const clubSlug = slugFromPath || slugFromQuery;
+
+  let slugFromPath = null;
+
+  if (pathParts[0] === 'app') {
+    if (pathParts[1] && pathParts[1] !== 'index.html') {
+      slugFromPath = pathParts[1].toLowerCase();
+    }
+  } else if (pathParts[0] && pathParts[0] !== 'index.html') {
+    slugFromPath = pathParts[0].toLowerCase();
+  }
+
+  const clubSlug = slugFromQuery
+    ? slugFromQuery.toLowerCase()
+    : slugFromPath;
 
   // Load dynamically from database if ?club variable is set
   if (clubSlug && supabaseClient) {
