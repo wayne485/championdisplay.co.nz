@@ -9,31 +9,204 @@
 <link rel="stylesheet" href="/style.css">
 
 <style>
-  .team-slider { touch-action: pan-y; }
-  .team-slide img { user-select:none; -webkit-user-drag:none; }
-  .slider-arrow {
-    width:48px;
-    height:48px;
-    border-radius:50%;
-    border:1px solid rgba(255,255,255,.35);
-    background:rgba(0,0,0,.62);
-    color:#fff;
-    font-size:34px;
-    line-height:1;
-    cursor:pointer;
+  .tp-hero {
+    padding: 64px 0 42px;
+    text-align: center;
   }
-  .slider-dot {
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    border:0;
-    background:#666;
-    padding:0;
-    cursor:pointer;
+  .tp-hero h1 {
+    max-width: 980px;
+    margin: 0 auto 36px;
+    font-size: clamp(42px, 7vw, 82px);
+    line-height: 0.98;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
   }
-  .slider-dot.active { background:#dac16d; }
-  @media (max-width:720px) {
-    .slider-arrow { width:42px;height:42px;font-size:30px; }
+  .tp-video-wrap {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .tp-video-wrap video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+
+  .tp-section {
+    padding: 72px 0;
+  }
+  .tp-alt {
+    background: #111;
+  }
+  .tp-section h2 {
+    margin: 0 auto 38px;
+    max-width: 920px;
+    text-align: center;
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .tp-benefits {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    gap: 22px;
+  }
+  .tp-benefit {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .tp-tick {
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 900;
+    color: #dac16d;
+  }
+  .tp-benefit h3 {
+    margin: 0 0 4px;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.05;
+  }
+  .tp-benefit p {
+    margin: 0;
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.45;
+  }
+  .tp-benefits-compact {
+    max-width: 700px;
+  }
+
+  .tp-slider {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+  .tp-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .tp-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,.72);
+    color: #fff;
+    font-size: 38px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .tp-prev { left: 14px; }
+  .tp-next { right: 14px; }
+
+  .tp-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .tp-dot {
+    width: 11px;
+    height: 11px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #666;
+    cursor: pointer;
+  }
+  .tp-dot.active {
+    background: #dac16d;
+  }
+
+  .tp-step {
+    max-width: 1100px;
+    margin: 0 auto 72px;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 44px;
+    align-items: center;
+  }
+  .tp-step-reverse {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+  .tp-step-reverse .tp-step-copy {
+    order: 2;
+  }
+  .tp-step-reverse img {
+    order: 1;
+  }
+  .tp-step img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .tp-step-number {
+    display: block;
+    margin-bottom: 8px;
+    color: #dac16d;
+    font-size: 20px;
+    font-weight: 900;
+  }
+  .tp-step h3 {
+    margin: 0 0 12px;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1;
+  }
+  .tp-step p {
+    margin: 0;
+    font-size: clamp(17px, 2vw, 21px);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 720px) {
+    .tp-hero {
+      padding: 42px 0 28px;
+    }
+    .tp-hero h1 {
+      margin-bottom: 26px;
+      font-size: 42px;
+    }
+    .tp-section {
+      padding: 54px 0;
+    }
+    .tp-section h2 {
+      margin-bottom: 30px;
+      font-size: 36px;
+    }
+    .tp-arrow {
+      width: 44px;
+      height: 44px;
+      font-size: 32px;
+    }
+    .tp-step,
+    .tp-step-reverse {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-bottom: 54px;
+    }
+    .tp-step-reverse .tp-step-copy,
+    .tp-step-reverse img {
+      order: initial;
+    }
+    .tp-step-copy {
+      order: 1;
+    }
+    .tp-step img {
+      order: 2;
+    }
   }
 </style>
 
@@ -56,142 +229,153 @@
 </header>
 
 
-<section class="hero" style="padding-bottom:20px;">
+<section class="tp-hero">
   <div class="wrap">
-    <span class="eyebrow">Team Posters</span>
-    <h1>Get a team photo kids will put on their bedroom wall.</h1>
-  </div>
-</section>
+    <h1>Get a team photo kids will put on their bedroom wall</h1>
 
-<section style="padding-top:20px;">
-  <div class="wrap">
-    <div class="display-case" style="max-width:960px;margin:0 auto;">
-      <span class="bracket-tl"></span><span class="bracket-br"></span>
-      <video controls playsinline preload="metadata" style="width:100%;display:block;border-radius:12px;">
-        <source src="/SQ Team Posters Ad.mp4" type="video/mp4">
+    <div class="tp-video-wrap">
+      <video controls playsinline preload="metadata">
+        <source src="/team-posters-video.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
   </div>
 </section>
 
-<section class="alt">
+<section class="tp-section tp-alt">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Why Clubs Are Choosing Team Posters</span>
+    <h2>Why Clubs Are Choosing Team Posters</h2>
+
+    <div class="tp-benefits">
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div>
+          <h3>Kids love them</h3>
+          <p>They go on bedroom walls.</p>
+        </div>
+      </div>
+
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div>
+          <h3>Parents want them</h3>
+          <p>They don’t end up buried in a cupboard.</p>
+        </div>
+      </div>
+
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div>
+          <h3>No extra work for the committee</h3>
+          <p>Each team deals directly with Champion Display.</p>
+        </div>
+      </div>
+
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div>
+          <h3>Makes every player feel like a pro</h3>
+          <p>A team photo they’re proud to show off.</p>
+        </div>
+      </div>
+
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div>
+          <h3>Raises money for the club</h3>
+          <p>Ask about our club rebate.</p>
+        </div>
+      </div>
     </div>
-    <ul class="checklist" style="max-width:900px;margin:0 auto;">
-      <li><strong>Kids love them.</strong> They go on bedroom walls.</li>
-      <li><strong>Parents want them.</strong> They don’t end up buried in a cupboard.</li>
-      <li><strong>No extra work for the committee.</strong> Each team deals directly with Champion Display.</li>
-      <li><strong>Makes every player feel like a pro.</strong> A team photo they’re proud to show off.</li>
-      <li><strong>Raises money for the club.</strong> Ask about our club rebate.</li>
-    </ul>
   </div>
 </section>
 
-<section>
+<section class="tp-section">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Team Poster Examples</span>
+    <h2>See What Your Team Could Look Like</h2>
+
+    <div class="tp-slider" id="teamSlider">
+      <div class="tp-slide">
+        <img src="/team-poster-pnhsob.webp" alt="PNHSOB Year 6 team poster">
+      </div>
+      <div class="tp-slide" hidden>
+        <img src="/team-poster-belfast.webp" alt="Belfast Year 8 Cobras team poster">
+      </div>
+      <div class="tp-slide" hidden>
+        <img src="/team-poster-taieri.webp" alt="Taieri Rugby Year 1 Gold team poster">
+      </div>
+
+      <button type="button" class="tp-arrow tp-prev" aria-label="Previous poster" onclick="changeTeamSlide(-1)">‹</button>
+      <button type="button" class="tp-arrow tp-next" aria-label="Next poster" onclick="changeTeamSlide(1)">›</button>
     </div>
 
-    <div class="team-slider" id="teamSlider" style="position:relative;max-width:1100px;margin:0 auto;">
-      <div class="team-slide active">
-        <img src="/PNHSOB Year 6 PV.jpg" alt="PNHSOB Year 6 team poster example" style="width:100%;display:block;border-radius:12px;">
-      </div>
-      <div class="team-slide" hidden>
-        <img src="/x21 prints.jpg" alt="Belfast Year 8 Cobras team poster example" style="width:100%;display:block;border-radius:12px;">
-      </div>
-      <div class="team-slide" hidden>
-        <img src="/Year 1 Gold.jpg" alt="Taieri Rugby Year 1 Gold team poster example" style="width:100%;display:block;border-radius:12px;">
-      </div>
+    <div class="tp-dots" aria-label="Poster slideshow navigation">
+      <button type="button" class="tp-dot active" aria-label="Poster 1" onclick="showTeamSlide(0)"></button>
+      <button type="button" class="tp-dot" aria-label="Poster 2" onclick="showTeamSlide(1)"></button>
+      <button type="button" class="tp-dot" aria-label="Poster 3" onclick="showTeamSlide(2)"></button>
+    </div>
+  </div>
+</section>
 
-      <button type="button" class="slider-arrow slider-prev" aria-label="Previous poster" onclick="changeTeamSlide(-1)" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:2;">‹</button>
-      <button type="button" class="slider-arrow slider-next" aria-label="Next poster" onclick="changeTeamSlide(1)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:2;">›</button>
+<section class="tp-section tp-alt">
+  <div class="wrap">
+    <h2>What You Get</h2>
 
-      <div class="slider-dots" style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
-        <button type="button" class="slider-dot active" aria-label="Show poster 1" onclick="showTeamSlide(0)"></button>
-        <button type="button" class="slider-dot" aria-label="Show poster 2" onclick="showTeamSlide(1)"></button>
-        <button type="button" class="slider-dot" aria-label="Show poster 3" onclick="showTeamSlide(2)"></button>
+    <div class="tp-benefits tp-benefits-compact">
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div><h3>A3 Team Poster</h3></div>
+      </div>
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div><h3>Laminated to the edge</h3></div>
+      </div>
+      <div class="tp-benefit">
+        <span class="tp-tick">✓</span>
+        <div><h3>Free delivery</h3></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="alt">
+<section class="tp-section">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">What You Get</span>
-    </div>
-    <ul class="checklist" style="max-width:760px;margin:0 auto;">
-      <li><strong>A3 Team Poster</strong></li>
-      <li><strong>Laminated to the edge</strong></li>
-      <li><strong>Free delivery</strong></li>
-    </ul>
-  </div>
-</section>
+    <h2>How It Works</h2>
 
-<section>
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">How It Works</span>
-    </div>
-
-    <div class="split">
-      <div>
-        <span class="eyebrow">01</span>
-        <h2>Take your team photo</h2>
+    <div class="tp-step">
+      <div class="tp-step-copy">
+        <span class="tp-step-number">01</span>
+        <h3>Take your team photo</h3>
         <p>Use your phone. No professional photographer or photo day needed.</p>
       </div>
-      <div class="split-media">
-        <div class="display-case">
-          <span class="bracket-tl"></span><span class="bracket-br"></span>
-          <img src="/freepik__talk__14714(20260901-003921).jpeg" alt="Taking a team photo on a mobile phone" style="width:100%;display:block;border-radius:12px;">
-        </div>
-      </div>
+      <img src="/team-photo-phone.webp" alt="Taking a team photo on a mobile phone">
     </div>
 
-    <div class="split reverse" style="margin-top:56px;">
-      <div class="split-media">
-        <div class="display-case">
-          <span class="bracket-tl"></span><span class="bracket-br"></span>
-          <img src="/Cantona 2025 Team Poster PRINT V.jpg" alt="Team poster being created" style="width:100%;display:block;border-radius:12px;">
-        </div>
-      </div>
-      <div>
-        <span class="eyebrow">02</span>
-        <h2>We create the poster</h2>
+    <div class="tp-step tp-step-reverse">
+      <div class="tp-step-copy">
+        <span class="tp-step-number">02</span>
+        <h3>We create the poster</h3>
         <p>Send us the photo, player names and team name. We do the rest.</p>
       </div>
+      <img src="/team-poster-design.webp" alt="Team poster being created">
     </div>
 
-    <div class="split" style="margin-top:56px;">
-      <div>
-        <span class="eyebrow">03</span>
-        <h2>You approve it</h2>
+    <div class="tp-step">
+      <div class="tp-step-copy">
+        <span class="tp-step-number">03</span>
+        <h3>You approve it</h3>
         <p>We send the finished design to you for approval.</p>
       </div>
-      <div class="split-media">
-        <div class="display-case">
-          <span class="bracket-tl"></span><span class="bracket-br"></span>
-          <img src="/Cantona 2025 Sample(1).jpg" alt="Finished Hibiscus Coast team poster" style="width:100%;display:block;border-radius:12px;">
-        </div>
-      </div>
+      <img src="/team-poster-cantona.webp" alt="Finished Hibiscus Coast team poster">
     </div>
 
-    <div class="split reverse" style="margin-top:56px;">
-      <div class="split-media">
-        <div class="display-case">
-          <span class="bracket-tl"></span><span class="bracket-br"></span>
-          <img src="/PNHSOB Year 6 PV.jpg" alt="Finished team poster ready for team orders" style="width:100%;display:block;border-radius:12px;">
-        </div>
-      </div>
-      <div>
-        <span class="eyebrow">04</span>
-        <h2>Take your orders</h2>
+    <div class="tp-step tp-step-reverse">
+      <div class="tp-step-copy">
+        <span class="tp-step-number">04</span>
+        <h3>Take your orders</h3>
         <p>Show the finished poster to your team and collect the orders.</p>
       </div>
+      <img src="/team-poster-pnhsob.webp" alt="Finished team poster ready for orders">
     </div>
   </div>
 </section>
@@ -279,25 +463,31 @@
 
 <script>
   let teamSlideIndex = 0;
+
   function showTeamSlide(index) {
-    const slides = Array.from(document.querySelectorAll('.team-slide'));
-    const dots = Array.from(document.querySelectorAll('.slider-dot'));
+    const slides = Array.from(document.querySelectorAll('.tp-slide'));
+    const dots = Array.from(document.querySelectorAll('.tp-dot'));
     if (!slides.length) return;
+
     teamSlideIndex = (index + slides.length) % slides.length;
+
     slides.forEach((slide, i) => {
       slide.hidden = i !== teamSlideIndex;
-      slide.classList.toggle('active', i === teamSlideIndex);
     });
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === teamSlideIndex));
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === teamSlideIndex);
+    });
   }
 
   function changeTeamSlide(step) {
     showTeamSlide(teamSlideIndex + step);
   }
 
-  (function enableTeamSliderSwipe() {
+  (function setupTeamSlider() {
     const slider = document.getElementById('teamSlider');
     if (!slider) return;
+
     let startX = null;
 
     slider.addEventListener('touchstart', function(e) {
@@ -310,20 +500,6 @@
       if (Math.abs(dx) > 45) changeTeamSlide(dx < 0 ? 1 : -1);
       startX = null;
     }, { passive: true });
-
-    let mouseDown = false;
-    let mouseStartX = 0;
-    slider.addEventListener('mousedown', function(e) {
-      if (e.target.closest('button')) return;
-      mouseDown = true;
-      mouseStartX = e.clientX;
-    });
-    window.addEventListener('mouseup', function(e) {
-      if (!mouseDown) return;
-      const dx = e.clientX - mouseStartX;
-      if (Math.abs(dx) > 60) changeTeamSlide(dx < 0 ? 1 : -1);
-      mouseDown = false;
-    });
   })();
 </script>
 
