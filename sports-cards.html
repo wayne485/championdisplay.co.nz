@@ -65,45 +65,17 @@
 }
 </style>
 
-
-<style>
-.moment-list{
-  display:flex!important;
-  flex-wrap:wrap!important;
-  justify-content:center!important;
-  align-items:center!important;
-  gap:14px 30px!important;
-  max-width:1000px!important;
-  margin:28px auto 0!important;
-}
-.moment-list div{
-  border:0!important;
-  padding:0!important;
-  color:var(--gold,#e1c46b)!important;
-  font-weight:800!important;
-  white-space:nowrap!important;
-}
-@media(max-width:720px){
-  .moment-list{
-    display:flex!important;
-    flex-direction:column!important;
-    align-items:flex-start!important;
-    width:max-content!important;
-    max-width:100%!important;
-    gap:12px!important;
-  }
-}
-</style>
-
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap">
-    <a href="/" class="brand">
-      <img src="/logo-crest.png" alt="Champion Display">
-      <a class="header-phone" href="tel:+6421577045">+64 21 577 045</a></span>
-    </a>
+    <div class="brand">
+      <a href="/" aria-label="Champion Display home">
+        <img src="/logo-crest.png" alt="Champion Display">
+      </a>
+      <a class="header-phone" href="tel:+6421577045" aria-label="Call +64 21 577 045">+64 21 577 045</a>
+    </div>
     <nav class="main-nav" id="mainNav">
       <a href="/sports-cards.html" class="active">Sports Cards</a>
       <a href="/player-cards.html">Player Cards</a>
@@ -118,7 +90,7 @@
 <section class="hero" style="padding-bottom:20px;">
   <div class="wrap">
     <h1>Give Every Player<br>Their <em>Hero Moment</em></h1>
-    <p class="lede">Phone pic to pro sports card in 30 seconds.</p>
+    <p class="lede">Create a Pro Sports Card in 30 seconds straight from your phone.</p>
   </div>
 </section>
 
@@ -144,11 +116,11 @@
       <h2>ONE TEMPLATE.<br><em>EVERY MOMENT COVERED.</em></h2>
     </div>
     <div class="moment-list">
-      <div>✓ PLAYER OF THE DAY</div>
-      <div>✓ GOAL SCORER</div>
-      <div>✓ END OF YEAR AWARDS</div>
-      <div>✓ GAME RESULTS</div>
-      <div>✓ UPCOMING GAMES</div>
+      <div>PLAYER OF THE DAY</div>
+      <div>GOAL SCORER</div>
+      <div>END-OF-YEAR AWARDS</div>
+      <div>GAME RESULTS</div>
+      <div>UPCOMING GAMES</div>
     </div>
   </div>
 </section>
@@ -166,5 +138,19 @@
 </section>
 
 <a href="#contact" class="floating-contact">✉ Contact Us</a>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var navToggle = document.getElementById('navToggle');
+    var mainNav = document.getElementById('mainNav');
+    if (navToggle && mainNav && !navToggle.dataset.menuBound) {
+      navToggle.dataset.menuBound = '1';
+      navToggle.addEventListener('click', function () {
+        mainNav.classList.toggle('open');
+      });
+    }
+  });
+</script>
+
 </body>
 </html>

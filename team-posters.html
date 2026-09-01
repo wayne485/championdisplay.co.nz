@@ -230,6 +230,37 @@
       order: 2;
     }
   }
+
+  .brand .header-phone {
+    color: #dac16d !important;
+    font-family: inherit !important;
+    font-size: clamp(14px, 1.6vw, 18px) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+
+  .tp-alt {
+    background: #000000 !important;
+  }
+
+  .tp-benefits-compact .tp-benefit h3 {
+    color: #ffffff !important;
+  }
+
+  .tp-benefits-compact .tp-tick {
+    color: #dac16d !important;
+  }
+
+  .tp-gold-heading {
+    color: #dac16d !important;
+  }
+
 </style>
 
 </head>
@@ -237,10 +268,12 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a href="/" class="brand">
-      <img src="/logo-crest.png" alt="Champion Display">
-      <span class="brand-word">Champion<span>Display</span></span>
-    </a>
+    <div class="brand">
+      <a href="/" aria-label="Champion Display home">
+        <img src="/logo-crest.png" alt="Champion Display">
+      </a>
+      <a class="brand-word header-phone" href="tel:+6421577045" aria-label="Call +64 21 577 045">+64 21 577 045</a>
+    </div>
     <nav class="main-nav" id="mainNav">
       <a href="/team-posters.html" class="active">Team Posters</a>
       <a href="/sports-cards.html">Sports Cards</a>
@@ -262,7 +295,7 @@
 
     <div class="tp-video-wrap">
       <video controls playsinline preload="metadata">
-        <source src="/team-posters-video.mp4" type="video/mp4">
+        <source src="/team-posters-video-web.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -456,9 +489,6 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
-  document.getElementById('navToggle').addEventListener('click', function() {
-    document.getElementById('mainNav').classList.toggle('open');
-  });
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var form = e.target;
@@ -524,6 +554,20 @@
       startX = null;
     }, { passive: true });
   })();
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var navToggle = document.getElementById('navToggle');
+    var mainNav = document.getElementById('mainNav');
+    if (navToggle && mainNav && !navToggle.dataset.menuBound) {
+      navToggle.dataset.menuBound = '1';
+      navToggle.addEventListener('click', function () {
+        mainNav.classList.toggle('open');
+      });
+    }
+  });
 </script>
 
 </body>
