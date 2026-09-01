@@ -137,6 +137,17 @@
   }
 </style>
 
+<style>
+.contact-product{background:#000!important;padding:72px 0}
+.contact-product-head h2{text-align:center;margin:0 0 38px;font-size:clamp(36px,5.5vw,64px);line-height:.98;text-transform:uppercase;color:#fff!important}
+.contact-product-head h2 span{color:#dac16d!important}
+.contact-action{max-width:720px;margin:0 auto 34px;text-align:center}
+.contact-action h3{margin:0 0 10px;color:#dac16d!important;font-size:clamp(28px,4vw,40px);line-height:1;text-transform:uppercase}
+.contact-phone{display:inline-block;color:#fff!important;font-size:clamp(24px,4vw,38px);font-weight:900;text-decoration:none}
+.contact-message{margin-bottom:0}
+.contact-product #contactForm{max-width:720px;margin:0 auto;display:grid;gap:14px}
+.contact-product #contactForm input,.contact-product #contactForm textarea{width:100%;box-sizing:border-box}
+</style>
 </head>
 <body>
 
@@ -207,6 +218,27 @@
       <p>Share it with friends and family.</p>
       <h2 class="print-headline">PRINT IT</h2>
       <p>Print for the bedroom wall.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="alt contact-product">
+  <div class="wrap">
+    <div class="contact-product-head"><h2><span>GET A PLAYER CARD</span><br>FOR YOUR CLUB</h2></div>
+    <div class="contact-action">
+      <h3>CALL</h3>
+      <a class="contact-phone" href="tel:+6421577045">+64 21 577 045</a>
+    </div>
+    <div class="contact-action contact-message">
+      <h3>MESSAGE</h3>
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit">SEND</button>
+        <div id="formStatus"></div>
+      </form>
     </div>
   </div>
 </section>

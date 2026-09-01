@@ -263,6 +263,17 @@
 
 </style>
 
+<style>
+.contact-product{background:#000!important;padding:72px 0}
+.contact-product-head h2{text-align:center;margin:0 0 38px;font-size:clamp(36px,5.5vw,64px);line-height:.98;text-transform:uppercase;color:#fff!important}
+.contact-product-head h2 span{color:#dac16d!important}
+.contact-action{max-width:720px;margin:0 auto 34px;text-align:center}
+.contact-action h3{margin:0 0 10px;color:#dac16d!important;font-size:clamp(28px,4vw,40px);line-height:1;text-transform:uppercase}
+.contact-phone{display:inline-block;color:#fff!important;font-size:clamp(24px,4vw,38px);font-weight:900;text-decoration:none}
+.contact-message{margin-bottom:0}
+.contact-product #contactForm{max-width:720px;margin:0 auto;display:grid;gap:14px}
+.contact-product #contactForm input,.contact-product #contactForm textarea{width:100%;box-sizing:border-box}
+</style>
 </head>
 <body>
 
@@ -444,38 +455,22 @@
   </div>
 </section>
 
-<section id="contact" class="alt">
+<section id="contact" class="alt contact-product">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Get In Touch</span>
-      <h2>Ask about a Team Poster for your club</h2>
-      <p>Tell us a bit about your club and squad size, and we'll get back to you.</p>
+    <div class="contact-product-head"><h2><span>GET A TEAM POSTER</span><br>FOR YOUR TEAM</h2></div>
+    <div class="contact-action">
+      <h3>CALL</h3>
+      <a class="contact-phone" href="tel:+6421577045">+64 21 577 045</a>
     </div>
-    <div class="contact-block">
-      <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-        <div class="contact-grid">
-          <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
-          </div>
-          <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="full">
-            <label for="club">Club Name</label>
-            <input type="text" id="club" name="club">
-          </div>
-          <input type="hidden" name="interest" value="Team Posters">
-          <div class="full">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Roughly how many players, and when's your season wrapping up?" required></textarea>
-          </div>
-        </div>
-        <div style="margin-top:24px;">
-          <button type="submit" class="btn btn-gold">Send Message</button>
-        </div>
-        <p class="form-msg" id="formMsg"></p>
+    <div class="contact-action contact-message">
+      <h3>MESSAGE</h3>
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit">SEND</button>
+        <div id="formStatus"></div>
       </form>
     </div>
   </div>
