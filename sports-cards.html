@@ -65,6 +65,49 @@
 }
 </style>
 
+
+<style>
+  .sports-moments {
+    background: #000000 !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .sports-moments::before,
+  .sports-moments::after,
+  .sports-moments .wrap::before,
+  .sports-moments .wrap::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    border: 0 !important;
+  }
+
+  .share-print {
+    background: #000000 !important;
+  }
+</style>
+
+<style>
+.custom-club-section{background:#000!important;padding:64px 0}
+.custom-club-section h2{margin:0 0 30px;text-align:center;color:#dac16d!important;font-size:clamp(34px,5vw,58px);line-height:1;text-transform:uppercase}
+.custom-club-points{max-width:700px;margin:0 auto;display:grid;gap:18px}
+.custom-club-point{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center;color:#fff!important;font-size:clamp(20px,3vw,28px);font-weight:800}
+.custom-club-tick{color:#dac16d!important;font-size:28px;font-weight:900}
+</style>
+
+
+<style>
+.custom-made-gold{color:#dac16d!important}
+.custom-made-white{color:#ffffff!important}
+</style>
+
+<style>
+.share-gold{color:#dac16d!important}
+.print-headline{color:#dac16d!important;margin-top:28px!important}
+</style>
+
 </head>
 <body>
 
@@ -110,6 +153,17 @@
   </div>
 </section>
 
+<section class="custom-club-section">
+  <div class="wrap">
+    <h2><span class="custom-made-gold">CUSTOM MADE</span><br><span class="custom-made-white">FOR YOUR CLUB</span></h2>
+    <div class="custom-club-points">
+      <div class="custom-club-point"><span class="custom-club-tick">✓</span><span>Your colour scheme</span></div>
+      <div class="custom-club-point"><span class="custom-club-tick">✓</span><span>Your logo</span></div>
+      <div class="custom-club-point"><span class="custom-club-tick">✓</span><span>Your sponsors' logos</span></div>
+    </div>
+  </div>
+</section>
+
 <section class="alt sports-moments">
   <div class="wrap">
     <div class="section-head">
@@ -128,12 +182,11 @@
 <section class="share-print">
   <div class="wrap">
     <div class="section-head">
-      <h2>SHARE IT. <em>PRINT IT.</em></h2>
-      <p>Share it online. Print it for the wall.</p>
+      <h2><span class="share-gold">SHARE IT</span></h2>
+      <p>Share it with friends and family.</p>
+      <h2 class="print-headline">PRINT IT</h2>
+      <p>Print for the bedroom wall.</p>
     </div>
-    <img src="/sports-cards-share-print.png"
-         alt="Sports card shared online and printed for the wall"
-         class="share-print-image">
   </div>
 </section>
 
