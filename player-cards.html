@@ -128,6 +128,43 @@
 .contact-product #contactForm button{display:block!important;width:100%!important;min-height:58px!important;padding:16px 20px!important;margin-top:4px!important;border:0!important;border-radius:8px!important;background:#dac16d!important;color:#000!important;font-size:clamp(18px,2.4vw,24px)!important;font-weight:900!important;line-height:1!important;text-transform:uppercase!important;cursor:pointer!important}
 </style>
 
+
+<style>
+/* Player Cards corrections */
+.watch-player-card {
+  text-transform: uppercase;
+}
+.memento-white {
+  color: #ffffff !important;
+}
+.memento-gold {
+  color: #dac16d !important;
+}
+.player-memento {
+  white-space: normal !important;
+  line-height: 0.95 !important;
+}
+
+/* Match the Sports Cards SHARE / PRINT headline sizing */
+.share-gold,
+.print-headline {
+  color: #dac16d !important;
+  font-size: clamp(42px, 7vw, 76px) !important;
+  line-height: 0.95 !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+.print-headline {
+  margin-top: 28px !important;
+}
+
+/* Make the hero subline definitely bold and white */
+.hero .lede {
+  color: #ffffff !important;
+  font-weight: 900 !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -159,12 +196,12 @@
 <section class="sports-proof">
   <div class="wrap">
     <div class="section-head">
-      <h2>WATCH A SPORTS CARD<br>BE CREATED IN<br><em>30 SECONDS</em></h2>
+      <h2 class="watch-player-card">WATCH A PLAYER CARD<br><em>IN 30 SECONDS</em></h2>
       
     </div>
     <div class="video-wrap">
       <video controls playsinline preload="metadata">
-        <source src="/player-card-high-quality.mp4" type="video/mp4">
+        <source src="/player-card-video.mp4" type="video/mp4">
       </video>
     </div>
     
@@ -174,7 +211,7 @@
 <section class="sports-moments">
   <div class="wrap">
     <div class="section-head">
-      <h2 class="player-memento">CREATE A TRULY SPECIAL MEMENTO</h2>
+      <h2 class="player-memento"><span class="memento-white">CREATE A TRULY</span><br><span class="memento-gold">SPECIAL MEMENTO</span></h2>
     </div>
   </div>
 </section>
