@@ -7,305 +7,15 @@
 <meta name="description" content="Custom team posters for junior sports clubs. Turn a season of matchday photos into a poster every player wants on their wall.">
 <link rel="icon" href="/logo.png">
 <link rel="stylesheet" href="/style.css">
-
-<style>
-  .tp-hero {
-    padding: 64px 0 42px;
-    text-align: center;
-  }
-  .tp-hero h1 {
-    max-width: 980px;
-    margin: 0 auto 36px;
-    font-size: clamp(42px, 7vw, 82px);
-    line-height: 0.98;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-  }
-  .tp-hero-line {
-    display: block;
-  }
-  .tp-gold {
-    color: #dac16d;
-  }
-  .tp-video-wrap {
-    width: 100%;
-    max-width: 980px;
-    margin: 0 auto;
-  }
-  .tp-video-wrap video {
-    display: block;
-    width: 100%;
-    height: auto;
-    background: #000;
-  }
-
-  .tp-section {
-    padding: 72px 0;
-  }
-  .tp-alt {
-    background: #111;
-  }
-  .tp-section h2 {
-    margin: 0 auto 38px;
-    max-width: 920px;
-    text-align: center;
-    font-size: clamp(34px, 5vw, 58px);
-    line-height: 1;
-    text-transform: uppercase;
-    color: #dac16d;
-  }
-
-  .tp-benefits {
-    max-width: 900px;
-    margin: 0 auto;
-    display: grid;
-    gap: 22px;
-  }
-  .tp-benefit {
-    display: grid;
-    grid-template-columns: 38px 1fr;
-    gap: 14px;
-    align-items: start;
-  }
-  .tp-tick {
-    font-size: 30px;
-    line-height: 1;
-    font-weight: 900;
-    color: #dac16d;
-  }
-  .tp-benefit h3 {
-    margin: 0 0 4px;
-    font-size: clamp(22px, 3vw, 30px);
-    line-height: 1.05;
-    color: #dac16d;
-  }
-  .tp-benefit p {
-    margin: 0;
-    font-size: clamp(16px, 2vw, 20px);
-    line-height: 1.45;
-    color: #ffffff;
-  }
-  .tp-benefits-compact {
-    max-width: 700px;
-  }
-
-  .tp-slider {
-    position: relative;
-    max-width: 1100px;
-    margin: 0 auto;
-    overflow: hidden;
-    touch-action: pan-y;
-  }
-  .tp-slide img {
-    width: 100%;
-    height: auto;
-    display: block;
-    user-select: none;
-    -webkit-user-drag: none;
-  }
-  .tp-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 52px;
-    height: 52px;
-    border: 0;
-    border-radius: 50%;
-    background: rgba(0,0,0,.72);
-    color: #fff;
-    font-size: 38px;
-    line-height: 1;
-    cursor: pointer;
-    z-index: 2;
-  }
-  .tp-prev { left: 14px; }
-  .tp-next { right: 14px; }
-
-  .tp-dots {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 18px;
-  }
-  .tp-dot {
-    width: 11px;
-    height: 11px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: #666;
-    cursor: pointer;
-  }
-  .tp-dot.active {
-    background: #dac16d;
-  }
-
-  .tp-step {
-    max-width: 1100px;
-    margin: 0 auto 72px;
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 44px;
-    align-items: center;
-  }
-  .tp-step-reverse {
-    grid-template-columns: 1.2fr 0.8fr;
-  }
-  .tp-step-reverse .tp-step-copy {
-    order: 2;
-  }
-  .tp-step-reverse img {
-    order: 1;
-  }
-  .tp-step img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  .tp-step-number {
-    display: block;
-    margin-bottom: 8px;
-    color: #dac16d;
-    font-size: 20px;
-    font-weight: 900;
-  }
-  .tp-step h3 {
-    margin: 0 0 12px;
-    font-size: clamp(28px, 4vw, 44px);
-    line-height: 1;
-  }
-  .tp-step p {
-    margin: 0;
-    font-size: clamp(17px, 2vw, 21px);
-    line-height: 1.5;
-  }
-
-
-  .tp-gold-heading,
-  .tp-step-title {
-    color: #dac16d !important;
-  }
-  .tp-step p {
-    color: #ffffff !important;
-  }
-  .tp-step-text-only {
-    grid-template-columns: 1fr;
-    max-width: 900px;
-  }
-
-  @media (max-width: 720px) {
-    .tp-hero {
-      padding: 42px 0 28px;
-    }
-    .tp-hero h1 {
-      margin-bottom: 26px;
-      font-size: 42px;
-    }
-    .tp-section {
-      padding: 54px 0;
-    }
-    .tp-section h2 {
-      margin-bottom: 30px;
-      font-size: 36px;
-    }
-    .tp-arrow {
-      width: 44px;
-      height: 44px;
-      font-size: 32px;
-    }
-    .tp-step,
-    .tp-step-reverse {
-      grid-template-columns: 1fr;
-      gap: 22px;
-      margin-bottom: 54px;
-    }
-    .tp-step-reverse .tp-step-copy,
-    .tp-step-reverse img {
-      order: initial;
-    }
-    .tp-step-copy {
-      order: 1;
-    }
-    .tp-step img {
-      order: 2;
-    }
-  }
-
-  .brand .header-phone {
-    color: #dac16d !important;
-    font-family: inherit !important;
-    font-size: clamp(14px, 1.6vw, 18px) !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.04em !important;
-    white-space: nowrap !important;
-    text-decoration: none !important;
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-  }
-
-
-  .tp-alt {
-    background: #000000 !important;
-  }
-
-  .tp-benefits-compact .tp-benefit h3 {
-    color: #ffffff !important;
-  }
-
-  .tp-benefits-compact .tp-tick {
-    color: #dac16d !important;
-  }
-
-  .tp-gold-heading {
-    color: #dac16d !important;
-  }
-
-</style>
-
-<style>
-.contact-product{background:#000!important;padding:72px 0}
-.contact-product-head h2{text-align:center;margin:0 0 38px;font-size:clamp(36px,5.5vw,64px);line-height:.98;text-transform:uppercase;color:#fff!important}
-.contact-product-head h2 span{color:#dac16d!important}
-.contact-action{max-width:720px;margin:0 auto 34px;text-align:center}
-.contact-action h3{margin:0 0 10px;color:#dac16d!important;font-size:clamp(28px,4vw,40px);line-height:1;text-transform:uppercase}
-.contact-phone{display:inline-block;color:#fff!important;font-size:clamp(24px,4vw,38px);font-weight:900;text-decoration:none}
-.contact-message{margin-bottom:0}
-.contact-product #contactForm{max-width:720px;margin:0 auto;display:grid;gap:14px}
-.contact-product #contactForm input,.contact-product #contactForm textarea{width:100%;box-sizing:border-box}
-</style>
-
-<style>
-  .contact-product #contactForm button[type="submit"],
-  .contact-product #contactForm button {
-    display: block !important;
-    width: 100% !important;
-    min-height: 58px !important;
-    padding: 16px 20px !important;
-    margin-top: 4px !important;
-    border: 0 !important;
-    border-radius: 8px !important;
-    background: #dac16d !important;
-    color: #000000 !important;
-    font-size: clamp(18px, 2.4vw, 24px) !important;
-    font-weight: 900 !important;
-    line-height: 1 !important;
-    text-transform: uppercase !important;
-    cursor: pointer !important;
-  }
-</style>
-
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap">
-    <div class="brand">
-      <a href="/" aria-label="Champion Display home">
-        <img src="/logo-crest.png" alt="Champion Display">
-      </a>
-      <a class="brand-word header-phone" href="tel:+6421577045" aria-label="Call +64 21 577 045">+64 21 577 045</a>
-    </div>
+    <a href="/" class="brand">
+      <img src="/logo-crest.png" alt="Champion Display">
+      <span class="brand-word">Champion<span>Display</span></span>
+    </a>
     <nav class="main-nav" id="mainNav">
       <a href="/team-posters.html" class="active">Team Posters</a>
       <a href="/sports-cards.html">Sports Cards</a>
@@ -315,183 +25,114 @@
   </div>
 </header>
 
-
-<section class="tp-hero">
+<section class="hero" style="padding-bottom:20px;">
   <div class="wrap">
-    <h1>
-      <span class="tp-hero-line">GET A <span class="tp-gold">TEAM PHOTO</span></span>
-      <span class="tp-hero-line">KIDS WILL PUT</span>
-      <span class="tp-hero-line">ON THEIR</span>
-      <span class="tp-hero-line tp-gold">BEDROOM WALL</span>
-    </h1>
-
-    <div class="tp-video-wrap">
-      <video controls playsinline preload="metadata">
-        <source src="/team-posters-video-web.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+    <span class="eyebrow">Team Posters</span>
+    <h1>A season worth<br>putting on the <em>wall</em></h1>
+    <p class="lede">Custom posters built from your club's own photos, designed to make every player feel like part of something worth remembering.</p>
   </div>
 </section>
 
-<section class="tp-section tp-alt">
+<section style="padding-top:20px;">
   <div class="wrap">
-    <h2>Why Clubs Are Choosing Team Posters</h2>
-
-    <div class="tp-benefits">
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div>
-          <h3>Custom made for your club</h3>
-          <p>Your colours, club logo and sponsor logos.</p>
-        </div>
+    <div class="split">
+      <div>
+        <span class="eyebrow">What it is</span>
+        <h2>One poster. The whole squad.</h2>
+        <p>A Team Poster brings your club's season to life: player photos, team colours, and club branding laid out in a single custom design that's built to be printed and hung, at home, in the clubrooms, wherever it belongs.</p>
+        <p>It's the kind of thing a kid points at on the wall for years after the season's over.</p>
       </div>
-
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div>
-          <h3>Kids love them</h3>
-          <p>They go on bedroom walls.</p>
-        </div>
-      </div>
-
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div>
-          <h3>Parents want them</h3>
-          <p>They don’t end up buried in a cupboard.</p>
-        </div>
-      </div>
-
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div>
-          <h3>No extra work for the committee</h3>
-          <p>Each team deals directly with Champion Display.</p>
-        </div>
-      </div>
-
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div>
-          <h3>Makes every player feel like a pro</h3>
-          <p>A team photo they’re proud to show off.</p>
-        </div>
-      </div>
-
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div>
-          <h3>Raises money for the club</h3>
-          <p>Ask about our club rebate.</p>
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <div class="placeholder-photo">Team Poster<br>Example</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="tp-section">
+<section class="alt">
   <div class="wrap">
-    <div class="tp-slider" id="teamSlider">
-      <div class="tp-slide">
-        <img src="/team-poster-pnhsob.webp" alt="PNHSOB Year 6 team poster">
+    <div class="split reverse">
+      <div class="split-media">
+        <div class="display-case">
+          <span class="bracket-tl"></span><span class="bracket-br"></span>
+          <div class="placeholder-photo">Design In<br>Progress</div>
+        </div>
       </div>
-      <div class="tp-slide" hidden>
-        <img src="/team-poster-belfast.webp" alt="Belfast Year 8 Cobras team poster">
-      </div>
-      <div class="tp-slide" hidden>
-        <img src="/team-poster-taieri.webp" alt="Taieri Rugby Year 1 Gold team poster">
-      </div>
-
-      <button type="button" class="tp-arrow tp-prev" aria-label="Previous poster" onclick="changeTeamSlide(-1)">‹</button>
-      <button type="button" class="tp-arrow tp-next" aria-label="Next poster" onclick="changeTeamSlide(1)">›</button>
-    </div>
-
-    <div class="tp-dots" aria-label="Poster slideshow navigation">
-      <button type="button" class="tp-dot active" aria-label="Poster 1" onclick="showTeamSlide(0)"></button>
-      <button type="button" class="tp-dot" aria-label="Poster 2" onclick="showTeamSlide(1)"></button>
-      <button type="button" class="tp-dot" aria-label="Poster 3" onclick="showTeamSlide(2)"></button>
-    </div>
-  </div>
-</section>
-
-<section class="tp-section tp-alt">
-  <div class="wrap">
-    <h2 class="tp-gold-heading">What You Get</h2>
-
-    <div class="tp-benefits tp-benefits-compact">
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div><h3>A3 Team Poster</h3></div>
-      </div>
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div><h3>Laminated to the edge</h3></div>
-      </div>
-      <div class="tp-benefit">
-        <span class="tp-tick">✓</span>
-        <div><h3>Free delivery</h3></div>
+      <div>
+        <span class="eyebrow">How it works</span>
+        <h2>We handle the design work</h2>
+        <ul class="checklist">
+          <li>You send through the season's team photos.</li>
+          <li>We lay out a custom poster in your club's colours and branding.</li>
+          <li>You review it and ask for any changes.</li>
+          <li>Print-ready files, sized and ready to order.</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<section class="tp-section">
+<section>
   <div class="wrap">
-    <h2 class="tp-gold-heading">How It Works</h2>
-
-    <div class="tp-step">
-      <div class="tp-step-copy">
-        <span class="tp-step-number">STEP 1</span>
-        <h3 class="tp-step-title">Take your team photo</h3>
-        <p>Use your phone. No professional photographer or photo day needed. Line the team up in the shade. Take your photo.</p>
-      </div>
-      <img src="/team-photo-phone.webp" alt="Taking a team photo on a mobile phone">
+    <div class="section-head">
+      <span class="eyebrow">Why It Matters</span>
+      <h2>Made for clubs that care about their players</h2>
     </div>
-
-    <div class="tp-step tp-step-reverse">
-      <div class="tp-step-copy">
-        <span class="tp-step-number">STEP 2</span>
-        <h3 class="tp-step-title">We create your poster</h3>
-        <p>Send us the photo, player names and team name. We do the rest.</p>
+    <div class="trio">
+      <div class="trio-item">
+        <span class="num">01</span>
+        <h3>Every club is different</h3>
+        <p>Colours, crest, sponsor logos, whatever makes your club yours, built into the design.</p>
       </div>
-      <img src="/team-poster-design.webp" alt="Team poster being created">
-    </div>
-
-    <div class="tp-step tp-step-text-only">
-      <div class="tp-step-copy">
-        <span class="tp-step-number">STEP 3</span>
-        <h3 class="tp-step-title">You approve it</h3>
-        <p>We send the finished design to you for approval.</p>
+      <div class="trio-item">
+        <span class="num">02</span>
+        <h3>A keepsake, not a printout</h3>
+        <p>Designed to be proudly displayed, not filed away with the rest of the season's paperwork.</p>
       </div>
-    </div>
-
-    <div class="tp-step tp-step-text-only">
-      <div class="tp-step-copy">
-        <span class="tp-step-number">STEP 4</span>
-        <h3 class="tp-step-title">Payment and delivery</h3>
-        <p>Collect your orders, pay in one lump sum, posters will be delivered direct to your door.</p>
+      <div class="trio-item">
+        <span class="num">03</span>
+        <h3>One point of contact</h3>
+        <p>You deal directly with us from first photo to final print-ready file.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="contact" class="alt contact-product">
+<section id="contact" class="alt">
   <div class="wrap">
-    <div class="contact-product-head"><h2><span>GET A TEAM POSTER</span><br>FOR YOUR TEAM</h2></div>
-    <div class="contact-action">
-      <h3>CALL</h3>
-      <a class="contact-phone" href="tel:+6421577045">+64 21 577 045</a>
+    <div class="section-head">
+      <span class="eyebrow">Get In Touch</span>
+      <h2>Ask about a Team Poster for your club</h2>
+      <p>Tell us a bit about your club and squad size, and we'll get back to you.</p>
     </div>
-    <div class="contact-action contact-message">
-      <h3>MESSAGE</h3>
-      <form id="contactForm">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="tel" name="phone" placeholder="Phone Number" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <textarea name="message" placeholder="Message" required></textarea>
-        <button type="submit">SEND</button>
-        <div id="formStatus"></div>
+    <div class="contact-block">
+      <form id="contactForm" action="https://formspree.io/f/mjyvadyp" method="POST">
+        <div class="contact-grid">
+          <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="full">
+            <label for="club">Club Name</label>
+            <input type="text" id="club" name="club">
+          </div>
+          <input type="hidden" name="interest" value="Team Posters">
+          <div class="full">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Roughly how many players, and when's your season wrapping up?" required></textarea>
+          </div>
+        </div>
+        <div style="margin-top:24px;">
+          <button type="submit" class="btn btn-gold">Send Message</button>
+        </div>
+        <p class="form-msg" id="formMsg"></p>
       </form>
     </div>
   </div>
@@ -513,6 +154,9 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('navToggle').addEventListener('click', function() {
+    document.getElementById('mainNav').classList.toggle('open');
+  });
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var form = e.target;
@@ -534,63 +178,6 @@
       msg.textContent = "Something went wrong sending that. Please try again or email us directly.";
       msg.className = 'form-msg error';
     });
-  });
-</script>
-
-
-<script>
-  let teamSlideIndex = 0;
-
-  function showTeamSlide(index) {
-    const slides = Array.from(document.querySelectorAll('.tp-slide'));
-    const dots = Array.from(document.querySelectorAll('.tp-dot'));
-    if (!slides.length) return;
-
-    teamSlideIndex = (index + slides.length) % slides.length;
-
-    slides.forEach((slide, i) => {
-      slide.hidden = i !== teamSlideIndex;
-    });
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === teamSlideIndex);
-    });
-  }
-
-  function changeTeamSlide(step) {
-    showTeamSlide(teamSlideIndex + step);
-  }
-
-  (function setupTeamSlider() {
-    const slider = document.getElementById('teamSlider');
-    if (!slider) return;
-
-    let startX = null;
-
-    slider.addEventListener('touchstart', function(e) {
-      if (e.touches.length === 1) startX = e.touches[0].clientX;
-    }, { passive: true });
-
-    slider.addEventListener('touchend', function(e) {
-      if (startX === null || !e.changedTouches.length) return;
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 45) changeTeamSlide(dx < 0 ? 1 : -1);
-      startX = null;
-    }, { passive: true });
-  })();
-</script>
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var navToggle = document.getElementById('navToggle');
-    var mainNav = document.getElementById('mainNav');
-    if (navToggle && mainNav && !navToggle.dataset.menuBound) {
-      navToggle.dataset.menuBound = '1';
-      navToggle.addEventListener('click', function () {
-        mainNav.classList.toggle('open');
-      });
-    }
   });
 </script>
 
