@@ -257,5 +257,18 @@
 </section>
 
 <a href="#contact" class="floating-contact">✉ Contact Us</a>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var navToggle = document.getElementById('navToggle');
+  var mainNav = document.getElementById('mainNav');
+  if (navToggle && mainNav) {
+    navToggle.addEventListener('click', function () {
+      mainNav.classList.toggle('open');
+    });
+  }
+});
+</script>
+
 </body>
 </html>
