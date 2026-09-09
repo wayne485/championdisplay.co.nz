@@ -963,6 +963,55 @@
   }
 
 </style>
+
+<style>
+  .contact-demo-copy {
+    margin: 0 0 14px;
+    color: #ffffff !important;
+    font-size: clamp(18px, 2.4vw, 24px);
+    font-weight: 700;
+  }
+  .contact-demo-button {
+    display: inline-block;
+    min-width: 240px;
+    padding: 16px 26px;
+    border-radius: 8px;
+    background: #dac16d;
+    color: #000000 !important;
+    font-size: clamp(18px, 2.4vw, 24px);
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+</style>
+
+
+<style>
+  #contact .contact-action {
+    max-width: 720px;
+    margin: 0 auto 34px;
+    text-align: center;
+  }
+  #contact .contact-action h3 {
+    margin: 0 0 10px;
+    color: #dac16d !important;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  #contact .contact-phone {
+    display: inline-block;
+    color: #ffffff !important;
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 900;
+    text-decoration: none;
+  }
+  #contact .contact-message {
+    margin-bottom: 0;
+  }
+</style>
+
 </head>
 <body>
 
@@ -1092,8 +1141,21 @@
     <div class="section-head">
       <h2>Get Champion Display at your club</h2>
     </div>
-    <div class="contact-block">
-      <form id="contactForm" action="https://formspree.io/f/mjyvadyp" method="POST">
+
+    <div class="contact-action">
+      <h3>CALL WAYNE</h3>
+      <a class="contact-phone" href="tel:+6421577045">+64 21 577 045</a>
+    </div>
+
+    <div class="contact-action">
+      <p class="contact-demo-copy">Grab 30 minutes with Wayne</p>
+      <a class="contact-demo-button" href="https://calendar.app.google/MoK7ecduyQwZUgww5" target="_blank" rel="noopener">BOOK A DEMO</a>
+    </div>
+
+    <div class="contact-action contact-message">
+      <h3>SEND A MESSAGE</h3>
+      <div class="contact-block">
+<form id="contactForm" action="https://formspree.io/f/mjyvadyp" method="POST">
         <div class="contact-grid">
           <div>
             <label for="name">Name</label>
@@ -1117,6 +1179,7 @@
         </div>
         <p class="form-msg" id="formMsg"></p>
       </form>
+      </div>
     </div>
   </div>
 </section>
