@@ -946,8 +946,12 @@ window.onload = async function() {
           currentClubConfig.fontFamily = "Impact, 'Arial Narrow', sans-serif";
         }
         
-        // Load Football Card specific font if different
-        if (data.has_football_card && data.football_card_url) {
+        // Load Football Card specific font. Football cards always use Cruyff,
+        // regardless of what the club has set as its Sports Card custom_font_url.
+        // This is intentionally NOT gated on data.football_card_url — that field
+        // being unset (e.g. a football card enabled after initial setup) must
+        // never cause a fallback to the sports card's font.
+        if (data.has_football_card) {
           try {
             const fcFontUrl = 'fonts/CruyffSansCondensed-Medium.ttf';
             const fcFontName = 'CruyffSansCondensed';
@@ -956,7 +960,11 @@ window.onload = async function() {
             document.fonts.add(fcLoaded);
             currentClubConfig.fcFontFamily = `"${fcFontName}", Impact, sans-serif`;
           } catch(e) {
-            currentClubConfig.fcFontFamily = currentClubConfig.fontFamily;
+            // Even if the Cruyff font file fails to load, fall back to a generic
+            // stack — never to currentClubConfig.fontFamily (the sports card's
+            // custom font), so football cards never inherit it.
+            console.warn('Cruyff font load failed, using Impact fallback for football card.');
+            currentClubConfig.fcFontFamily = "Impact, 'Arial Narrow', sans-serif";
           }
         }
         // Football card text color - per-club, defaults to the original green
@@ -2263,7 +2271,10 @@ function confirmFCPosition() {
 }
 
 function getFCFont() {
-  return currentClubConfig.fcFontFamily || currentClubConfig.fontFamily || "Impact, Arial Black, sans-serif";
+  // Never fall back to currentClubConfig.fontFamily here — that's the Sports
+  // Card's font (which may be a club's custom_font_url). Football cards must
+  // always use Cruyff, or a generic fallback stack if it failed to load.
+  return currentClubConfig.fcFontFamily || "CruyffSansCondensed, Impact, 'Arial Narrow', sans-serif";
 }
 
 function drawFCText(ctx, W, H) {
