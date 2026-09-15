@@ -943,7 +943,7 @@ window.onload = async function() {
           try {
             const fcFontUrl = '/fonts/CruyffSansCondensed-Medium.ttf';
             const fcFontName = 'CruyffSansCondensed';
-            const fcFontFace = new FontFace(fcFontName, `url(${fcFontUrl})`);
+            const fcFontFace = new FontFace(fcFontName, `url(${fcFontUrl})`, { weight: '500' });
             const fcLoaded = await fcFontFace.load();
             document.fonts.add(fcLoaded);
             currentClubConfig.fcFontFamily = `"${fcFontName}", Impact, sans-serif`;
@@ -1878,26 +1878,26 @@ async function generateFootballCardThumbnail(targetImgEl) {
   ctx.shadowBlur = 8;
 
   ctx.textAlign = 'left';
-  ctx.font = `900 ${FC_LAYOUT.rating.size}px ${font}`;
+  ctx.font = `500 ${FC_LAYOUT.rating.size}px ${font}`;
   const ratingWidth = ctx.measureText(rating).width;
   ctx.fillStyle = textColor;
   ctx.fillText(rating, FC_LAYOUT.rating.x, FC_LAYOUT.rating.y);
 
   ctx.textAlign = 'center';
-  ctx.font = `900 ${FC_LAYOUT.position.size}px ${font}`;
+  ctx.font = `500 ${FC_LAYOUT.position.size}px ${font}`;
   ctx.fillText(position, FC_LAYOUT.rating.x + (ratingWidth / 2), FC_LAYOUT.position.y);
 
   const nameMaxWidth = FC_LAYOUT.stats.xs[5] - FC_LAYOUT.stats.xs[0] + 260;
   let nameSize = FC_LAYOUT.name.size;
-  ctx.font = `900 ${nameSize}px ${font}`;
+  ctx.font = `500 ${nameSize}px ${font}`;
   while (ctx.measureText(name).width > nameMaxWidth && nameSize > 60) {
     nameSize -= 4;
-    ctx.font = `900 ${nameSize}px ${font}`;
+    ctx.font = `500 ${nameSize}px ${font}`;
   }
   ctx.fillText(name, W / 2, FC_LAYOUT.name.y);
 
   stats.forEach((val, i) => {
-    ctx.font = `900 ${FC_LAYOUT.stats.size}px ${font}`;
+    ctx.font = `500 ${FC_LAYOUT.stats.size}px ${font}`;
     ctx.fillText(String(val), FC_LAYOUT.stats.xs[i], FC_LAYOUT.stats.y);
   });
   ctx.shadowBlur = 0;
@@ -2289,7 +2289,7 @@ function drawFCText(ctx, W, H) {
   ctx.textAlign = 'left';
   let ratingWidth = 0;
   if (rating) {
-    ctx.font = `900 ${FC_LAYOUT.rating.size}px ${font}`;
+    ctx.font = `500 ${FC_LAYOUT.rating.size}px ${font}`;
     ratingWidth = ctx.measureText(rating).width;
     ctx.fillStyle = textColor;
     ctx.fillText(rating, FC_LAYOUT.rating.x, FC_LAYOUT.rating.y);
@@ -2298,7 +2298,7 @@ function drawFCText(ctx, W, H) {
   // Draw position - centered under the rating number, whatever its width
   if (position) {
     ctx.textAlign = 'center';
-    ctx.font = `900 ${FC_LAYOUT.position.size}px ${font}`;
+    ctx.font = `500 ${FC_LAYOUT.position.size}px ${font}`;
     ctx.fillStyle = textColor;
     const positionCenterX = FC_LAYOUT.rating.x + (ratingWidth / 2);
     ctx.fillText(position, positionCenterX, FC_LAYOUT.position.y);
@@ -2309,10 +2309,10 @@ function drawFCText(ctx, W, H) {
     ctx.textAlign = 'center';
     const nameMaxWidth = FC_LAYOUT.stats.xs[5] - FC_LAYOUT.stats.xs[0] + 260;
     let nameSize = FC_LAYOUT.name.size;
-    ctx.font = `900 ${nameSize}px ${font}`;
+    ctx.font = `500 ${nameSize}px ${font}`;
     while (ctx.measureText(name).width > nameMaxWidth && nameSize > 60) {
       nameSize -= 4;
-      ctx.font = `900 ${nameSize}px ${font}`;
+      ctx.font = `500 ${nameSize}px ${font}`;
     }
     ctx.fillStyle = textColor;
     ctx.fillText(name, W / 2, FC_LAYOUT.name.y);
@@ -2322,7 +2322,7 @@ function drawFCText(ctx, W, H) {
   ctx.textAlign = 'center';
   stats.forEach((val, i) => {
     if (val) {
-      ctx.font = `900 ${FC_LAYOUT.stats.size}px ${font}`;
+      ctx.font = `500 ${FC_LAYOUT.stats.size}px ${font}`;
       ctx.fillStyle = textColor;
       ctx.fillText(val, FC_LAYOUT.stats.xs[i], FC_LAYOUT.stats.y);
     }
