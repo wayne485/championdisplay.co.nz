@@ -843,14 +843,22 @@ let uploadFrameImg = null; // preloaded frame for upload canvas - no flicker
 let uploadState = { x:0, y:0, scale:1, isDragging:false, startX:0, startY:0, imgStartX:0, imgStartY:0, lastDist:null };
 
 // ── TELEMETRY LOGGER ENGINE ──
-async function logTelemetryEvent(eventString) {
+async function logTelemetryEvent(eventName, eventData = {}) {
   if (!supabaseClient) return;
   try {
-    await supabaseClient
+    const { error } = await supabaseClient
       .from('analytics_events')
-      .insert([{ event_string: eventString, track_type: currentClubConfig.clubSlug }]);
+      .insert([{
+        club_slug: currentClubConfig.clubSlug,
+        event_name: eventName,
+        event_data: eventData
+      }]);
+
+    if (error) {
+      console.error('Telemetry error:', error);
+    }
   } catch (err) {
-    // Silent fail in offline conditions
+    console.error('Telemetry exception:', err);
   }
 }
 
