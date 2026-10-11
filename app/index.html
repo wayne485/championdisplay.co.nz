@@ -817,6 +817,13 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 let supabaseClient = null;
 
+// Keep existing club assets working after the move to championdisplay.com.
+// Only rewrite URLs belonging to the former Champion Display domain.
+function currentAssetUrl(url) {
+  if (!url || typeof url !== 'string') return url;
+  return url.replace(/^https?:\/\/(?:www\.)?championdisplay\.co\.nz(?=\/|$)/i, 'https://championdisplay.com');
+}
+
 // Dynamic configuration profile
 const currentClubConfig = {
   isB2B: false,
@@ -830,7 +837,7 @@ const currentClubConfig = {
   line3Color: "#ffffff",
   line3StrokeColor: null,
   line3FontFamily: "sans-serif",
-  frameOverlayUrl: "https://championdisplay.co.nz/frames/hibiscuscoast_frame.png" // Fallback
+  frameOverlayUrl: "https://championdisplay.com/frames/hibiscuscoast_frame.png" // Fallback
 };
 
 let str = null;
@@ -895,14 +902,14 @@ window.onload = async function() {
         currentClubConfig.clubName = data.club_name;
         currentClubConfig.hasFrame = data.has_frame !== false; // default true
         currentClubConfig.hasFootballCard = data.has_football_card === true; // default false
-        currentClubConfig.footballCardUrl = data.football_card_url || null;
+        currentClubConfig.footballCardUrl = currentAssetUrl(data.football_card_url) || null;
         // Use render_config if available, otherwise fall back to frame_url
         const rc = data.render_config || {};
         const frameFile = rc.frame || null;
         if (frameFile) {
-          currentClubConfig.frameOverlayUrl = 'https://championdisplay.co.nz/frames/' + frameFile;
+          currentClubConfig.frameOverlayUrl = 'https://championdisplay.com/frames/' + frameFile;
         } else if (data.frame_url) {
-          currentClubConfig.frameOverlayUrl = data.frame_url;
+          currentClubConfig.frameOverlayUrl = currentAssetUrl(data.frame_url);
         }
         
         // Apply render_config text positions and colours
@@ -927,7 +934,7 @@ window.onload = async function() {
         const fontFile = (data.render_config && data.render_config.font) ? data.render_config.font : (data.custom_font_url || null);
         if (fontFile) {
           try {
-            const fontUrl = fontFile.startsWith('http') ? fontFile : 'https://championdisplay.co.nz/fonts/' + fontFile;
+            const fontUrl = fontFile.startsWith('http') ? currentAssetUrl(fontFile) : 'https://championdisplay.com/fonts/' + fontFile;
             const fontName = 'ClubFont_' + currentClubConfig.clubSlug;
             const fontFace = new FontFace(fontName, `url(${fontUrl})`);
             const loadedFont = await fontFace.load();
@@ -990,7 +997,7 @@ window.onload = async function() {
         
         // Set Football Card template URL - completely separate from frame URL
         if (data.football_card_url) {
-          currentClubConfig.footballCardTemplateUrl = data.football_card_url;
+          currentClubConfig.footballCardTemplateUrl = currentAssetUrl(data.football_card_url);
         }
         
         // Update product selection thumbnails
