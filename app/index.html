@@ -8,6 +8,10 @@
 <meta http-equiv="Expires" content="0">
 <title>Champion Display</title>
 
+<!-- PERFORMANCE: start connecting to Supabase and the CDN immediately -->
+<link rel="preconnect" href="https://ftxmnrsqnbpwhvsvngnk.supabase.co" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
 <!-- IMPORT SUPABASE CLIENT CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -549,7 +553,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 <div class="screen" id="s2">
   <div class="aspect-container">
     <video id="video" autoplay playsinline muted></video>
-    <img id="camera-frame" class="frame-layer" src="" alt="">
+    <img id="camera-frame" crossorigin="anonymous" class="frame-layer" src="" alt="">
     <button id="flip-btn" onclick="flipCam()">⟳</button>
     <div class="cam-bottom">
       <div class="cam-hint-box">
@@ -568,7 +572,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 <div class="screen" id="s2b">
   <div class="aspect-container">
     <img id="confirm-img" class="frame-layer" style="object-fit:cover; z-index:1;" src="" alt="">
-    <img id="confirm-frame" class="frame-layer" src="" alt="">
+    <img id="confirm-frame" crossorigin="anonymous" class="frame-layer" src="" alt="">
   </div>
   <div class="action-container">
     <button id="btn-use-photo" class="btn-prem" onclick="show('s3')">Use This Photo</button>
@@ -580,7 +584,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 <div class="screen" id="s3">
   <div class="aspect-container" style="flex-shrink:0;">
     <img id="preview-img" class="frame-layer" style="object-fit:cover; z-index:1;" src="" alt="">
-    <img id="preview-frame" class="frame-layer" src="" alt="">
+    <img id="preview-frame" crossorigin="anonymous" class="frame-layer" src="" alt="">
     <div class="text-overlay">
       <div class="tline" id="tl1">&nbsp;</div>
       <div class="tline" id="tl2">&nbsp;</div>
@@ -668,7 +672,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
     <h2 style="font-size:25px;font-weight:900;color:#fff;text-align:center;margin-bottom:4px;">Create your card in<br><span style="color:#dac16d;">30 seconds</span></h2>
     
     <button onclick="launchFrame()" style="width:100%;background:#1a1a1a;border:2px solid #2a2a2a;border-radius:16px;overflow:hidden;cursor:pointer;padding:12px;display:flex;flex-direction:row;align-items:center;gap:14px;">
-      <img id="frame-thumb" src="" alt="Sports Card" style="width:100px;aspect-ratio:4/5;object-fit:cover;object-position:top center;display:block;border-radius:8px;flex-shrink:0;">
+      <img id="frame-thumb" crossorigin="anonymous" src="" alt="Sports Card" style="width:100px;aspect-ratio:4/5;object-fit:cover;object-position:top center;display:block;border-radius:8px;flex-shrink:0;">
       <div style="text-align:left;flex:1;min-width:0;">
         <div style="font-size:21px;font-weight:900;color:#dac16d;text-transform:uppercase;letter-spacing:0.04em;">Sports Card</div>
         <div style="font-size:12px;color:#888;margin-top:2px;">Photo with frame overlay and text</div>
@@ -677,7 +681,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
     </button>
 
     <button onclick="launchFootballCard()" style="width:100%;background:#1a1a1a;border:2px solid #2a2a2a;border-radius:16px;overflow:hidden;cursor:pointer;padding:12px;display:flex;flex-direction:row;align-items:center;gap:14px;">
-      <img id="fc-thumb" src="" alt="Football Card" style="width:100px;aspect-ratio:4/5;object-fit:cover;object-position:top center;display:block;border-radius:8px;flex-shrink:0;">
+      <img id="fc-thumb" crossorigin="anonymous" src="" alt="Football Card" style="width:100px;aspect-ratio:4/5;object-fit:cover;object-position:top center;display:block;border-radius:8px;flex-shrink:0;">
       <div style="text-align:left;flex:1;min-width:0;">
         <div style="font-size:21px;font-weight:900;color:#dac16d;text-transform:uppercase;letter-spacing:0.04em;">Football Card</div>
         <div style="font-size:12px;color:#888;margin-top:2px;">FIFA-style card with your stats</div>
@@ -721,7 +725,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 
 <!-- S-FC-DETAILS-1: Overall Rating + Position -->
 <div class="screen" id="s-fc-details1">
-  <img src="/reference/top_position_image.jpg" alt="Overall Rating and Position reference" class="fc-reference-img">
+  <img data-src="/reference/top_position_image.jpg" alt="Overall Rating and Position reference" class="fc-reference-img">
   <div class="fc-inputs">
     <div class="fc-row">
       <div class="input-group">
@@ -756,7 +760,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 
 <!-- S-FC-DETAILS-2: Player Name + Stats -->
 <div class="screen" id="s-fc-details2">
-  <img src="/reference/bottom_position_image.jpg" alt="Name and Stats reference" class="fc-reference-img">
+  <img data-src="/reference/bottom_position_image.jpg" alt="Name and Stats reference" class="fc-reference-img">
   <div class="fc-inputs">
     <div class="input-group">
       <label>Player Name</label>
@@ -817,6 +821,12 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 let supabaseClient = null;
 
+// PERFORMANCE: one cache-bust value per page visit. Previously every image
+// request used a fresh Date.now(), so the same 1-2MB frame/template was
+// downloaded 3-4 times per visit. Now each asset downloads once per visit,
+// and you still always get the latest version on every new visit.
+const ASSET_V = Date.now();
+
 // Keep existing club assets working after the move to championdisplay.com.
 // Only rewrite URLs belonging to the former Champion Display domain.
 function currentAssetUrl(url) {
@@ -846,6 +856,7 @@ let photoData = null;
 let finalDataURL = null;
 let deferredPrompt = null;
 let uploadImg = null;
+let fcFontReady = Promise.resolve(); // resolves once the football card font has loaded (or failed)
 let uploadFrameImg = null; // preloaded frame for upload canvas - no flicker
 let uploadState = { x:0, y:0, scale:1, isDragging:false, startX:0, startY:0, imgStartX:0, imgStartY:0, lastDist:null };
 
@@ -870,7 +881,7 @@ async function logTelemetryEvent(eventName, eventData = {}) {
 }
 
 // ── ON PAGE INITIALIZATION ──
-window.onload = async function() {
+async function initApp() {
   // Initialize client once keys are validated
   try {
     if (typeof supabase !== 'undefined' && SUPABASE_ANON_KEY !== "your-anon-public-key") {
@@ -929,6 +940,33 @@ window.onload = async function() {
         currentClubConfig.renderConfig = rc;
         currentClubConfig.primaryColor = data.primary_color_hex;
         
+        // Load Football Card specific font. Football cards always use Cruyff,
+        // regardless of what the club has set as its Sports Card custom_font_url.
+        // This is intentionally NOT gated on data.football_card_url — that field
+        // being unset (e.g. a football card enabled after initial setup) must
+        // never cause a fallback to the sports card's font.
+        if (data.has_football_card) {
+          // PERFORMANCE: no longer awaited here, so the Cruyff download no
+          // longer holds up the splash screen. Anything that draws football
+          // card text awaits fcFontReady first, so the font is still
+          // guaranteed to be there when it's needed.
+          fcFontReady = (async () => {
+            try {
+              const fcFontUrl = '/fonts/CruyffSansCondensed-Medium.ttf';
+              const fcFontName = 'CruyffSansCondensed';
+              const fcFontFace = new FontFace(fcFontName, `url(${fcFontUrl})`, { weight: '500' });
+              const fcLoaded = await fcFontFace.load();
+              document.fonts.add(fcLoaded);
+              currentClubConfig.fcFontFamily = `"${fcFontName}", Impact, sans-serif`;
+            } catch(e) {
+              // Even if the Cruyff font file fails to load, fall back to a generic
+              // stack — never to currentClubConfig.fontFamily (the sports card's
+              // custom font), so football cards never inherit it.
+              console.warn('Cruyff font load failed, using Impact fallback for football card.');
+              currentClubConfig.fcFontFamily = "Impact, 'Arial Narrow', sans-serif";
+            }
+          })();
+        }
         // ── DYNAMIC CUSTOM FONT LOADING LOGIC ──
         // Load font from /fonts/ folder on GitHub
         const fontFile = (data.render_config && data.render_config.font) ? data.render_config.font : (data.custom_font_url || null);
@@ -949,27 +987,6 @@ window.onload = async function() {
           currentClubConfig.fontFamily = "Impact, 'Arial Narrow', sans-serif";
         }
         
-        // Load Football Card specific font. Football cards always use Cruyff,
-        // regardless of what the club has set as its Sports Card custom_font_url.
-        // This is intentionally NOT gated on data.football_card_url — that field
-        // being unset (e.g. a football card enabled after initial setup) must
-        // never cause a fallback to the sports card's font.
-        if (data.has_football_card) {
-          try {
-            const fcFontUrl = '/fonts/CruyffSansCondensed-Medium.ttf';
-            const fcFontName = 'CruyffSansCondensed';
-            const fcFontFace = new FontFace(fcFontName, `url(${fcFontUrl})`, { weight: '500' });
-            const fcLoaded = await fcFontFace.load();
-            document.fonts.add(fcLoaded);
-            currentClubConfig.fcFontFamily = `"${fcFontName}", Impact, sans-serif`;
-          } catch(e) {
-            // Even if the Cruyff font file fails to load, fall back to a generic
-            // stack — never to currentClubConfig.fontFamily (the sports card's
-            // custom font), so football cards never inherit it.
-            console.warn('Cruyff font load failed, using Impact fallback for football card.');
-            currentClubConfig.fcFontFamily = "Impact, 'Arial Narrow', sans-serif";
-          }
-        }
         // Football card text color - per-club, defaults to the original green
         // so existing clubs (Hibiscus Coast) render exactly as before.
         currentClubConfig.fcTextColor = data.football_card_color_hex || '#81c950';
@@ -989,7 +1006,7 @@ window.onload = async function() {
         document.getElementById('btn-again').style.backgroundColor = '#dac16d';
         
         // Set frame overlay URL for Frame product
-        const frameUrl = currentClubConfig.frameOverlayUrl + '?v=' + Date.now();
+        const frameUrl = currentClubConfig.frameOverlayUrl + '?v=' + ASSET_V;
         ['camera-frame', 'confirm-frame', 'preview-frame'].forEach(id => {
           const el = document.getElementById(id);
           if (el) el.src = frameUrl;
@@ -1000,8 +1017,8 @@ window.onload = async function() {
           currentClubConfig.footballCardTemplateUrl = currentAssetUrl(data.football_card_url);
         }
         
-        // Update product selection thumbnails
-        updateProductSelectThumbs();
+        // (Product selection thumbnails are now generated after the first
+        //  screen is showing - see the end of initApp.)
 
         // ── SILENTLY MASK/REWRITE THE URL BAR ──
         window.history.replaceState({}, document.title, "/" + currentClubConfig.clubSlug);
@@ -1013,15 +1030,10 @@ window.onload = async function() {
 
   logTelemetryEvent('session_start');
 
-  // Transition away from splash screen now that club data is loaded
-  if (localStorage.getItem('cd_consent') === '1') {
-    routeAfterConsent();
-    return;
-  } else {
-    show('s1');
-  }
-
   // Setup dynamic font styling
+  // (Moved above the screen routing: previously returning users hit an early
+  //  'return' before this ran, so their live text preview never used the
+  //  club font and the Add to Home Screen prompt was never set up.)
   const styleBlock = document.createElement('style');
   styleBlock.textContent = `
     .tline {
@@ -1033,7 +1045,46 @@ window.onload = async function() {
 
   // Initialize PWA Installation Prompts
   initializePwaInstallPrompts();
-};
+
+  // Transition away from splash screen now that club data is loaded
+  if (localStorage.getItem('cd_consent') === '1') {
+    routeAfterConsent();
+  } else {
+    show('s1');
+  }
+
+  // PERFORMANCE: everything below is background work that used to happen
+  // BEFORE the first screen appeared. It now runs just after it.
+  setTimeout(() => {
+    if (currentClubConfig.isB2B &&
+        currentClubConfig.hasFrame !== false &&
+        currentClubConfig.hasFootballCard === true) {
+      updateProductSelectThumbs();
+    }
+    if (currentClubConfig.hasFootballCard === true) {
+      loadDeferredImages();
+    }
+  }, 50);
+}
+
+// PERFORMANCE: start as soon as the HTML is parsed. window.onload used to
+// wait for every <img> on the page (including ~1.3MB of football card
+// reference images on hidden screens) before even asking Supabase for the
+// club's settings.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
+
+// Loads images marked data-src (reference images on hidden screens).
+// Called after the first screen is showing, so they never delay startup.
+function loadDeferredImages() {
+  document.querySelectorAll('img[data-src]').forEach(img => {
+    img.src = img.getAttribute('data-src');
+    img.removeAttribute('data-src');
+  });
+}
 
 // ── PWA / HOME SCREEN INSTALL CONFIG ──
 function initializePwaInstallPrompts() {
@@ -1158,7 +1209,7 @@ function initUploadCanvas() {
   uploadFrameImg.onerror = () => {
     renderUploadCanvas(); // Render without frame if it fails
   };
-  uploadFrameImg.src = currentClubConfig.frameOverlayUrl + '?v=' + Date.now();
+  uploadFrameImg.src = currentClubConfig.frameOverlayUrl + '?v=' + ASSET_V;
   setupUploadTouches();
 }
 
@@ -1409,7 +1460,7 @@ async function buildPreview() {
     im.crossOrigin = 'anonymous';
     im.onload = () => res(im);
     im.onerror = () => res({ width: 0, height: 0 });
-    im.src = currentClubConfig.frameOverlayUrl + '?v=' + Date.now();
+    im.src = currentClubConfig.frameOverlayUrl + '?v=' + ASSET_V;
   });
 
   // Use render_config output dimensions if available
@@ -1620,7 +1671,7 @@ function loadImg(ctx, src, x, y, w, h) {
     img.crossOrigin = 'anonymous';
     img.onload = () => { ctx.drawImage(img, x, y, w, h); res(); };
     img.onerror = () => res();
-    img.src = src + (src.startsWith('data:') ? '' : '?v=' + Date.now());
+    img.src = src + (src.startsWith('data:') ? '' : '?v=' + ASSET_V);
   });
 }
 
@@ -1700,6 +1751,7 @@ function launchFrame() {
 }
 
 function launchFootballCard() {
+  loadDeferredImages();
   show('s-fc-upload');
 }
 
@@ -1750,14 +1802,14 @@ function updateProductSelectThumbs() {
   const fcThumb = document.getElementById('fc-thumb');
   if (frameThumb && currentClubConfig.frameOverlayUrl) {
     // Fallback first (instant), then try to upgrade to a generated sample preview
-    frameThumb.src = currentClubConfig.frameOverlayUrl + '?v=' + Date.now();
+    frameThumb.src = currentClubConfig.frameOverlayUrl + '?v=' + ASSET_V;
     generateSportsCardThumbnail(frameThumb).catch(err => {
       console.error('Sports card thumbnail generation failed, using raw overlay instead:', err);
     });
   }
   if (fcThumb && currentClubConfig.footballCardTemplateUrl) {
     // Fallback first (instant), then try to upgrade to a generated sample preview
-    fcThumb.src = currentClubConfig.footballCardTemplateUrl + '?v=' + Date.now();
+    fcThumb.src = currentClubConfig.footballCardTemplateUrl + '?v=' + ASSET_V;
     generateFootballCardThumbnail(fcThumb).catch(err => {
       console.error('Football card thumbnail generation failed, using raw template instead:', err);
     });
@@ -1774,7 +1826,7 @@ const SPORTS_CARD_SAMPLE_PHOTO_URL = '/reference/sample_player_sportscard.jpg';
 async function generateSportsCardThumbnail(targetImgEl) {
   const [photoImg, frameImg] = await Promise.all([
     loadImageSafe(SPORTS_CARD_SAMPLE_PHOTO_URL),
-    loadImageSafe(currentClubConfig.frameOverlayUrl + '?v=' + Date.now())
+    loadImageSafe(currentClubConfig.frameOverlayUrl + '?v=' + ASSET_V)
   ]);
   if (!photoImg || !frameImg) return; // leave existing fallback src in place
 
@@ -1782,9 +1834,15 @@ async function generateSportsCardThumbnail(targetImgEl) {
   const W = rc_dims.output_width || 1080;
   const H = rc_dims.output_height || 1350;
 
+  // PERFORMANCE: the thumbnail shows at ~100px wide, so render it at 400px
+  // wide instead of full print size. All drawing below uses the same
+  // full-size coordinates; ctx.scale shrinks them. Shadow blur ignores
+  // ctx.scale, so it's multiplied by TS by hand.
+  const TS = 400 / W;
   const cv = document.createElement('canvas');
-  cv.width = W; cv.height = H;
+  cv.width = Math.round(W * TS); cv.height = Math.round(H * TS);
   const ctx = cv.getContext('2d');
+  ctx.scale(TS, TS);
 
   ctx.drawImage(photoImg, 0, 0, W, H);
   ctx.drawImage(frameImg, 0, 0, W, H);
@@ -1793,7 +1851,7 @@ async function generateSportsCardThumbnail(targetImgEl) {
   ctx.textAlign = 'center';
   const scale = W / 1080;
   ctx.shadowColor = 'rgba(0,0,0,0.5)';
-  ctx.shadowBlur = 8 * scale;
+  ctx.shadowBlur = 8 * scale * TS;
 
   const rc = currentClubConfig.renderConfig || {};
   const configs = [
@@ -1849,15 +1907,23 @@ function fcThumbRandStat() {
 
 async function generateFootballCardThumbnail(targetImgEl) {
   const [templateImg, cutoutImg] = await Promise.all([
-    loadImageSafe(currentClubConfig.footballCardTemplateUrl + '?v=' + Date.now()),
+    loadImageSafe(currentClubConfig.footballCardTemplateUrl + '?v=' + ASSET_V),
     loadImageSafe(FC_SAMPLE_PHOTO_URL)
   ]);
   if (!templateImg || !cutoutImg) return; // leave existing fallback src in place
+  await fcFontReady; // sample text uses the football card font
 
+  // PERFORMANCE: render at 400px wide instead of 2160px (see sports card
+  // thumbnail above). Shadow sizes are multiplied by TS by hand.
   const W = FC_W, H = FC_H;
+  const TS = 400 / W;
   const cv = document.createElement('canvas');
-  cv.width = W; cv.height = H;
+  cv.width = Math.round(W * TS); cv.height = Math.round(H * TS);
   const ctx = cv.getContext('2d');
+  ctx.scale(TS, TS);
+
+  // Keep the template for the real card too, so it isn't fetched again later
+  if (!(fcCardTemplateImg && fcCardTemplateImg.naturalWidth > 0)) fcCardTemplateImg = templateImg;
 
   ctx.drawImage(templateImg, 0, 0, W, H);
 
@@ -1873,9 +1939,9 @@ async function generateFootballCardThumbnail(targetImgEl) {
 
   ctx.save();
   ctx.shadowColor = 'rgba(0,0,0,0.65)';
-  ctx.shadowBlur = H * 0.045;
+  ctx.shadowBlur = H * 0.045 * TS;
   ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = H * 0.025;
+  ctx.shadowOffsetY = H * 0.025 * TS;
   ctx.drawImage(cutoutImg, ix, iy, iw, ih);
   ctx.restore();
 
@@ -1890,7 +1956,7 @@ async function generateFootballCardThumbnail(targetImgEl) {
   const font = getFCFont();
   const textColor = currentClubConfig.fcTextColor || '#81c950';
   ctx.shadowColor = 'rgba(0,0,0,0.8)';
-  ctx.shadowBlur = 8;
+  ctx.shadowBlur = 8 * TS;
 
   ctx.textAlign = 'left';
   ctx.font = `500 ${FC_LAYOUT.rating.size}px ${font}`;
@@ -2094,7 +2160,7 @@ async function removeFCBackground(imageBlob) {
       tmpl.onload = () => { fcCardTemplateImg = tmpl; resolve(); };
       // Still proceed even if template fails to load, matching prior behavior.
       tmpl.onerror = () => resolve();
-      tmpl.src = currentClubConfig.footballCardTemplateUrl + '?v=' + Date.now();
+      tmpl.src = currentClubConfig.footballCardTemplateUrl + '?v=' + ASSET_V;
     });
   }
 
@@ -2366,7 +2432,8 @@ async function showFCPreview() {
     });
   }
   
-  // Draw all text
+  // Draw all text (make sure the football card font has finished loading)
+  await fcFontReady;
   drawFCText(ctx, FC_W, FC_H);
   
   fcFinalDataURL = previewCanvas.toDataURL('image/jpeg', 0.96);
