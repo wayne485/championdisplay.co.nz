@@ -1489,6 +1489,7 @@ async function buildPreview() {
   const configs = [
     { 
       y: H * (rc.line1 ? rc.line1.y : 0.640), 
+      x: W * (rc.line1 && rc.line1.x != null ? rc.line1.x : 0.5),
       baseSize: (rc.line1 ? rc.line1.size : 80) * scale, 
       minSize: 30 * scale, 
       color: currentClubConfig.line1Color, 
@@ -1498,6 +1499,7 @@ async function buildPreview() {
     },
     { 
       y: H * (rc.line2 ? rc.line2.y : 0.725), 
+      x: W * (rc.line2 && rc.line2.x != null ? rc.line2.x : 0.5),
       baseSize: (rc.line2 ? rc.line2.size : 80) * scale, 
       minSize: 30 * scale, 
       color: currentClubConfig.line2Color, 
@@ -1507,6 +1509,7 @@ async function buildPreview() {
     },
     { 
       y: H * (rc.line3 ? rc.line3.y : 0.795), 
+      x: W * (rc.line3 && rc.line3.x != null ? rc.line3.x : 0.5),
       baseSize: (rc.line3 ? rc.line3.size : 38) * scale, 
       minSize: 18 * scale, 
       color: currentClubConfig.line3Color, 
@@ -1533,11 +1536,11 @@ async function buildPreview() {
       const strokeW = c.stroke_width ? c.stroke_width * scale : (i === 2 ? 4 * scale : Math.max(6 * scale, fs * 0.12));
       ctx.lineWidth = strokeW;
       ctx.lineJoin = 'round';
-      ctx.strokeText(t, W / 2, c.y);
+      ctx.strokeText(t, c.x, c.y);
     }
 
     ctx.fillStyle = c.color;
-    ctx.fillText(t, W / 2, c.y);
+    ctx.fillText(t, c.x, c.y);
   });
 
   ctx.shadowBlur = 0;
@@ -1855,9 +1858,9 @@ async function generateSportsCardThumbnail(targetImgEl) {
 
   const rc = currentClubConfig.renderConfig || {};
   const configs = [
-    { y: H * (rc.line1 ? rc.line1.y : 0.640), baseSize: (rc.line1 ? rc.line1.size : 80) * scale, minSize: 30 * scale, color: currentClubConfig.line1Color, stroke: currentClubConfig.line1StrokeColor, stroke_width: rc.line1 ? (rc.line1.stroke_width || null) : null, font: currentClubConfig.fontFamily },
-    { y: H * (rc.line2 ? rc.line2.y : 0.725), baseSize: (rc.line2 ? rc.line2.size : 80) * scale, minSize: 30 * scale, color: currentClubConfig.line2Color, stroke: currentClubConfig.line2StrokeColor, stroke_width: rc.line2 ? (rc.line2.stroke_width || null) : null, font: currentClubConfig.fontFamily },
-    { y: H * (rc.line3 ? rc.line3.y : 0.795), baseSize: (rc.line3 ? rc.line3.size : 38) * scale, minSize: 18 * scale, color: currentClubConfig.line3Color, stroke: currentClubConfig.line3StrokeColor, stroke_width: rc.line3 ? (rc.line3.stroke_width || null) : null, font: currentClubConfig.fontFamily }
+    { y: H * (rc.line1 ? rc.line1.y : 0.640), x: W * (rc.line1 && rc.line1.x != null ? rc.line1.x : 0.5), baseSize: (rc.line1 ? rc.line1.size : 80) * scale, minSize: 30 * scale, color: currentClubConfig.line1Color, stroke: currentClubConfig.line1StrokeColor, stroke_width: rc.line1 ? (rc.line1.stroke_width || null) : null, font: currentClubConfig.fontFamily },
+    { y: H * (rc.line2 ? rc.line2.y : 0.725), x: W * (rc.line2 && rc.line2.x != null ? rc.line2.x : 0.5), baseSize: (rc.line2 ? rc.line2.size : 80) * scale, minSize: 30 * scale, color: currentClubConfig.line2Color, stroke: currentClubConfig.line2StrokeColor, stroke_width: rc.line2 ? (rc.line2.stroke_width || null) : null, font: currentClubConfig.fontFamily },
+    { y: H * (rc.line3 ? rc.line3.y : 0.795), x: W * (rc.line3 && rc.line3.x != null ? rc.line3.x : 0.5), baseSize: (rc.line3 ? rc.line3.size : 38) * scale, minSize: 18 * scale, color: currentClubConfig.line3Color, stroke: currentClubConfig.line3StrokeColor, stroke_width: rc.line3 ? (rc.line3.stroke_width || null) : null, font: currentClubConfig.fontFamily }
   ];
 
   sampleTexts.forEach((t, i) => {
@@ -1873,10 +1876,10 @@ async function generateSportsCardThumbnail(targetImgEl) {
       const strokeW = c.stroke_width ? c.stroke_width * scale : (i === 2 ? 4 * scale : Math.max(6 * scale, fs * 0.12));
       ctx.lineWidth = strokeW;
       ctx.lineJoin = 'round';
-      ctx.strokeText(t, W / 2, c.y);
+      ctx.strokeText(t, c.x, c.y);
     }
     ctx.fillStyle = c.color;
-    ctx.fillText(t, W / 2, c.y);
+    ctx.fillText(t, c.x, c.y);
   });
   ctx.shadowBlur = 0;
 
