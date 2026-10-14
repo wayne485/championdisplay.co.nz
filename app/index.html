@@ -138,7 +138,7 @@ body { background:#0a0a0a; font-family:sans-serif; color:#fff; height:100dvh; ov
 
 #tl1 { font-size:9.5vw; }
 #tl2 { font-size:9.5vw; }
-#tl3 { font-size:4.5vw; font-weight:700; font-family:sans-serif; letter-spacing:0.05em; margin-top:4px; -webkit-text-stroke:0px; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
+#tl3 { font-size:4.5vw; font-weight:900; font-family:sans-serif; letter-spacing:0.05em; margin-top:4px; -webkit-text-stroke:0px; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
 
 @media(min-width:480px) {
   #tl1 { font-size:45px; }
@@ -1522,7 +1522,7 @@ async function buildPreview() {
     let fs = c.baseSize;
 
     while (fs > c.minSize) {
-      ctx.font = i === 2 ? `700 ${fs}px ${c.font}` : `900 ${fs}px ${c.font}`;
+      ctx.font = `900 ${fs}px ${c.font}`;
       if (ctx.measureText(t).width < W * 0.90) break;
       fs -= 2;
     }
@@ -1864,7 +1864,7 @@ async function generateSportsCardThumbnail(targetImgEl) {
     const c = configs[i];
     let fs = c.baseSize;
     while (fs > c.minSize) {
-      ctx.font = i === 2 ? `700 ${fs}px ${c.font}` : `900 ${fs}px ${c.font}`;
+      ctx.font = `900 ${fs}px ${c.font}`;
       if (ctx.measureText(t).width < W * 0.90) break;
       fs -= 2;
     }
