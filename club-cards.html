@@ -108,19 +108,9 @@ fbq('track', 'PageView');
 <header class="site-header">
   <div class="wrap">
     <div class="brand">
-      <a href="/" aria-label="Champion Display home">
-        <img src="/logo-crest.png" alt="Champion Display">
-      </a>
+      <img src="/logo-crest.png" alt="Champion Display">
       <a class="header-phone" href="tel:+6421577045" aria-label="Call +64 21 577 045" data-track="call_click">+64 21 577 045</a>
     </div>
-    <nav class="main-nav" id="mainNav">
-      <a href="/sports-cards.html" class="active">Sports Cards</a>
-      <a href="/player-cards.html">Player Cards</a>
-      <a href="/team-posters.html">Team Posters</a>
-      <a href="/team-photos.html">Team Photos</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="nav-toggle" id="navToggle">Menu</button>
   </div>
 </header>
 
@@ -219,17 +209,6 @@ fbq('track', 'PageView');
   </div>
 </section>
 
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  var navToggle = document.getElementById('navToggle');
-  var mainNav = document.getElementById('mainNav');
-  if (navToggle && mainNav && !navToggle.dataset.menuBound) {
-    navToggle.dataset.menuBound = '1';
-    navToggle.addEventListener('click', function () { mainNav.classList.toggle('open'); });
-  }
-});
-</script>
 
 <!-- Supabase tracking (analytics_events) -->
 <script>
