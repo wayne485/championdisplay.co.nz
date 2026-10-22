@@ -318,6 +318,38 @@
   }
 </style>
 
+<style>
+/* Pulsing Pick a Time button, matching the Sports Cards page */
+.contact-demo-button{
+  display:inline-block!important;
+  min-width:260px;
+  padding:18px 30px!important;
+  border:2px solid #fff3c4!important;
+  border-radius:999px!important;
+  background:#dac16d!important;
+  color:#000000!important;
+  font-size:clamp(18px,2.4vw,24px)!important;
+  font-weight:900!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+  text-decoration:none!important;
+  cursor:pointer;
+  animation:cd-pulse 1.8s ease-in-out infinite;
+  transition:transform .12s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.contact-demo-button:hover{transform:scale(1.04)}
+.contact-demo-button:active{transform:scale(.95)}
+.btn-arrow{display:inline-block;margin-left:6px}
+@keyframes cd-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(218,193,109,.7),0 0 12px rgba(218,193,109,.4)}
+  50%{box-shadow:0 0 0 12px rgba(218,193,109,0),0 0 30px rgba(218,193,109,.8)}
+}
+@media(prefers-reduced-motion:reduce){
+  .contact-demo-button{animation:none;box-shadow:0 0 20px rgba(218,193,109,.6)}
+}
+</style>
+
 </head>
 <body>
 
@@ -509,8 +541,8 @@
       <a class="contact-phone" href="tel:+6421577045">+64 21 577 045</a>
     </div>
     <div class="contact-action">
-      <p class="contact-demo-copy">Grab 30 minutes with Wayne</p>
-      <a class="contact-demo-button" href="https://calendar.app.google/MoK7ecduyQwZUgww5" target="_blank" rel="noopener">BOOK A DEMO</a>
+      <p class="contact-demo-copy">Let's chat about your club.<br>Grab 30 minutes with Wayne.</p>
+      <a class="contact-demo-button" href="https://calendar.app.google/MoK7ecduyQwZUgww5" target="_blank" rel="noopener">PICK A TIME <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
     </div>
     <div class="contact-action contact-message">
       <h3>SEND A MESSAGE</h3>
@@ -526,8 +558,6 @@
     </div>
   </div>
 </section>
-
-<a href="#contact" class="floating-contact">✉ Contact Us</a>
 
 <footer class="site-footer">
   <div class="wrap">
